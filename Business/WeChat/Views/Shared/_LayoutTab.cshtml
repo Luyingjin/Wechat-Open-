@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script src="@Url.Content("/CommonWebResource/CoreLib/Basic/jQuery/jquery-1.6.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("/CommonWebResource/CoreLib/MiniUI/miniui.js")" type="text/javascript"></script>
+    <script src="@Url.Content("/CommonWebResource/Theme/" + @Html.GetGlobalColor() + "/MiniCssInc.js")" type="text/javascript"></script>
+    <script src="@Url.Content("/CommonWebResource/CoreLib/MiniUI/baseMiniuiExt.js")" type="text/javascript"></script>
+    <script src="@Url.Content("/MvcConfig/miniuiExt.js")" type="text/javascript"></script>
+    <link href="@Url.Content("/CommonWebResource/Theme/" + @Html.GetGlobalColor() + "/Tab/images/style.css")" rel="stylesheet" type="text/css" />
+</head>
+<body style="overflow: hidden">
+    <div id="divTabs" style="width: 100%; overflow: none">
+        <div id="divMoreTabs" class="menu_indent" style="display: none">
+            <div onclick="ShowHideMoreTabs()" class="tab_menu_img_up">
+            </div>
+        </div>
+    </div>
+    <div id="miniToolBar" class="mini-toolbar" style="width: 100%; border-bottom: 0;
+        padding: 0px;">
+        <table style="width: 100%;">
+            <tr>
+                <td align="left">
+                    @Html.ExportButton()
+                </td>
+                <td align="right">
+                    <input class="mini-buttonedit searchbox" id="key" emptytext="@ViewBag.KeyEmptyText" style="width: 150px;"
+                                    onenter="onKeyEnter" onbuttonclick="BindGrid()" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="width: 100%; position: relative; overflow: hidden">
+        @RenderBody()
+    </div>
+    @foreach (KeyValuePair<string, string> item in (Dictionary<string, string>)ViewBag.ColumnEnums)
+    {
+        <input type="hidden" key="@item.Key" value="@item.Value" name="columnenum" />
+    }
+</body>
+</html>
+@RenderSection("scripts", required: false)
+<script type="text/javascript">
+    //GetBasicInfo参数分别为：当前用户信息、按钮字段权限、动态文件服务器地址和当前流程环节
+    //请根据具体需要调整true或false
+    @Html.GetBasicInfo(false, false, false, false)
+    var keyQueryField = "@ViewBag.KeyQueryField";
+    var columnEnums = {};
+
+    $(function () {
+        loadTab();
+    })
+
+    $(window).resize(function () {
+        SetGridHeight();
+    });
+
+    function loadTab() {
+        var arrEnums = $("input[name='columnenum']");
+        if (arrEnums.length > 0)
+            $("#divMoreTabs").show();
+        $.each(arrEnums, function (i, val) {
+            var queryField = $(val).attr("key");
+            var objEnum = mini.decode($(val).val());
+            renderTab(queryField, objEnum);
+        });
+        SetGridHeight();
+    }
+
+    function renderTab(queryField, objEnum) {
+        var $div = $("<div class=\"tab_menu_bg\"></div>");
+        var $spanLeft = $("<span class=\"tab_menu_left\">" + objEnum.title + "：</span>");
+        var $ulRight = $("<ul class=\"tab_menu_top\" queryfield=\"" + queryField + "\" enumkey=\"" + objEnum.enumkey + "\"></ul>");
+        renderMenus($ulRight, objEnum.menus);
+        CreateTable($div, $spanLeft, $ulRight);
+        $("#divMoreTabs").before($div);
+    }
+
+    function CreateTable($parent, $td1, $td2) {
+        var table = $("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\"></table>");
+        table.appendTo($parent);
+        var tr = $("<tr></tr>");
+        tr.appendTo(table);
+        for (var j = 0; j < 2; j++) {
+            var td = $("<td></td>");
+            if (j == 0) {
+                td.attr("valign", "top");
+                td.addClass("tab_menu_left_w");
+                td.html($td1[0].outerHTML);
+            }
+            else if (j == 1) {
+                td.html($td2[0].outerHTML);
+            }
+            td.appendTo(tr);
+        }
+        $parent.append(table);
+    }
+
+    function renderMenus($ul, menusdata) {
+        $ul.append($("<li><a href=\"#\" value=\"_all\" class=\"currentall\" onclick=\"menuCheckd();\"><span></span>全部</a></li>"));
+        $.each(menusdata, function (i, menudata) {
+            $ul.append($("<li><a href=\"#\" value=\"" + menudata.value + "\" onclick=\"menuCheckd('" + menudata.radio + "');\"><span></span>" + menudata.text + "</a></li>"));
+        });
+    }
+
+    //菜单选中取消
+    function menuCheckd(radio) {
+        var $a = $(event.srcElement);
+        var $tab_menu = $a.parent().parent();
+        if ($a.attr("value") == "_all") {
+            if (!($a.hasClass("currentall"))) {
+                //'全部'选中
+                $tab_menu.find("a[value='_all']").addClass("currentall");
+                $tab_menu.find("a[value!='_all']").removeClass("current");
+            }
+        }
+        else {
+            if ($a.hasClass("current")) {
+                //取消
+                $a.removeClass("current");
+                //如果都取消，则'全部'选中
+                if ($tab_menu.find("a.current").length == 0) {
+                    $tab_menu.find("a[value='_all']").addClass("currentall");
+                }
+            }
+            else {
+                //单选则先取消所有
+                if (radio == "T") {
+                    $tab_menu.find("a[value!='_all']").removeClass("current");
+                }
+                //选中
+                $a.addClass("current");
+                //取消'全部'
+                $tab_menu.find("a[value='_all']").removeClass("currentall");
+            }
+        }
+        BindGrid();
+    }
+
+    function ShowHideMoreTabs() {
+        var img = $("#divMoreTabs").find("div");
+        var arrMoretabs = $("#divTabs").find("div.tab_menu_bg");
+        if ($(img).hasClass("tab_menu_img_down")) {
+            $(img).removeClass("tab_menu_img_down").addClass("tab_menu_img_up");
+            arrMoretabs.each(function (i) {
+                if (i >= 0)
+                    $(this).show();
+            });
+        }
+        else {
+            $(img).removeClass("tab_menu_img_up").addClass("tab_menu_img_down");
+            arrMoretabs.each(function (i) {
+                if (i >= 0)
+                    $(this).hide();
+            });
+        }
+        SetGridHeight();
+    }
+
+    function SetGridHeight() {
+        var grid = mini.get("dataGrid");
+        if (grid) {
+            var height = $("body").height() - $("#divTabs").height() - mini.get("miniToolBar").getHeight();
+            grid.setHeight(height);
+        }
+    }
+
+    //获取标签数据
+    function GetTabsData() {
+        var data = [];
+        $.each($("#divTabs").find("ul.tab_menu_top"), function (i, ulTab) {
+            if ($(ulTab).find("a.currentall").length == 0) {
+                var tabData = {};
+                tabData.queryfield = $(ulTab).attr("queryfield");
+                tabData.enumkey = $(ulTab).attr("enumkey");
+                var vals = [];
+                $(ulTab).find("a.current").each(function (i) {
+                    vals.push($(this).attr("value"));
+                });
+                tabData.value = vals.join(',');
+                data.push(tabData);
+            }
+        });
+        return data;
+    }
+
+    function GetKeyData() {
+        var keyData = [];
+        var keyValue = mini.get("key").getValue();
+        if ($.trim(keyValue) != "") {
+            var arrqueryfields = keyQueryField.split(",");
+            $.each(arrqueryfields, function (i, val) {
+                var data = {};
+                data.queryfield = val;
+                data.value = keyValue;
+                keyData.push(data);
+            });
+        }
+        return keyData;
+    }
+
+    function onKeyEnter() {
+        BindGrid();
+    }
+
+    function BindGrid() {
+        var queryData = {};
+        queryData.tabdata = GetTabsData();
+        queryData.keydata = GetKeyData();
+        var grid = mini.get("dataGrid");
+        var json = mini.encode(queryData);
+        grid.load({
+            queryData: json,
+            pageIndex: grid.pageIndex,
+            pageSize: grid.pageSize,
+            sortField: grid.sortField,
+            sortOrder: grid.sortOrder
+        });
+    }
+    preInit();
+</script>

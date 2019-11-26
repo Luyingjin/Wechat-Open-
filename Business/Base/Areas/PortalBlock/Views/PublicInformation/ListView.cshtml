@@ -1,0 +1,130 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+            </td>
+            <td class="gw-toolbar-right">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入标题" style="width: 200px;"
+                    onenter="quickSearch('Title');" onbuttonclick="quickSearch('Title');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetListView?CatalogKey=@ViewBag.CatalogKey" style="width: 100%;
+        height: 100%;"  allowMoveColumn="false"  ondrawcell="OnDrawCell" sortfield="Important,Urgency,CreateTime" sortOrder="Desc,desc,desc">
+        <div property="columns">
+            <div field="Urgency" headeralign="center" align="center" width="50" allowsort="true">
+                紧急性</div>
+            <div field="Title" width="*" headeralign="center" allowsort="true" align="left">
+                标题</div>
+            <div field="ReceiveDeptName" headeralign="center" align="left" width="120" allowsort="true">
+                接收部门</div>
+            <div field="ReceiveUserName" headeralign="center" align="left" width="120" allowsort="true">
+                接收人</div>
+            <div field="ExpiresTime" width="80" dateformat="yyyy-MM-dd" headeralign="center"
+                allowsort="true" align="center">
+                过期时间</div>
+            @* <div field="IsTop" width="45" renderer="onEnumRender" headeralign="center" allowsort="true"
+                align="center">
+                置顶</div>*@
+            <div field="ReadCount" width="60" headeralign="center" style="" allowsort="true"
+                align="right">
+                阅读数</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true" ondrawcell="OnDrawCell">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    标题
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Title" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                    接收部门
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$ReceiveDeptName" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                    接收人
+                </td>
+                <td align="left" width="23%">
+                    <input name="$LK$ReceiveUserName" style="width: 75%;" class="mini-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    是否重要
+                </td>
+                <td align="left">
+                    <input class="mini-combobox" name="$LK$Important" style="width: 75%;" valuefield="value"
+                        textfield="text" data="TrueOrFalse" shownullitem="true" />
+                </td>
+                <td align="center">
+                    是否紧急
+                </td>
+                <td align="left">
+                    <input class="mini-combobox" name="$LK$Urgency" style="width: 75%;" valuefield="value"
+                        textfield="text" data="TrueOrFalse" shownullitem="true" />
+                </td>
+                <td align="center">
+                </td>
+                <td align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false"
+                    iconcls="icon-clear">清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    @Html.GetEnum("System.TrueOrFalse")
+</script>
+<script type="text/javascript">
+    //为Grid枚举列指定枚举定义
+    addGridEnum("dataGrid", "IsTop", "TrueOrFalse");
+    //注册Grid链接列
+    //    addGridLink('dataGrid', 'Title', 'Views?ID={ID}', { funcType: 'view', width: 920,
+    //        height: '85%'
+    //    });
+    function closeWindows() {
+        mini.get("dataGrid").load();
+    }
+
+    function OnDrawCell(e) {
+        var grid = e.sender;
+        var record = e.record;
+        var uid = record._uid;
+        var rowIndex = e.rowIndex;
+        if (e.field == "Urgency") {
+            if (e.value == "1")
+                e.cellHtml = "<span class='icon-row-urgency' title='紧急' style='float:center;'></span>";
+            else {
+                e.cellHtml = "<span class='icon-row-urgency-not' title='一般' style='float:center;'></span>";
+            }
+        }
+        else if (e.field == "Title") {
+            if (record.Important == "1")
+                e.cellHtml = "<a onclick=\"GoTo('" + record.Title + "','" + record.ID + "');\" href='#' style='color:#fa2805;text-decoration: none'>" + record.Title + "</a>";
+            else
+                e.cellHtml = "<a onclick=\"GoTo('" + record.Title + "','" + record.ID + "');\" href='#' style='text-decoration: none'>" + record.Title + "</a>";
+        }
+    }
+    function GoTo(title, id) {
+        var actionUrl = "Views?ID=" + id;
+        openWindow(actionUrl, { title: title, gridId: "dataGrid", funcType: 'view', width: 920, height: '85%' });
+    }
+</script>

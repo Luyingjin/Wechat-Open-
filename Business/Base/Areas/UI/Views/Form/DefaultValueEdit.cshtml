@@ -1,0 +1,64 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="addRow({},{isLast:true})">添加</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" iconcls="icon-save" onclick="saveDefaultValueSettings();">保存</a>
+                <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="getDefaultValueSettings" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true"
+        showpager="false" allowunselect="false">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div type="comboboxcolumn" field="ConnName" width="150" autoshowpopup="true" align="center" vtype="required;">数据库连接
+                <input property="editor" class="mini-combobox" style="width: 100%;" data="ConnEnum" onitemclick="commitEdit" />
+            </div>
+            <div field="SQL" width="*">SQL
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    }
+    function getitemTypeText(value) {
+        for (var i = 0; i < ItemType.length; i++) {
+            if (ItemType[i]["value"] == value)
+                return ItemType[i]["text"];
+        }
+    }
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }        
+</script>
+<script type="text/javascript">
+@Html.GetEnum("ConnEnum");
+</script>
+<script type="text/javascript">
+
+    function saveDefaultValueSettings() {
+        addExecuteParam("DefaultValueSettings", mini.get("dataGrid").getData());
+        execute("SaveDefaultValueSettings", { actionTitle: "保存" });
+    }
+</script>

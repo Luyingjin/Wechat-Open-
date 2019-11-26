@@ -1,0 +1,101 @@
+﻿@{
+    ViewBag.Title = "菜单树";
+}
+<div class="mini-splitter" style="width: 100%; height: 100%;" allowresize="true">
+    <div size="150" showcollapsebutton="true">
+        <div class="mini-fit">
+            <ul id="myTree" class="mini-tree" url="GetTree" style="width: 100%; height: 100%"
+                showtreeicon="false" onnodeselect="onNodeSelect" expandonload="3" textfield="Name"
+                idfield="ID" parentfield="ParentID" iconfield="NODETYPE" resultastree="false"
+                selectonload="true" contextmenu="#treeMenu">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-fit">
+            <iframe id="myframe" name="myframe" src="" frameborder="0" style="width: 100%; height: 100%;" border="0"  scrolling="no"></iframe>
+            </div>
+    </div>
+</div>
+<ul id="treeMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
+    <li name="add" id="btnAdd" iconcls="icon-add" onclick="onAddNode">新增</li>
+    <li name="edit" id="btnEdit" iconcls="icon-edit" onclick="onEditNode">编辑</li>
+    <li name="remove" id="btnDel" iconcls="icon-remove" onclick="onRemoveNode">删除</li>
+</ul>
+<script type="text/javascript">
+    var tree;
+    function pageLoad() {
+        tree = mini.get("myTree");
+    }
+
+    function onNodeSelect(e) {
+        var node = e.node;
+        if (node.Length != 1) {
+
+            var url = "/WeChat/MpFans/List?GroupID=" + node.ID + "&MpID=" + node.MpID;
+            $('#myframe').attr("src", url);
+        }
+        else {
+            var url = "/WeChat/MpFans/List?MpID=" + node.MpID;
+            $('#myframe').attr("src", url);
+        }
+
+    }
+
+    function onAddNode() {
+        var node = tree.getSelectedNode();
+        var url = "Edit?ParentID=" + node.ID + "&FuncType=insert" + "&MpID=" + node.MpID;
+        openWindow(url, {
+            title: "新增", width: 600, height: 220, onDestroy: function () {
+                tree.reload();
+            }
+        });
+    }
+
+    function onEditNode() {
+        var node = tree.getSelectedNode();
+        var url = "Edit?ID=" + node.ID;
+        openWindow(url, {
+            title: "编辑", width: 600, height: 220, onDestroy: function () {
+                tree.reload();
+            }
+        });
+    }
+
+    function onRemoveNode() {
+        var node = tree.getSelectedNode();
+        if (node) {
+            addExecuteParam("ID", node.ID);
+            execute("DeleteNode", { mustConfirm: true, onComplete: function () { msgUI("删除成功！"); tree.reload(); } });
+        }
+    }
+
+    function onBeforeOpen(e) {
+        var menu = e.sender;
+        var node = tree.getSelectedNode();
+        if (!node) {
+            e.cancel = true;
+            return;
+        }
+
+        var addItem = mini.getbyName("add", menu);
+        var editItem = mini.getbyName("edit", menu);
+        var removeItem = mini.getbyName("remove", menu);
+
+        if (node.Length == 1) {
+            addItem.show();
+            editItem.hide();
+            removeItem.hide();
+        }
+        else if (node.Length == 2 && node.Name != "未分组" && node.Name != "黑名单" && node.Name != "星标组") {
+            addItem.hide();
+            editItem.show();
+            removeItem.show();
+        }
+        else {
+            addItem.hide();
+            editItem.hide();
+            removeItem.hide();
+        }
+    }
+</script>

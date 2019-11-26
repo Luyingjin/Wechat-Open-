@@ -1,0 +1,112 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save">保存</a> 
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" url="">
+<div class="formDiv">
+    <fieldset>
+    <legend><span>基本信息</span></legend>
+        <table width="100%" style="">
+            <tr style="height: 0px">
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    开始时间
+                </td>
+                <td colspan="3">
+                    <input id="StartDate" name="StartDate" class="mini-datepicker" width="100px" required="true"/>&nbsp;<input id="StartTSP" name="StartTSP" class="mini-timespinner" format="HH:mm" width="80px" required="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    结束时间
+                </td>
+                <td colspan="3">
+                    <input id="EndDate"  name="EndDate" class="mini-datepicker" width="100px" required="true"/>&nbsp;<input id="EndTSP" name="EndTSP" class="mini-timespinner" format="HH:mm" width="80px" required="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    标题
+                </td>
+                <td colspan="3">
+                    <input name="Title" id="Title"  class="mini-textbox" style="width:100%" required="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>内容</td>
+                <td colspan="3">
+                    <textarea class="mini-textarea" name="Description" style="WIDTH:100%;height:98px"></textarea>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<script language="javascript" type="text/javascript">
+
+    $(function () {
+        var arrStart = getQueryString("Start").split('|');
+        var arrEnd = getQueryString("End").split('|');
+        mini.get("StartDate").setValue(arrStart[0]);
+        mini.get("StartTSP").setValue(arrStart[1]);
+        mini.get("EndDate").setValue(arrEnd[0]);
+        mini.get("EndTSP").setValue(arrEnd[1]);
+
+        $("#btnSave").bind("click", function () {
+            var form = new mini.Form("#dataForm");
+            if (!(form.validate())) {
+                return;
+            }
+            var data = form.getData();
+            data.StartTime = data.StartDate.format("yyyy-MM-dd") + "T" + data.StartTSP.format("hh:mm");
+            data.EndTime = data.EndDate.format("yyyy-MM-dd") + "T" + data.EndTSP.format("hh:mm");
+            closeWindow(data);
+        });
+    });
+
+    Date.prototype.format = function (format) {
+        /* 
+        * eg:format="yyyy-MM-dd hh:mm:ss"; 
+        */
+        var o = {
+            "M+": this.getMonth() + 1, // month  
+            "d+": this.getDate(), // day  
+            "h+": this.getHours(), // hour  
+            "m+": this.getMinutes(), // minute  
+            "s+": this.getSeconds(), // second  
+            "q+": Math.floor((this.getMonth() + 3) / 3), // quarter  
+            "S": this.getMilliseconds()
+            // millisecond  
+        }
+
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+                        - RegExp.$1.length));
+        }
+
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                            ? o[k]
+                            : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
+    }
+</script>

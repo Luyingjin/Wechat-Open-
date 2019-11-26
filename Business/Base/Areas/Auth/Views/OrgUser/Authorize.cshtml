@@ -1,0 +1,126 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;">
+    <div size="250" showcollapsebutton="false">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetTree" contextmenu="#treeMenu" showtreeicon="true" iconfield="Type" textfield="Name" idfield="ID"
+                parentfield="ParentID" resultastree="false" onnodeselect="onNodeSelect" expandonload="0">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" style="border-left: 0px">
+            <table>
+                <tr>
+                    <td>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称或简称" onenter="quickSearch('Code,Name,ShortName');" onbuttonclick="quickSearch('Code,Name,ShortName');" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" borderstyle="border-left:0px" url="GetOrgList" multiselect="true" allowunselect="false">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="Code" width="100px" allowsort="true">组织编号</div>
+                    <div field="Name" width="200px" allowsort="true">组织名称</div>
+                    <div field="ShortName" width="150px">组织简称</div>
+                    <div field="Type" width="60px">组织类型</div>
+                    <div field="rule" width="60px"></div>
+                    <div field="res" width="60px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul id="treeMenu" class="mini-contextmenu">
+    <li iconcls="icon-setting" onclick="relationSetting(urlConstant.multiRes,{action:'SetOrgRes',getDataAction:'GetOrgRes?NodeFullID={FullID}',paramFrom:'dataTree' ,refresh:false,title:'设置入口权限'});">
+        设置入口权限</li>
+    <li iconcls="icon-setting" onclick="relationSetting(urlConstant.multiRule,{action:'SetOrgRule',getDataAction:'GetOrgRes?NodeFullID={FullID}',paramFrom:'dataTree' ,refresh:false,title:'设置规则权限'});">
+        设置规则权限</li>
+</ul>
+<script type="text/javascript">
+    function onNodeSelect(e) {
+        var dataGrid = mini.get("dataGrid");
+        dataGrid.setUrl(dataGrid.url.split('?')[0] + "?NodeFullID=" + e.node.FullID);
+        dataGrid.load();
+    }
+
+    function pageLoad() {
+        var tree = mini.get("dataTree");
+        var node = tree.getRootNode();
+        node = tree.getChildNodes(node)[0];
+        tree.selectNode(node);
+        var e = {};
+        e.node = node;
+        onNodeSelect(e);
+    }
+
+    treeConfig.title = "组织";
+</script>
+<script type="text/javascript">
+
+    function getOrgRes(contentWindow) {
+        var node = mini.get("dataGrid").getSelected();
+
+        execute("GetOrgRes?NodeFullID=" + node.FullID, { onComplete: function (data, settings) {
+            contentWindow.setData(data);
+        }
+        });
+    }
+
+    function setOrgRes(data, settings) {
+        if (data == "close")
+            return;
+        var node = mini.get("dataGrid").getSelected();
+
+        addExecuteParam("NodeFullID", node.ID);
+        addExecuteParam("RelationData", mini.encode(data));
+        addExecuteParam("FullRelation", false);
+
+        execute("SetOrgRes", { actionTitle: "设置", refresh: false });
+    }
+
+    function setOrgRule(data, settings) {
+        if (data == "close")
+            return;
+        var node = mini.get("dataGrid").getSelected();
+
+        addExecuteParam("NodeFullID", node.ID);
+        addExecuteParam("RelationData", mini.encode(data));
+        addExecuteParam("FullRelation", false);
+
+        execute("SetOrgRule", { actionTitle: "设置", refresh: false });
+    }
+
+    addGridLink("dataGrid", "res", urlConstant.multiRes, { refresh: false, onLoad: getOrgRes, onDestroy: setOrgRes, linkText: "入口权限", title: "入口权限" });
+    addGridLink("dataGrid", "rule", urlConstant.multiRule, { refresh: false, onLoad: getOrgRes, onDestroy: setOrgRule, linkText: "规则权限", title: "规则权限" });
+
+    addGridEnum("dataGrid", "Type", "OrgType");
+
+</script>
+<script type="text/javascript">
+@Html.GetEnum(typeof(Config.OrgType))
+</script>
+<style type="text/css">
+    .Org
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/org.gif) no-repeat;
+    }
+    .Dept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/dept.gif) no-repeat;
+    }
+    .ManufactureDept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/cutover.png) no-repeat;
+    }
+    .SubDept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+    .Post
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/user.png) no-repeat;
+    }
+</style>

@@ -1,0 +1,137 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save">保存</a> 
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<input name="BlockType" class="mini-hidden" />
+<input name="TemplateId" class="mini-hidden" />
+<input name="Color" class="mini-hidden" />
+<input name="ColorValue" class="mini-hidden" />
+
+<div class="basediv" style="max-width:100%;">
+    <table width="100%">
+        <tr style="height: 0px">
+            <td width="15%">
+            </td>
+            <td width="35%">
+            </td>
+            <td width="15%">
+            </td>
+            <td width="35%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                块标题
+            </td>
+            <td>
+                <input name="BlockTitle" style="width: 100%" class="mini-textbox" vtype="maxLength:50"
+                    required="true" />
+            </td>
+            <td>
+                块Key
+            </td>
+            <td>
+                <input name="BlockKey" style="width: 100%" class="mini-textbox" vtype="maxLength:50"
+                    required="true" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                默认显示条数
+            </td>
+            <td>
+                <input name="RepeatItemCount" class="mini-textbox" style="width: 100%" vtype="int" />
+            </td>
+            <td>
+                能否编辑
+            </td>
+            <td>
+                <input class="mini-combobox" name="IsEdit" style="width: 60px;" valuefield="value"
+                    textfield="text" data="TorF" required="true" />
+            </td>
+        </tr>
+        <tr>
+            <td>是否隐藏</td>
+            <td>
+                 <input class="mini-combobox" name="IsHidden" style="width: 60px;" valuefield="value"
+                    textfield="text" data="TorF" required="true" />
+           </td>
+            <td>延迟加载(秒)</td>
+            <td>
+                <input name="DelayLoadSecond" class="mini-textbox" style="width: 100%" vtype="int" required="true"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                块图标
+            </td>
+            <td colspan="3">
+                <input name="BlockImage" style="width: 100%" class="mini-textbox" vtype="maxLength:100" required="true"/>
+            </td>
+        </tr>
+		<tr>
+			<td>列表数据源sql语句</td>
+			<td colspan='3'>
+                <textarea class="mini-textarea" name="RepeatDataDataSql" style="WIDTH:100%;HEIGHT:88px" required="true"></textarea>
+            </td>
+		</tr>
+		<tr>
+			<td></td>
+			<td colspan='3'style="COLOR:red">说明：跨库Sql为了重用性及迁移性可直接用大括号{}内加入数据库标签，如{OfficeAutoCntString}来代替实际库名</td>
+		</tr>
+        <tr>
+			<td>标题头html</td>
+			<td colspan='3'>
+                <textarea class="mini-textarea" id="HeadHtml" name="HeadHtml" style="WIDTH:100%;HEIGHT:400px;" required="true"></textarea>
+            </td>
+        </tr>
+        <tr>
+			<td>列表html模版</td>
+			<td colspan='3'>
+                <textarea class="mini-textarea" id="RepeatItemTemplate" name="RepeatItemTemplate" style="WIDTH:100%;HEIGHT:400px;" required="true"></textarea>
+            </td>
+        </tr>
+        <tr>
+			<td>页脚html</td>
+			<td colspan='3'>
+                <textarea class="mini-textarea" id="FootHtml" name="FootHtml" style="WIDTH:100%;HEIGHT:60px" required="true"></textarea>
+            </td>
+        </tr>
+		<tr>
+			<td>相关的script脚本</td>
+			<td colspan='3'>
+                <textarea class="mini-textarea" name="RelateScript" style="WIDTH:100%; HEIGHT:400px;"></textarea>
+            </td>
+		</tr>
+		<tr>
+			<td>备注</td>
+			<td colspan='3'>
+                <textarea class="mini-textarea" name="Remark" style="WIDTH:100%;HEIGHT:100px"></textarea>
+            </td>
+		</tr>
+    </table>
+</div>
+</form>
+<script language="javascript" type="text/javascript">
+    @Html.GetEnum("System.TorF")
+</script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").bind("click", function () {
+            var id = getQueryString("ID");
+            save({ closeWindow: true });
+        });
+    });
+
+</script>

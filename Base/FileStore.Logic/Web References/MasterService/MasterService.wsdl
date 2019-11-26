@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="GetFileInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serverName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFileInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFileInfoResult" type="tns:FsFileInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="FsFileInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="FileName" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FileSize" type="s:long" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileFullPath" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="FileFullPathList" type="tns:ArrayOfString" />
+          <s:element minOccurs="0" maxOccurs="1" name="SrcFileFullPath" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="SrcFileServiceUrl" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="AddFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serverName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="destfileName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="fileSize" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="relateId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fileCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="version" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="src" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddFileResult" type="tns:FsFileInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serverName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="destfileName" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="fileSize" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="relateId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fileCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="version" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="src" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateFileResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="UpdateFileResult" type="tns:FsFileInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetFileStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="status" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetFileStatusResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="UpdateFileServerNames">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="serverName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="UpdateFileServerNamesResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DelFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="delReason" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DelFileResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DelFileByRelateId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="relateId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="delReason" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DelFileByRelateIdResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="DeletePhysicalFile">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="DeletePhysicalFileResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetFileNamesByRelateId">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="relateId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFileNamesByRelateIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFileNamesByRelateIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetFileBaseAttr">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="relateId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="fileCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="version" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SetFileBaseAttrResponse">
+        <s:complexType />
+      </s:element>
+      <s:element name="GetFileSize">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileId" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFileSizeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="GetFileSizeResult" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFileName">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="fileID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetFileNameResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetFileNameResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAvailableRootFolder">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serverName" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="src" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="extName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAvailableRootFolderResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAvailableRootFolderResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllRootFolderInfo">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="serverName" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetAllRootFolderInfoResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetAllRootFolderInfoResult" type="tns:ArrayOfRootFolderInfo" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfRootFolderInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="RootFolderInfo" nillable="true" type="tns:RootFolderInfo" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="RootFolderInfo">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="RootFolderPath" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="UserName" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Pwd" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetFileInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFileInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetFileInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFileInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddFileSoapIn">
+    <wsdl:part name="parameters" element="tns:AddFile" />
+  </wsdl:message>
+  <wsdl:message name="AddFileSoapOut">
+    <wsdl:part name="parameters" element="tns:AddFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateFileSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateFile" />
+  </wsdl:message>
+  <wsdl:message name="UpdateFileSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetFileStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:SetFileStatus" />
+  </wsdl:message>
+  <wsdl:message name="SetFileStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:SetFileStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="UpdateFileServerNamesSoapIn">
+    <wsdl:part name="parameters" element="tns:UpdateFileServerNames" />
+  </wsdl:message>
+  <wsdl:message name="UpdateFileServerNamesSoapOut">
+    <wsdl:part name="parameters" element="tns:UpdateFileServerNamesResponse" />
+  </wsdl:message>
+  <wsdl:message name="DelFileSoapIn">
+    <wsdl:part name="parameters" element="tns:DelFile" />
+  </wsdl:message>
+  <wsdl:message name="DelFileSoapOut">
+    <wsdl:part name="parameters" element="tns:DelFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="DelFileByRelateIdSoapIn">
+    <wsdl:part name="parameters" element="tns:DelFileByRelateId" />
+  </wsdl:message>
+  <wsdl:message name="DelFileByRelateIdSoapOut">
+    <wsdl:part name="parameters" element="tns:DelFileByRelateIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="DeletePhysicalFileSoapIn">
+    <wsdl:part name="parameters" element="tns:DeletePhysicalFile" />
+  </wsdl:message>
+  <wsdl:message name="DeletePhysicalFileSoapOut">
+    <wsdl:part name="parameters" element="tns:DeletePhysicalFileResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFileNamesByRelateIdSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFileNamesByRelateId" />
+  </wsdl:message>
+  <wsdl:message name="GetFileNamesByRelateIdSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFileNamesByRelateIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="SetFileBaseAttrSoapIn">
+    <wsdl:part name="parameters" element="tns:SetFileBaseAttr" />
+  </wsdl:message>
+  <wsdl:message name="SetFileBaseAttrSoapOut">
+    <wsdl:part name="parameters" element="tns:SetFileBaseAttrResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFileSizeSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFileSize" />
+  </wsdl:message>
+  <wsdl:message name="GetFileSizeSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFileSizeResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetFileNameSoapIn">
+    <wsdl:part name="parameters" element="tns:GetFileName" />
+  </wsdl:message>
+  <wsdl:message name="GetFileNameSoapOut">
+    <wsdl:part name="parameters" element="tns:GetFileNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAvailableRootFolderSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAvailableRootFolder" />
+  </wsdl:message>
+  <wsdl:message name="GetAvailableRootFolderSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAvailableRootFolderResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetAllRootFolderInfoSoapIn">
+    <wsdl:part name="parameters" element="tns:GetAllRootFolderInfo" />
+  </wsdl:message>
+  <wsdl:message name="GetAllRootFolderInfoSoapOut">
+    <wsdl:part name="parameters" element="tns:GetAllRootFolderInfoResponse" />
+  </wsdl:message>
+  <wsdl:portType name="MasterServiceSoap">
+    <wsdl:operation name="GetFileInfo">
+      <wsdl:input message="tns:GetFileInfoSoapIn" />
+      <wsdl:output message="tns:GetFileInfoSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddFile">
+      <wsdl:input message="tns:AddFileSoapIn" />
+      <wsdl:output message="tns:AddFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFile">
+      <wsdl:input message="tns:UpdateFileSoapIn" />
+      <wsdl:output message="tns:UpdateFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetFileStatus">
+      <wsdl:input message="tns:SetFileStatusSoapIn" />
+      <wsdl:output message="tns:SetFileStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFileServerNames">
+      <wsdl:input message="tns:UpdateFileServerNamesSoapIn" />
+      <wsdl:output message="tns:UpdateFileServerNamesSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DelFile">
+      <wsdl:input message="tns:DelFileSoapIn" />
+      <wsdl:output message="tns:DelFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DelFileByRelateId">
+      <wsdl:input message="tns:DelFileByRelateIdSoapIn" />
+      <wsdl:output message="tns:DelFileByRelateIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="DeletePhysicalFile">
+      <wsdl:input message="tns:DeletePhysicalFileSoapIn" />
+      <wsdl:output message="tns:DeletePhysicalFileSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFileNamesByRelateId">
+      <wsdl:input message="tns:GetFileNamesByRelateIdSoapIn" />
+      <wsdl:output message="tns:GetFileNamesByRelateIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SetFileBaseAttr">
+      <wsdl:input message="tns:SetFileBaseAttrSoapIn" />
+      <wsdl:output message="tns:SetFileBaseAttrSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFileSize">
+      <wsdl:input message="tns:GetFileSizeSoapIn" />
+      <wsdl:output message="tns:GetFileSizeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFileName">
+      <wsdl:input message="tns:GetFileNameSoapIn" />
+      <wsdl:output message="tns:GetFileNameSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableRootFolder">
+      <wsdl:input message="tns:GetAvailableRootFolderSoapIn" />
+      <wsdl:output message="tns:GetAvailableRootFolderSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAllRootFolderInfo">
+      <wsdl:input message="tns:GetAllRootFolderInfoSoapIn" />
+      <wsdl:output message="tns:GetAllRootFolderInfoSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="MasterServiceSoap" type="tns:MasterServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetFileInfo">
+      <soap:operation soapAction="http://tempuri.org/GetFileInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddFile">
+      <soap:operation soapAction="http://tempuri.org/AddFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFile">
+      <soap:operation soapAction="http://tempuri.org/UpdateFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetFileStatus">
+      <soap:operation soapAction="http://tempuri.org/SetFileStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFileServerNames">
+      <soap:operation soapAction="http://tempuri.org/UpdateFileServerNames" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelFile">
+      <soap:operation soapAction="http://tempuri.org/DelFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelFileByRelateId">
+      <soap:operation soapAction="http://tempuri.org/DelFileByRelateId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeletePhysicalFile">
+      <soap:operation soapAction="http://tempuri.org/DeletePhysicalFile" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileNamesByRelateId">
+      <soap:operation soapAction="http://tempuri.org/GetFileNamesByRelateId" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetFileBaseAttr">
+      <soap:operation soapAction="http://tempuri.org/SetFileBaseAttr" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileSize">
+      <soap:operation soapAction="http://tempuri.org/GetFileSize" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileName">
+      <soap:operation soapAction="http://tempuri.org/GetFileName" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableRootFolder">
+      <soap:operation soapAction="http://tempuri.org/GetAvailableRootFolder" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllRootFolderInfo">
+      <soap:operation soapAction="http://tempuri.org/GetAllRootFolderInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="MasterServiceSoap12" type="tns:MasterServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="GetFileInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetFileInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddFile">
+      <soap12:operation soapAction="http://tempuri.org/AddFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFile">
+      <soap12:operation soapAction="http://tempuri.org/UpdateFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetFileStatus">
+      <soap12:operation soapAction="http://tempuri.org/SetFileStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateFileServerNames">
+      <soap12:operation soapAction="http://tempuri.org/UpdateFileServerNames" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelFile">
+      <soap12:operation soapAction="http://tempuri.org/DelFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DelFileByRelateId">
+      <soap12:operation soapAction="http://tempuri.org/DelFileByRelateId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeletePhysicalFile">
+      <soap12:operation soapAction="http://tempuri.org/DeletePhysicalFile" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileNamesByRelateId">
+      <soap12:operation soapAction="http://tempuri.org/GetFileNamesByRelateId" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetFileBaseAttr">
+      <soap12:operation soapAction="http://tempuri.org/SetFileBaseAttr" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileSize">
+      <soap12:operation soapAction="http://tempuri.org/GetFileSize" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileName">
+      <soap12:operation soapAction="http://tempuri.org/GetFileName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAvailableRootFolder">
+      <soap12:operation soapAction="http://tempuri.org/GetAvailableRootFolder" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetAllRootFolderInfo">
+      <soap12:operation soapAction="http://tempuri.org/GetAllRootFolderInfo" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="MasterService">
+    <wsdl:port name="MasterServiceSoap" binding="tns:MasterServiceSoap">
+      <soap:address location="http://localhost:8004/FileStore/Services/MasterService.asmx" />
+    </wsdl:port>
+    <wsdl:port name="MasterServiceSoap12" binding="tns:MasterServiceSoap12">
+      <soap12:address location="http://localhost:8004/FileStore/Services/MasterService.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

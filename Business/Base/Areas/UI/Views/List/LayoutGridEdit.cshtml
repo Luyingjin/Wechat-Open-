@@ -1,0 +1,100 @@
+﻿<div id="formlayout" class="mini-layout" style="width: 100%; height: 100%;">
+    <div region="north" height="32" showspliticon="false" showheader="false" allowresize="false"
+        splitsize="0" style="border: 0;">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-save" onclick="save({action:'SaveLayoutGrid'});">
+                            保存</a>
+                    </td>
+                    <td id="btnRight">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div title="center" region="center" style="border: 0;">
+        <form id="dataForm" method="post" url="GetLayoutGrid">
+        <div class="formDiv">
+            <fieldset>
+                <legend>基本属性</legend>
+                <div>
+                    <table>
+                        <tr class="hideRow">
+                            <td width="50%">
+                            </td>
+                            <td width="50%">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                是否多选：
+                            </td>
+                            <td>
+                                <input name="multiSelect" class="mini-combobox" value="true" data="yesNo" style="width: 100%" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                显示斑马纹：
+                            </td>
+                            <td>
+                                <input name="allowAlternating" class="mini-combobox" value="false" data="yesNo" style="width: 100%" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                锁定开始列：
+                            </td>
+                            <td>
+                                <input name="frozenStartColumn" class="mini-textbox" style="width: 100%;" vtype="int;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                锁定截至列：
+                            </td>
+                            <td>
+                                <input name="frozenEndColumn" class="mini-textbox" style="width: 100%;" vtype="int;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                显示汇总行：
+                            </td>
+                            <td>                                
+                                <input name="showSummaryRow" class="mini-combobox" value="false" data="yesNo" style="width: 100%" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>事件属性</legend>
+                <div>
+                    <table>
+                        <tr class="hideRow">
+                            <td width="50%">
+                            </td>
+                            <td width="50%">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                绘制单元格时发生：
+                            </td>
+                            <td>
+                                <input name="drawcell" class="mini-textbox" style="width: 100%" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </fieldset>
+        </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    var yesNo = [{ "value": "true", "text": "是" }, { "value": "false", "text": "否"}];
+</script>

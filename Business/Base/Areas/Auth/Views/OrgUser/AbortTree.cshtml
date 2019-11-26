@@ -1,0 +1,123 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;">
+    <div size="350" showcollapsebutton="false">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetAbortTree" showtreeicon="true" contextmenu="#treeMenu" iconfield="Type" textfield="Name"
+                idfield="ID" parentfield="ParentID" resultastree="false" onnodeselect="onNodeSelect" expandonload="0">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false" style="border: 0px">
+        <div class="mini-toolbar gw-grid-toolbar">
+            <table>
+                <tr>
+                    <td>
+                        <div class="gw-grid-title icon-tip">所属员工列表</div>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入账号或姓名或工号" style="width: 200px;" onenter="quickSearch('Code,Name,WorkNo');" onbuttonclick="quickSearch('Code,Name,WorkNo');" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetRelationList" sortfield="SortIndex" sortorder="asc" multiselect="true">
+                <div property="columns">
+                    <div field="Code" width="60px" allowsort="true" align="center">账号</div>
+                    <div field="Name" width="60px" allowsort="true" align="center">姓名</div>
+                    <div field="Sex" width="40px" allowsort="true" align="center">性别 </div>
+                    <div field="WorkNo" width="60px" allowsort="true" align="center">工号</div>
+                    <div field="Phone" width="100px" allowsort="true" align="center">电话</div>
+                    <div field="MobilePhone" width="100px" allowsort="true" align="center">手机</div>
+                    <div field="RTX" width="100px" allowsort="true" align="center">RTX</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul id="treeMenu" class="mini-contextmenu" onbeforeopen="onNodeBefore">
+    <li iconcls="icon-add" onclick="onNodeRecover">恢复作废组织</li>
+</ul>
+<script type="text/javascript">
+
+    function onNodeSelect(e) {
+        var dataGrid = mini.get("dataGrid");
+        dataGrid.setUrl(dataGrid.url.split('?')[0] + "?NodeFullID=" + e.node.FullID);
+        dataGrid.load();
+    }
+
+    function onNodeBefore(e) {
+        var menu = e.sender;
+        var tree = mini.get("dataTree");
+
+        var node = tree.getSelectedNode();
+        if (node && node.IsDeleted == "1") {
+            //可以编辑
+            return;
+        }
+        else {
+            e.cancel = true;
+            //阻止浏览器默认右键菜单
+            e.htmlEvent.preventDefault();
+            return;
+        }
+    }
+
+    function onNodeRecover(e) {
+        var tree = mini.get("dataTree");
+        var node = tree.getSelectedNode();
+        var pnode = tree.getParentNode(node);
+        if (pnode && pnode.IsDeleted == '1') {
+            msgUI("请先恢复父级组织！", 1);
+            return;
+        }
+        msgUI("确认恢复当前作废组织吗？", 2, function (action) {
+            if (action == "ok") {
+                execute("RecoverOrg?NodeID=" + node.ID,
+                { actionTitle: '恢复作废组织',
+                    mustConfirm: false,
+                    onComplete: function () {
+                        tree.updateNode(node, { Name: node.Name.replace("(已作废)", "").replace("title", "notitle"), IsDeleted: '0' });
+                    }
+                });
+            }
+        })
+
+    }
+
+    function pageLoad() {
+        var tree = mini.get("dataTree");
+        var node = tree.getRootNode();
+        node = tree.getChildNodes(node)[0];
+        tree.selectNode(node);
+        var e = {};
+        e.node = node;
+        onNodeSelect(e);
+    }
+</script>
+<script type="text/javascript">
+    @Html.GetEnum("System.Sex");
+    addGridEnum("dataGrid", "Sex", "Sex");
+    addGridLink("dataGrid", "Name", "../User/Edit?ID={ID}&FuncType=View", { title: "查看用户", refresh: false });
+</script>
+<style type="text/css">
+    .Org
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/org.gif) no-repeat;
+    }
+    .Dept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/dept.gif) no-repeat;
+    }
+    .ManufactureDept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/cutover.png) no-repeat;
+    }
+    .SubDept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+    .Post
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/user.png) no-repeat;
+    }
+</style>

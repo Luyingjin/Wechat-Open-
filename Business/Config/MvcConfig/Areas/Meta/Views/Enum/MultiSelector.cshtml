@@ -1,0 +1,23 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-refer" onclick="returnList();">选择</a>
+            </td>
+            <td class="gw-toolbar-right">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入名称" onenter="quickSearch('text');"
+                    onbuttonclick="quickSearch('text');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetList"
+        multiselect="true">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="text" width="200" allowsort="true">名称</div>
+            <div field="Description" width="*">描述 </div>
+        </div>
+    </div>
+</div>

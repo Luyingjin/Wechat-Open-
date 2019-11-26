@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Scripts.Render("/CommonWebResource/CoreLib/Basic/jQuery/jquery-1.6.2.min.js")
+    @Scripts.Render("/CommonWebResource/CoreLib/MiniUI/miniui.js")
+    @Scripts.Render("/CommonWebResource/CoreLib/MiniUI/baseMiniuiExt.js")
+    @Scripts.Render("/MvcConfig/miniuiExt.js")
+    @Scripts.Render("/CommonWebResource/Theme/" + @Html.GetGlobalColor() + "/MiniCssInc.js")
+    @Scripts.Render("/CommonWebResource/CoreLib/Basic/fusioncharts/fusioncharts.js")
+    @Scripts.Render("/CommonWebResource/CoreLib/Basic/fusioncharts/FusionCharts.jqueryplugin.js")
+    @Styles.Render("/market/Scripts/marketstyle.css")
+</head>
+<body style="overflow:hidden">
+    @RenderBody()
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        preInit();
+        //GetBasicInfo参数分别为：当前用户信息、按钮字段权限、动态文件服务器地址和当前流程环节
+        //请根据具体需要调整true或false
+        @Html.GetBasicInfo(false, false, false, false)
+    </script>
+</body>
+</html>

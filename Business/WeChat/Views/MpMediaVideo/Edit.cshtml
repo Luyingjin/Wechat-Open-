@@ -1,0 +1,104 @@
+﻿<style type="text/css">
+    .gw_portrait
+    {
+        width: 100%;
+        text-align: center;
+    }
+</style>
+<div id="formlayout" class="mini-layout" style="width: 100%; height: 100%;">
+    <div region="north" height="32" showspliticon="false" showheader="false" allowresize="false"
+        splitsize="0" style="border: 0;">
+        <div class="mini-toolbar" id="btnDiv">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%; text-align: left;">
+                        <a class="mini-button" plain="true" iconcls="icon-save" onclick="save();">保存</a>
+                        <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div title="center" region="center" style="border: 0;">
+        <form id="dataForm" method="post">
+        <input name="ID" class="mini-hidden" />
+        <input name="FileID" class="mini-hidden" />
+        <input name="MediaID" class="mini-hidden" />
+        <div class="basediv">
+            <fieldset>
+                <legend style="font-weight: bold">视频信息</legend>
+                <table style="width: 100%">
+                    <tr style="height: 0px">
+                        <td width="15%">
+                        </td>
+                        <td width="85%">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            标题
+                        </td>
+                        <td>
+                            <input name="Title" class="mini-textbox" style="width: 100%" required="true"
+                                vtype="maxLength:64" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            简介
+                        </td>
+                        <td>
+                            <input name="Description" class="mini-textarea" style="width: 100%" vtype="maxLength:120" />
+                        </td>
+                    </tr>
+                    <tr id="trupload" >
+                        <td colspan="2" class="gw_portrait" >
+                        <input onclick="uploadFile()"
+    class="mini-button" text="上传" plain="false" style="height: 19px;width:130px" />
+                        </td>
+                    </tr>
+                    <tr id="trdownload" style="display:none;" >
+                        <td colspan="2">
+                        <div class="gw_portrait"><a href="javascript:dodownload();">下载</a></div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        </form>
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function onFormSetData() {
+        var fileid = mini.getbyName("FileID").getValue();
+        if (fileid && fileid != "")
+            $("#trdownload").show();
+    }
+    function uploadFile() {
+        var value = "FileIds";
+        var relateId = getQueryString("MpID");
+        var url = SlUploadUrl + "?value=" + value + "&" + "FileMode=multi&IsLog=undefined&Filter=视频|*.rm;*.rmvb;*.wmv;*.avi;*.mpg;*.mpeg;*.mp4&MaximumUpload=" + 20 + "&MaxNumberToUpload=" + 20 + "&AllowThumbnail=" + false + "&RelateId=&Src=system";
+        if (relateId)
+            url += "&RelateId=" + relateId;
+        mini.open({
+            url: url,
+            width: 500,
+            height: 300,
+            title: "视频上传",
+            ondestroy: function (rtnValue) {
+                if (rtnValue.substring(0, 3) == "err") {
+                    msgUI(rtnValue, 4);
+                    return;
+                }
+                else if (rtnValue != "") {
+                    mini.getbyName("FileID").setValue(rtnValue);
+                    $("#trdownload").show();
+                }
+            }
+        });
+    }
+
+    function dodownload() {
+        DownloadFile(mini.getbyName("FileID").getValue());
+    }
+</script>

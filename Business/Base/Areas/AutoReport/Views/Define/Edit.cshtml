@@ -1,0 +1,275 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-save" onclick="Save();">保存</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a id="btnExport" class="mini-button" iconcls="icon-extend-download" onclick="ExportTmpl();">
+                    导出模板</a>
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<input name="CategoryID" class="mini-hidden" />
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        报表编号
+                    </td>
+                    <td>
+                        <input name="Code" class="mini-textbox" style="width: 100%" required="true" />
+                    </td>
+                    <td>
+                        报表名称
+                    </td>
+                    <td>
+                        <input name="Name" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+    <div style="height: 160px">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-add" onclick="addDataSet();">添加数据集</a>
+                        <a class="mini-button" iconcls="icon-remove" onclick="delDataSetRow();">删除数据集</a>
+                    </td>
+                    <td id="btnRight">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataSetGrid" class="mini-datagrid" style="width: 100%; height: 100%;" pagesize="100"
+                multiselect="false" allowcelledit="true" allowcellselect="true" showpager="false"
+                onrowclick="onDataSetClick" onload="onDatasetLoad" allowcellvalid="true" oncellvalidation="onCellValidation">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="Name" width="100px" required="true">数据集名称
+                        <input property="editor" class="mini-textbox" style="width: 100%;" onvalidation="onChineseValidation"/></div>
+                    <div field="ConnName" width="100px" required="true">数据库名
+                        <input property="editor" class="mini-combobox" style="width: 100%" data="ConnEnum" /></div>
+                    <div field="TableNames" width="100px">表名
+                        <input property="editor" class="mini-textbox" style="width: 100%;" /></div>
+                    <div field="Sql" width="*" vtype="required;">Sql
+                        <input property="editor" class="mini-textbox" style="width: 100%;" /></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="height: 280px">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        <a id="btnImportField" class="mini-button" iconcls="icon-import" onclick="ImportField();"
+                            >导入字段</a>
+                        <a id="btnAddField" class="mini-button" iconcls="icon-add" onclick="addField();"
+                           >添加字段</a>
+                        <a id="btnDeleteField" class="mini-button" iconcls="icon-remove" onclick="delRow({gridId:'fieldGrid'});"
+                            >删除字段</a>
+                        <a id="btnSaveField" class="mini-button" iconcls="icon-save" onclick="SaveField();"
+                            >保存字段</a>
+                    </td>
+                    <td id="btnRight">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="fieldGrid" class="mini-datagrid" style="width: 100%; height: 100%;" pagesize="100"
+                multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="Code" width="200px" vtype="required;">数据库字段名
+                        <input property="editor" class="mini-textbox" style="width: 100%;" /></div>
+                    <div field="Name" width="*" vtype="required;">报表字段名
+                        <input property="editor" class="mini-textbox" style="width: 100%;" /></div>
+                    <div field="Type" type="comboboxcolumn" width="100px" vtype="required;">类型
+                        <input property="editor" class="mini-combobox" valuefield="value" textfield="text"
+                            style="width: 100%;" data="fieldType" /></div>
+                    <div field="EnumKey" width="100px">枚举
+                        <input property="editor" class="mini-textbox" style="width: 100%;" /></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+ @Html.GetEnum("ConnEnum")
+</script>
+<script type="text/javascript">
+
+    var fieldType = [{ value: "System.String", text: "字符串" },
+    { value: "System.Int32", text: "整型" },
+    { value: "System.Double", text: "浮点型" },
+    { value: "System.DateTime", text: "日期型" },
+    { value: "System.Boolean", text: "布尔型"}];
+    function onFormSetData() {
+        var grid = mini.get("dataSetGrid");
+        grid.setUrl("GetDataSetList?DefineID=" + mini.getbyName("ID").getValue());
+        grid.reload();
+
+        if (getQueryString("ID") == "")
+            mini.get("btnExport").disable();
+    }
+
+    function addDataSet() {
+        var row = {};
+        row.DefineID = mini.getbyName("ID").getValue();
+        addRow(row, { gridId: "dataSetGrid", isLast: true, createId: true });
+    }
+
+    function addField() {
+        if (dataSetID == "") {
+            msgUI("请先选择一个数据集！", 1);
+            return;
+        }
+        var row = {};
+        row.DataSetID = dataSetID;
+        addRow(row, { gridId: "fieldGrid", isLast: true, createId: true });
+    }
+
+
+    function Save() {
+        var fieldList = mini.encode(mini.get("fieldGrid").getChanges());
+        addExecuteParam("fieldList", fieldList);
+        var dataSetList = mini.encode(mini.get("dataSetGrid").getChanges());
+        addExecuteParam("dataSetList", dataSetList);
+
+        saveList({ action: 'SaveField', onComplete: function () {
+            //mini.get("dataSetGrid").reload();
+            //mini.get("fieldGrid").reload();
+            msgUI("保存成功！");
+        }
+        });
+
+        mini.get("btnExport").enable();
+    }
+
+    function SaveField() {
+        var fieldList = mini.encode(mini.get("fieldGrid").getChanges());
+        addExecuteParam("fieldList", fieldList);
+        var dataSetList = mini.encode(mini.get("dataSetGrid").getChanges());
+        addExecuteParam("dataSetList", dataSetList);
+
+        saveList({ action: 'SaveField', onComplete: function () {
+            //mini.get("fieldGrid").reload();
+            msgUI("保存成功！");
+        }
+        });
+
+        mini.get("btnExport").enable();
+    }
+
+    var dataSetID = "";
+    function onDataSetClick(e) {
+
+        var row = e.record;
+
+        if (dataSetID != row["ID"]) {
+            dataSetID = row["ID"];
+
+            var grid = mini.get("fieldGrid");
+            grid.setUrl("GetFieldList?DataSetID=" + dataSetID);
+            grid.reload();
+
+
+//            mini.get("btnAddField").enable();
+//            mini.get("btnDeleteField").enable();
+//            mini.get("btnSaveField").enable();
+//            mini.get("btnImportField").enable();
+        }
+
+    }
+
+    function onDatasetLoad() {
+//        mini.get("btnAddField").disable();
+//        mini.get("btnDeleteField").disable();
+//        mini.get("btnSaveField").disable();
+//        mini.get("btnImportField").disable();
+    }
+
+    function delDataSetRow() {
+        del({ action: "DeleteDataList", gridId: "dataSetGrid" });
+    }
+
+    function delFieldRow() {
+        del({ action: "DeleteFieldList", gridId: "fieldGrid" });
+    }
+
+    function ImportField() {
+
+        var row = mini.get("dataSetGrid").getSelected();
+
+        if (row == null) {
+            msgUI("请先选择数据集！", 1);
+            return;
+        }
+                
+        var dataSetList = mini.encode(mini.get("dataSetGrid").getChanges());
+        addExecuteParam("dataSetList", dataSetList);
+
+        execute("ImportField?dataSetID=" + row["ID"], { actionTitle: '导入', gridId: "fieldGrid" });
+
+
+
+        //execute("ImportField?ConnName=" + row["ConnName"] + "&TableNames=" + row["TableNames"] + "&dataSetID=" + row["ID"], { actionTitle: '导入', gridId: "fieldGrid" });
+    }
+
+    function ExportTmpl() {
+        window.open("TmplFile?DefineID=" + mini.getbyName("ID").getValue());
+    }
+
+    function onChineseValidation(e) {
+        if (e.isValid) {
+            if (isChinese(e.value) == false) {
+                e.errorText = "必须输入中文";
+                e.isValid = false;
+            }
+        }
+    }
+
+    /* 是否汉字 */
+    function isChinese(v) {
+
+        var re = new RegExp("^[\u4e00-\u9fa5]+$");
+        if (re.test(v)) return true;
+        return false;
+    }
+
+    function onCellValidation(e) {
+        if (e.field == "Name") {
+            if (isChinese(e.value) == false) {
+                e.isValid = false;
+                e.errorText = "数据集名称必须为中文";
+            }
+        }
+
+    }
+
+
+</script>

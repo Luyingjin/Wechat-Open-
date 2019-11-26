@@ -1,0 +1,103 @@
+﻿@section scripts{
+    <script src="@Url.Content("/commonwebresource/corelib/swfupload/swfupload.js")" type="text/javascript"></script>
+    <style type="text/css">
+    body {margin: 0px;}
+    .gw_user_wrapper{ margin:0 0 0 10px; width:96%; padding-top:2px;}
+    .gw_user_photo{ border:1px #eee solid; width:225px; height:300px; float:left; margin-right:30px;}
+    .gw_user_text{font-size:12px; color:#666; width:100%;}
+    .gw_user_text header{ margin:0 0 16px 0}
+    .gw_user_text span.f1{font-size:18px; color:#000; padding-right:10px; font-weight:bold; font-family:Microsoft YaHei;}
+    .gw_user_text span.f2{font-size:16px; color:#666; font-family:Microsoft YaHei;}
+    .gw_user_text p{font-size:14px; color:#666; font-family:Microsoft YaHei;}
+    .gw_user_name{border:1px #eee solid; float:left;height:30px;width:80px}
+    .gw_user_bt a{ background:url(gw_user_bt_bg.jpg) no-repeat; text-align:center; text-decoration:none; width:119px; height:31px; line-height:31px; font-size:14px; margin:0px 15px 0px 0px; display: block; float:left; color:#000}
+    </style>
+}
+<div class="gw_user_wrapper" id="editForm">
+    <div class="gw_user_text">
+    <b>当前签名图片：</b>
+       <div class="gw_user_name" ><input id="auditsign" class="mini-signpic" userid='@Request["UserID"]' /></div>
+       <div style=" width:100%; float:left; "><input id="SignImg" class="mini-fileupload" style="width:250px" name="Fdata" limitType="*.jpg;*.gif;*.png;*.bmp" uploadOnSelect="false"
+        flashUrl="/commonwebresource/corelib/swfupload/swfupload.swf" uploadUrl="/Base/Auth/User/UploadImg?UserID=@Request["UserID"]"
+        onuploadsuccess="onSigndSuccess"/>&nbsp;<a href="javascript:void(0);" onclick="startUpload('Sign')">上传新签名</a>&nbsp;<a href="javascript:void(0);" onclick="freePic('Sign')">清空</a>
+        说明：个人签名图片的尺寸为80*30，请选择合适比例的图片文件上传。</div>
+    <br>
+    <div style=" width:100%; float:left; border-bottom:1px #eee solid "></div>
+    <b>当前头像图片：</b><br>
+    <div class="gw_user_photo"><input id="usersign" class="mini-PortraitPic" userid='@Request["UserID"]' /></div>
+    <div style=" width:100%; float:left; "><input id="UserImg" class="mini-fileupload" style="width:250px" name="Fdata" limitType="*.jpg;*.gif;*.png;*.bmp" uploadOnSelect="false"
+    flashUrl="/commonwebresource/corelib/swfupload/swfupload.swf" uploadUrl='/Base/Auth/User/UploadImg?UserID=@Request["UserID"]&isPortrait=true'
+    onuploadsuccess="onPortraitSuccess"/>&nbsp;<a href="javascript:void(0);" onclick="startUpload('Portrait')">上传新头像</a>&nbsp;<a href="javascript:void(0);" onclick="freePic('Portrait')">清空</a>
+    说明：个人头像图片的尺寸为225*300，请选择合适比例的图片文件上传。</div>
+   </div>
+    
+</div>
+
+<script type="text/javascript">
+    var form = new mini.Form("#editForm");
+    var tid = 0;
+    function onSigndSuccess(e) {
+        mini.get("auditsign").setValue('@Request["UserID"]'+"&t="+(tid++));
+        this.setText("");
+        form.unmask();
+        msgUI("上传成功" + e.serverData+"！");
+    }
+
+    function onPortraitSuccess(e) {
+        mini.get("usersign").setValue('@Request["UserID"]' + "&t=" + (tid++));
+        this.setText("");
+        form.unmask();
+        msgUI("上传成功" + e.serverData + "！");
+    }
+
+    function startUpload(imgType) {
+        var fileupload;
+        if (imgType == "Sign")
+            fileupload = mini.get("SignImg");
+        else
+            fileupload = mini.get("UserImg");
+
+        if (fileupload.getText()=="")
+        {
+            msgUI("请先选择本地图片文件！",1);
+            return;
+        }
+
+        form.clear();
+        form.loading();
+        fileupload.startUpload();
+    }
+
+    function freePic(imgType) {
+        if (imgType == "Sign") {
+            msgUI("确认清空当前签名图片吗？", 2, function (action) {
+                if (action == "ok") {
+                    form.clear();
+                    form.loading();
+                    execute("FreeSign?imgType=" + imgType, { onComplete: onClearComplete });
+                    return;
+                }
+            });
+        }
+        else if (imgType == "Portrait") {
+            msgUI("确认清空当前头像图片吗？", 2, function (action) {
+                if (action == "ok") {
+                    form.clear();
+                    form.loading();
+                    execute("FreeSign?imgType=" + imgType, { onComplete: onClearComplete });
+                    return;
+                }
+            });
+        }
+    }
+
+    function onClearComplete(e)
+    {
+        if (e.ImgType == "Sign")
+            mini.get("auditsign").setValue('@Request["UserID"]' + "&t=" + (tid++));
+        else
+            mini.get("usersign").setValue("");
+        form.unmask();
+    }
+
+</script>

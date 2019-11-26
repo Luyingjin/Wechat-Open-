@@ -1,0 +1,60 @@
+﻿.Plugin{
+	position:absolute;
+	}
+.myPlugin{
+	width:200px;
+	height:200px;
+	position:absolute;
+	right:15px;
+	top:50px;
+	background:url(../images/bg.png) repeat
+	}
+.myPlugin .loading{
+	width:100%;
+	position:absolute;
+	top:50px;
+	height:25px;
+	padding-top:35px;
+	font-size:12px;
+	margin-top:-30px;
+	background:url(../images/loading.gif) no-repeat center top;
+	text-align:center;
+	}	
+.PluginTitle{
+	width:100%;
+	height:30px;
+	line-height:30px;
+	cursor:move;
+ 	}
+.innerPluginTitle{
+	width:100%;
+	height:30px;
+	display:none;
+    background:url(../images/bg_task_b.png) repeat-x left center;
+	}	
+.PluginTitle  b{
+	float:left;
+	height:30px;
+	line-height:30px;
+	display:inline-block;
+	color:#fff;
+	font-size:12px;
+	text-indent:10px;
+ 	}	
+.PluginTitle span{
+	float:right;
+	display:inline-block;
+	height:20px;
+	margin-top:5px;
+	}
+.PluginTitle span a{
+	display:block;
+	width:20px;
+	height:20px;
+	}
+.PluginClose{
+	background:url(../images/close_plugin.png) no-repeat center center;
+	}				
+.PluginClose:hover{
+	background:url(../images/close_plugin.png) no-repeat center center;
+	}	

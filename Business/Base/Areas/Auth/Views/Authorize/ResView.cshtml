@@ -1,0 +1,111 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" >
+    <div size="250" minsize="200" showcollapsebutton="false">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="width: 100%; height: 100%; overflow-x: hidden" url="GetResTree" showtreeicon="true" textfield="Name" iconfield="Type" idfield="ID" parentfield="ParentID"
+                resultastree="false" onnodeselect="onNodeSelect" expandonload="0">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        有权限的用户
+                    </td>
+                    <td id="btnRight">
+                        <input id="key" class="mini-textbox" emptytext="请输入工号或姓名" style="width: 150px;" onenter="quickSearch('WorkNo,Name',{gridId:'userGrid'});" />
+                        <a class="mini-button" onbuttonclick="quickSearch('Code,Name',{gridId:'userGrid'});" iconcls="icon-search">查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="userGrid" class="mini-datagrid" borderstyle="border:0px" style="width: 100%; height: 100%;">
+                <div property="columns">                  
+                    <div field="WorkNo" width="60px" allowsort="true" align="center">工号</div>
+                    <div field="Name" width="60px" allowsort="true" align="center">姓名</div>
+                    <div field="Sex" width="40px" allowsort="true" align="center">性别 </div>
+                    <div field="Code" width="60px" allowsort="true" align="center">账号</div>
+                    <div field="Phone" width="100px" allowsort="true" align="center">电话</div>
+                    <div field="MobilePhone" width="100px" allowsort="true" align="center">手机</div>
+                    <div field="RTX" width="100px" allowsort="true" align="center">RTX</div>
+                    <div field="DeptName" width="100px" allowsort="true" align="center">当前部门 </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function onNodeSelect(e) {
+        var userGrid = mini.get("userGrid");
+        userGrid.setUrl("GetResUserList?ResID=" + e.node.ID);
+        userGrid.load();
+    }
+
+    function pageLoad() {
+        var tree = mini.get("dataTree");
+        var node = tree.getRootNode();
+        node = tree.getChildNodes(node)[0];
+        tree.selectNode(node);
+        var e = {};
+        e.node = node;
+        onNodeSelect(e);
+    }
+
+    function ViewDetail(userID, resID) {
+        var url = changeToFullUrl('GetUserAuthDetail'); //url转换为全路径
+        url += '?UserID=' + userID + '&ResID=' + resID;
+        $.ajax({
+            url: url,
+            type: "post",
+            cache: false,
+            success: function (text) {
+                var arr = mini.decode(text);
+                var msg = getValues(arr, "Src");
+                msgUI(msg);
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                var msg = getErrorFromHtml(jqXHR.responseText);
+                msgUI(msg, 4, function (act) {
+                });
+            }
+        });
+    }
+
+    addGridButton("userGrid", "Name", { onButtonClick: function (row) {
+        var node = mini.get("dataTree").getSelectedNode();
+        ViewDetail(row["ID"], node.ID);
+    }
+    });
+</script>
+<script type="text/javascript"> 
+    @Html.GetEnum("System.Sex")
+    addGridEnum("userGrid", "Sex", "Sex");
+</script>
+<style type="text/css">
+    .Menu
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/flowstart.gif) no-repeat;
+    }
+    .Button
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/set.gif) no-repeat;
+    }
+    .Field
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/item.gif) no-repeat;
+    }
+    .Data
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+    .Page
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+    .Code
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+</style>

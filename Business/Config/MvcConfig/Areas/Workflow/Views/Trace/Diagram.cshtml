@@ -1,0 +1,17 @@
+﻿<div class="mini-tabs" activeindex="0" style="width: 100%; height: 100%">
+    <div id="tab1" title="跟踪图"></div>
+    <div id="tab2" title="时序图"></div>
+</div>
+<script type="text/javascript">
+var existFlow=@ViewBag.ExistFlow;
+</script>
+<script type="text/javascript">
+    if (existFlow) {
+        $("#tab1").attr("url", "/MvcConfig/Workflow/Trace/ExecDetail" + window.location.search);
+        $("#tab2").attr("url", "/MvcConfig/Workflow/Trace/Sequence" + window.location.search);
+    }
+    else {
+        mini.parse();
+        msgUI("流程尚未启动！", 1, function () { setTimeout('closeWindow("");', 200); });
+    }
+</script>

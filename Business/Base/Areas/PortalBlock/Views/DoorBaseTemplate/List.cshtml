@@ -1,0 +1,86 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" iconcls="icon-add" onclick="add({ height: 310,width:920,title:'添加门户基础模板',onDestroy:closeWindows});" plain="true">
+                    增加</a> <a class="mini-button" iconcls="icon-edit" onclick="edit({ title:'修改门户基础模板', height: 310,width:920,onDestroy:closeWindows});"
+                        plain="true">编辑</a> <a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a>
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入标题" style="width: 200px;"
+                    onenter="quickSearch('Title');" onbuttonclick="quickSearch('Title');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" style="width: 100%;
+        height: 100%;"  allowMoveColumn="false">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Title" headeralign="center" align="left" width="120" allowsort="true">
+                标题</div>
+            <div field="IsDefault" width="40" renderer="onEnumRender" headeralign="center" allowsort="true" align="center">
+                是否默认</div>
+            <div field="IsEdit" width="40" renderer="onEnumRender" headeralign="center" allowsort="true" align="center">
+                能否编辑</div>
+            <div field="TemplateColWidth" headeralign="center" align="left" width="100">
+                模板列宽度</div>
+            <div field="Enter" headeralign="center" align="left" width="60">
+                模板维护</div>
+      </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="15%" align="center">
+                    标题
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$Title" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="15%" align="center">
+                    能否编辑
+                </td>
+                <td width="35%" align="left">
+                    <input class="mini-combobox" name="$LK$IsEdit" style="width: 75%;" valuefield="value"
+                        textfield="text" data="TorF" shownullitem="true" />
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+@Html.GetEnum("System.TorF")
+
+</script>
+<script type="text/javascript">
+    //为Grid枚举列指定枚举定义
+    addGridEnum("dataGrid", "IsEdit", "TorF");
+    addGridEnum("dataGrid", "IsDefault", "TorF");
+    //注册Grid链接列
+    addGridLink('dataGrid', 'Title', 'Edit?ID={ID}', { funcType: 'view', width: 920,
+        height: 310
+    });
+    addGridLink('dataGrid', 'Enter', '/Portal/BaseHomeBoard.aspx?TemplateId={ID}', { width: "100%",
+        height: "100%", linkText: "模板维护"
+    });
+    function closeWindows() {
+        mini.get("dataGrid").load();
+    }
+
+</script>

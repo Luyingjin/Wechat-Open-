@@ -1,0 +1,118 @@
+﻿<div class="mini-tabs" id="tab" activeindex="0" style="width: 100%; height: 100%; padding: 0px">
+    <div title="条件编辑" name="EnumEdit">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-add" onclick="addRow({OrGroup:'Group1'},{isLast:true});">添加</a>
+                        <a class="mini-button" iconcls="icon-remove" onclick="delRow();">移除</a>
+                        <a class="mini-button" iconcls="icon-save" onclick="returnData();">确定</a>
+                        <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                        <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+                    </td>
+                    <td id="btnRight">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="FieldName" width="*" vtype="required;">字段名称
+                        <input property="editor" class="mini-textbox" style="width: 100%;" />
+                    </div>
+                    <div field="QueryMode" width="120" vtype="required;" autoshowpopup="true">查询类型
+                        <input property="editor" class="mini-combobox" data="queryModeEnum" style="width: 100%;" onitemclick="commitEdit" />
+                    </div>
+                    <div field="Value" width="100" vtype="required;">值
+                        <input property="editor" class="mini-textbox" style="width: 100%;" />
+                    </div>
+                    <div field="OrGroup" width="100" vtype="required;">条件组名
+                        <input property="editor" class="mini-textbox" style="width: 100%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div title="条件选择" name="EnumSelector" style="overflow: hidden;">
+        <div class="mini-toolbar" id="btnDiv" style="width: 100%">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" plain="true" iconcls="icon-refer" onclick="returnDataFilter();">选择</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <input name="DataFilter" class="mini-listbox" textfield="text" valuefield="value" style="width: 100%;" data="DataFilterType" />
+    </div>
+</div>
+<script type="text/javascript">
+    var queryModeEnum = [
+    { value: "Equal", text: "=" },
+    { value: "LessThan", text: "<" },
+    { value: "GreaterThan", text: ">" },
+    { value: "LessThanOrEqual", text: "<=" },
+    { value: "GreaterThanOrEqual", text: ">=" },
+    { value: "Like", text: "Like" },
+    { value: "In", text: "In" },
+    { value: "DateBlock", text: "DateBlock" },
+    { value: "StartsWith", text: "StartsWith" },
+    { value: "Between", text: "Between"}];
+    @Html.GetEnum(typeof(Base.Logic.DataFilterType));
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    } 
+</script>
+<script type="text/javascript">
+    function setData(data) {
+        if (data) {
+            var grid = mini.get("dataGrid");
+            try {
+                grid.setData(mini.decode(data));
+            } catch (e) { }
+        }
+    }
+    function returnData() {
+        var grid = mini.get("dataGrid");
+
+        grid.validate();
+        if (grid.isValid() == true) {
+            var data = grid.getData();
+            for (var i = 0; i < data.length; i++) {
+                delete data[i]._state;
+                delete data[i]._id;
+                delete data[i]._uid;
+            }
+            closeWindow(data);
+        }
+    }
+
+    function returnDataFilter() {
+        var ctrl = mini.getbyName("DataFilter");
+        var obj = {};
+        obj.value = ctrl.getValue();
+        for (var i = 0; i < DataFilterType.length; i++) {
+            if (DataFilterType[i].value == obj.value)
+                obj.text = DataFilterType[i].text;
+        }
+        closeWindow(obj);
+    }
+</script>

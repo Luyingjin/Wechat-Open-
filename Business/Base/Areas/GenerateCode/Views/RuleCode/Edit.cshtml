@@ -1,0 +1,109 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save" onclick="DoSave();">保存</a> 
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<div class="basediv">
+    <fieldset>
+        <legend style="font-weight: bold">基本信息</legend>
+        <table width="100%">
+            <tr style="height: 0px">
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    编码
+                </td>
+                <td>
+                    <input name="Code" style="width: 100%" class="mini-textbox" vtype="maxLength:50" required="true" />
+                </td>
+                <td>
+                    规则描述
+                </td>
+                <td>
+                    <input name="RuleName" class="mini-textbox" style="width: 100%" required="true" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    规则前缀
+                </td>
+                <td>
+                     <input name="Prefix" style="width: 100%" class="mini-textbox" vtype="maxLength:50" required="false" />
+                </td>
+                <td>
+                    规则后缀
+                </td>
+                <td>
+                   <input name="Postfix" style="width: 100%" class="mini-textbox" vtype="maxLength:50" />
+                </td>
+            </tr>
+            <tr>                
+                <td>
+                    分隔符
+                </td>
+                <td>
+                    <input class="mini-combobox" name="Separative" style="width: 100%;" valuefield="value"
+                        textfield="text" data="Separative" shownullitem="true" required="false" />
+                </td>
+                <td>
+                    开始数值
+                </td>
+                <td>
+                    <input name="StartNumber" style="width: 100%" class="mini-textbox"  vtype="int" required="true" />
+                </td>
+            </tr>
+             <tr>                
+                <td>
+                    序号位数
+                </td>
+                <td>
+                     <input name="Digit" style="width: 100%" class="mini-textbox" vtype="int" required="true"/>
+                </td>
+            </tr>             
+        </table>
+    </fieldset>    
+</div>
+</form>
+<script language="javascript" type="text/javascript">
+    @Html.GetEnum("System.Separative")
+    //校验 开始数值的位数小于序号位数
+    function CheckStartNumber()
+    {
+        var start=mini.getbyName("StartNumber").getValue();
+        var digit=mini.getbyName("Digit").getValue();
+        if(isNaN(start)||isNaN(digit))
+           return;
+        if(start.length>parseInt(digit))
+        {
+            alert("【开始数值】的位数必须小于【序号位数】");
+            return;
+        }
+        else
+            return true;
+    }
+    //保存
+    function DoSave()
+    {
+        var isPass=CheckStartNumber();
+        if(isPass==null||isPass!=true) return;
+        save({onComplete:returnForm});
+    }
+</script>

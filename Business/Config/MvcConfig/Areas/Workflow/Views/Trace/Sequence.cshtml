@@ -1,0 +1,12 @@
+﻿@Html.Raw(ViewBag.TableHtml)
+<script type="text/javascript">
+    function viewDetail(id, userID) {
+        openWindow("/MvcConfig/Workflow/Trace/UserView?ID=" + id + "&UserID=" + userID, { title: "人员信息", weight: 300, height: 230 });
+    }
+</script>
+<style>
+.CTable{border-right:1px solid #5c5c5c;border-bottom:1px solid #5c5c5c}
+.CTable td{border-left:1px solid #5c5c5c;border-top:1px solid #5c5c5c}
+.ITable{border-right:0px solid #5c5c5c;border-bottom:3px solid #ffffff;border-top:3px solid #ffffff}
+.ITable td{border-left:0px solid #5c5c5c;border-top:0px solid #5c5c5c}
+</style>

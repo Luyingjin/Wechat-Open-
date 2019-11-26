@@ -1,0 +1,137 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" id="btnSave" iconcls="icon-add" onclick="add({title:'添加公众号',height:'400px'})" plain="true">
+                    增加</a> <a class="mini-button" iconcls="icon-edit" onclick="edit({title:'编辑公众号',height:'400px'});"
+                        plain="true">编辑</a> <a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a>
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入名称或描述" style="width: 200px;"
+                    onenter="quickSearch('Name,Remark');" onbuttonclick="quickSearch('Name,Remark');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Name" width="100" headeralign="center" align="left" allowsort="true" >
+                名称</div>
+            <div field="Type" width="120" headeralign="center" align="center" allowsort="true" >
+                类型</div>
+            <div field="Remark" headeralign="center" width="*" align="left" allowsort="true">
+                描述</div>
+            <div field="AppID" headeralign="center" align="left" width="100" allowsort="true">
+                AppID</div>
+            <div field="AppSecret" width="100" headeralign="center" align="left" allowsort="true" >
+                AppSecret</div>
+            <div field="Operation" width="100" headeralign="center" align="center" >
+                操作</div>
+            <div field="RedPacket" width="100" headeralign="center" align="center" renderer="onRPRender" >
+                红包</div>
+            @*<div field="OwnerUsers" width="100" headeralign="center" align="left" >
+                使用人</div>*@
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    名称
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Name" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    描述
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Remark" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    @Html.GetEnum("WeChat.MpType")
+    function getRoleUser(contentWindow) {
+        var node = mini.get("dataGrid").getSelected();
+
+        execute("GetRoleUser?mpid=" + node.ID, { onComplete: function (data, settings) {
+            var newdt=new Array();
+            for(var i=0;i<data.length;i++)
+                newdt[i]={ID:data[i].UserID};
+            contentWindow.setData(newdt);
+        }
+        });
+    }
+
+    function setRoleUser(data, settings) {
+        if (data == undefined || data == "close")
+            return;       
+        var node = mini.get("dataGrid").getSelected();
+
+        addExecuteParam("mpid", node.ID);
+        addExecuteParam("RelationData", mini.encode(data));
+
+        execute("SetRoleUser", { actionTitle: "设置" });
+    }
+
+    //注册Grid链接列
+    addGridLink("dataGrid", "Operation", urlConstant.multiUser, { refresh: false, onLoad: getRoleUser, onDestroy: setRoleUser
+    , linkText: "设置用户", width: 1000, height: "85%", title: "设置用户"
+    });    
+    //addGridLink('dataGrid', 'Operation', 'Edit?ID={ID}',  { linkText: '权限维护', title: '权限维护', width: 1000, height: "85%" });    function onRPRender(e) {
+        return '<a href="#" onclick="onOperationLinkClick(\'' + e.record.ID + '\',\'红包活动-' + e.record.Name + '\');" >维护</a>';
+    }
+    function onOperationLinkClick(id, name) {
+        window.parent.$("#MyTabs").show();
+        window.parent.$("#mainiframe").hide();
+        var tabs = window.parent.mini.get("MyTabs");
+        var tab = tabs.getTab(id);
+        if (!tab) {
+            var tab = {};
+            tab.name = id;
+            tab.title = name;
+            tab.url = "/Wechat/MpRedPacket/List?MpID=" + id;
+            tab.showCloseButton = true;
+            tab.onload = function () {
+                var iframe = this.getTabIFrameEl(this.getActiveTab());
+                if ($.trim(name) != "") {
+                    $(iframe.contentWindow.document).attr("title", name);
+                }
+            };
+            if (tabs.getTabs().length >= 5)//最多5个
+                tabs.removeTab(0);
+            tabs.addTab(tab);
+        }
+        if (tab) {
+            tabs.activeTab(tab);
+            tabs.reloadTab(tab);
+        }
+    }
+</script>
+<script type="text/javascript">
+    addGridEnum("dataGrid", "Type", "MpType");
+</script>

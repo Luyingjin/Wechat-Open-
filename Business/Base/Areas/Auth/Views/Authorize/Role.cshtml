@@ -1,0 +1,158 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;">
+    <div size="550" showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" style="border: 0px;">
+            <table>
+                <tr>
+                    <td>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name',{gridId:'roleGrid'});" onbuttonclick="quickSearch('Code,Name',{gridId:'roleGrid'});" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="roleGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetRoleList" multiselect="false" allowunselect="false" onrowclick="onRowSelect" borderstyle="border-left:0px;border-bottom:1px;border-right:0px;">
+                <div property="columns">
+                    <div field="Code" width="100px" allowsort="true" align="center">编号</div>
+                    <div field="Name" width="200px" allowsort="true">名称</div>
+                    <div field="Type" width="60px" allowsort="true" align="center">类型</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-tabs" id="tabs" activeindex="0" onactivechanged="activechanged" style="width: 100%; height: 100%; padding: 0px;" borderstyle="border:0px;">
+            <div title="菜单入口" name="res">
+                <div class="mini-toolbar" id="btnDiv">
+                    <table>
+                        <tr>
+                            <td>
+                                <a class="mini-button" id="btnSaveRes" plain="true" iconcls="icon-save" onclick="saveResAuth();">保存</a>
+                            </td>
+                            <td id="btnRight">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mini-fit">
+                    <ul id="resTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" showtreeicon="true" iconfield="Type" textfield="Name" idfield="ID" parentfield="ParentID" checkedfield="Checked"
+                        resultastree="false" autocheckparent="true" checkrecursive="true" expandonload="0" showcheckbox="true" onbeforeload="resTree_BeforeLoad" onload="resTree_Load">
+                    </ul>
+                </div>
+            </div>
+            <div title="授权对象" name="rule">
+                <div class="mini-toolbar" id="btnDiv">
+                    <table>
+                        <tr>
+                            <td>
+                                <a class="mini-button" id="btnSaveRule" plain="true" iconcls="icon-save" onclick="saveRuleAuth();">保存</a>
+                            </td>
+                            <td id="btnRight">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mini-fit">
+                    <ul id="ruleTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" showtreeicon="true" iconfield="Type" textfield="Name" idfield="ID" parentfield="ParentID" checkedfield="Checked"
+                        resultastree="false" autocheckparent="true" checkrecursive="true" expandonload="0" showcheckbox="true" ondrawnode="onDrawNode" onbeforeload="ruleTree_BeforeLoad" onload="ruleTree_Load">
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function onRowSelect(e) {
+        var roleID = e.record.ID;
+
+        var index = mini.get("tabs").activeIndex;
+        if (index == 0) {
+            mini.get("resTree").setUrl("GetResTreeByRoleID?RoleID=" + roleID);
+        }
+        else {
+            mini.get("ruleTree").setUrl("GetRuleTreeByRoleID?RoleID=" + roleID);
+        }
+    }
+    function activechanged(e) {
+        var node = mini.get("roleGrid").getSelected();
+        if (!node) {
+            return;
+        }
+        if (e.tab.name == "res") {
+            mini.get("resTree").setUrl("GetResTreeByRoleID?RoleID=" + node.ID);
+        }
+        else {
+            mini.get("ruleTree").setUrl("GetRuleTreeByRoleID?RoleID=" + node.ID);
+        }
+    }
+
+    function resTree_BeforeLoad() {
+        mini.get("btnSaveRes").disable();
+    }
+    function resTree_Load(e) {
+        mini.get("btnSaveRes").enable();
+    }
+
+    function ruleTree_BeforeLoad() {
+        mini.get("btnSaveRule").disable();
+    }
+    function ruleTree_Load(e) {
+        mini.get("btnSaveRule").enable();
+    }
+
+    function saveResAuth() {
+        var nodes = mini.get("resTree").getCheckedNodes();
+        var resIDs = getValues(nodes, "ID");
+        addExecuteParam("ResIDs", resIDs);
+        addExecuteParam("RoleID", mini.get("roleGrid").getSelected().ID);
+        execute("SaveRoleRes", { actionTitle: '保存' });
+    }
+    function saveRuleAuth() {
+        var nodes = mini.get("ruleTree").getCheckedNodes();
+        var resIDs = getValues(nodes, "ID");
+        addExecuteParam("RuleIDs", resIDs);
+        addExecuteParam("RoleID", mini.get("roleGrid").getSelected().ID);
+        execute("SaveRoleRule", { actionTitle: '保存' });
+    }
+</script>
+<script type="text/javascript">
+    function onDrawNode(e) {
+        if (e.node.Type == "Menu")
+            e.showCheckBox = false;
+    }
+</script>
+<script type="text/javascript">
+@Html.GetEnum(typeof(Base.Logic.RoleType));
+addGridEnum("roleGrid","Type","RoleType");
+</script>
+<style type="text/css">
+    .Menu
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/flowstart.gif) no-repeat;
+    }
+    .Button
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/set.gif) no-repeat;
+    }
+    .Field
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/item.gif) no-repeat;
+    }
+    .FieldEdit
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/item.gif) no-repeat;
+    }
+    .Data
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+    .Page
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+    .Code
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+</style>

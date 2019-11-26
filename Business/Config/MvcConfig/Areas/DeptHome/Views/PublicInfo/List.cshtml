@@ -1,0 +1,120 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" iconcls="icon-add" onclick="add({ height: '85%',width:920,title:'添加公共信息',onDestroy:closeWindows});" plain="true">
+                    增加</a> <a class="mini-button" iconcls="icon-edit" onclick="editPublicInfo"
+                        plain="true">编辑</a> <a class="mini-button" iconcls="icon-remove" onclick="delPublicInfo"
+                            plain="true">删除</a>
+            </td>
+            <td class="gw-toolbar-right">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入标题" style="width: 200px;"
+                    onenter="quickSearch('Title');" onbuttonclick="quickSearch('Title');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" style="width: 100%;
+        height: 100%;"  allowMoveColumn="false" multiselect="true">
+        <div property="columns">
+            <div type="checkcolumn" width="20">
+            </div>
+            <div field="CatalogId" visible="@ViewBag.CatalogVisible" renderer="onEnumRender" headeralign="center" align="left" width="80" allowsort="true" >
+                所属栏目</div>
+            <div field="DeptDoorName" headeralign="center" align="left" width="150" allowsort="true">
+                所属门户</div>
+            <div field="Title" width="200" headeralign="center" renderer="onLinkRender" allowsort="true"
+                align="left">
+                标题</div>
+            <div field="ExpiresTime" width="60" dateFormat="yyyy-MM-dd" headeralign="center" allowsort="true" align="center">
+                过期时间</div>
+            <div field="IsTop" width="40" renderer="onEnumRender" headeralign="center" allowsort="true" align="center">
+                置顶</div>
+            <div field="ReadCount" width="40" headeralign="center" allowsort="true" align="right">
+                阅读数</div>
+             <div field="CreateUserName" headeralign="center" align="left" width="60" allowsort="true">
+                发布人</div>
+       </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="15%" align="center">
+                    标题
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$Title" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td align="center">
+                    置顶
+                </td>
+                <td align="left">
+                    <input class="mini-combobox" name="$LK$IsTop" style="width: 75%;" valuefield="value"
+                        textfield="text" data="TrueOrFalse" shownullitem="true" />
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+             <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+@Html.GetEnum("System.TrueOrFalse")
+var CatalogEnum = @Html.Raw(ViewBag.CatalogEnum);
+addMultiUserSelector("ReceiveUserId");
+
+var user = @Html.Raw(ViewBag.UserInfo);
+
+//为Grid枚举列指定枚举定义
+addGridEnum("dataGrid", "IsTop", "TrueOrFalse");
+addGridEnum("dataGrid", "CatalogId", "CatalogEnum");
+
+//注册Grid链接列
+addGridLink('dataGrid', 'Title', 'Edit?ID={ID}', { funcType: 'view', width: 920,
+    height: '85%'
+});
+</script>
+<script type="text/javascript">
+
+    function closeWindows() {
+        mini.get("dataGrid").load();
+    }
+
+    function validate() {
+        var rows = mini.get("dataGrid").getSelecteds();
+        for (var i = 0; i < rows.length; i++) {
+            if (user.UserFullOrgID.indexOf($.trim(rows[i].DeptDoorId)) == -1 && user.UserID != $.trim(rows[i].CreateUserID)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function editPublicInfo() {
+        if (!validate()) {
+            msgUI("只有所属门户人员或发布人才能编辑!");
+            return;
+        }
+        edit({ title: '修改公共信息', height: '85%', width: 920, onDestroy: closeWindows });
+    }
+
+    function delPublicInfo() {
+        if (!validate()) {
+            msgUI("只有所属门户人员或发布人才能删除!");
+            return;
+        }
+        del({ action: '/Base/PortalBlock/PublicInformation/Delete' });
+    }
+
+</script>

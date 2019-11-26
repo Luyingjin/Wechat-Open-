@@ -1,0 +1,76 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+            @Html.ExportButton()
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入openid" style="width: 200px;"
+                    onenter="quickSearch('Openid');" onbuttonclick="quickSearch('Openid');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Openid" width="200" headeralign="center" align="left" allowsort="true" >
+                Openid</div>
+            <div field="Total" headeralign="center" width="100" align="right" allowsort="true" >
+                金额(分)</div>
+            <div field="SendTime" width="200" headeralign="center" align="center" allowsort="true" dateFormat="yyyy-MM-dd HH:mm:ss" >
+                发送时间</div>
+            <div field="State" width="100" headeralign="center" align="center" allowsort="true" >
+                发送成功</div>
+            <div field="Msg" width="*" headeralign="center" align="left" allowsort="true" >
+                状态说明</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="13%" align="center">
+                    Openid
+                </td>
+                <td width="37%" align="left">
+                    <input name="$LK$Openid" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="13%" align="center">
+                    发送成功
+                </td>
+                <td width="37%" align="left">
+                    <input name="$EQ$State" class="mini-combobox"  data='TrueOrFalse' style='width:75%' />
+                </td>
+            </tr>
+            <tr>
+                <td width="13%" align="center">发送时间从</td>
+                <td width="37%" align="left">
+                    <input name="$FR$SendTime" class="mini-datepicker" format="yyyy-MM-dd" style="width: 75%;" />
+                </td>
+                <td width="13%" align="center">至</td>
+                <td width="37%" align="left">
+                    <input name="$TO$SendTime" class="mini-datepicker" format="yyyy-MM-dd" style="width: 75%;" />
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    @Html.GetEnum("System.TrueOrFalse")
+    addGridEnum("dataGrid", "State", "TrueOrFalse");
+</script>

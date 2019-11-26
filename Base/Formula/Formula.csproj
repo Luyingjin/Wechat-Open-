@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4F19C14A-5D4D-447C-862E-B4B9608DBE8F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Formula</RootNamespace>
+    <AssemblyName>Formula</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Aspose.Cells">
+      <HintPath>..\packages\Aspose.Cells.dll</HintPath>
+    </Reference>
+    <Reference Include="Aspose.Words">
+      <HintPath>..\packages\Aspose.Words.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WebActivator">
+      <HintPath>..\packages\WebActivator.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseModel.cs" />
+    <Compile Include="BaseQueryBuilder.cs" />
+    <Compile Include="Constant.cs" />
+    <Compile Include="FormulaDbContext.cs" />
+    <Compile Include="DynConditionObject\ConditionItem.cs" />
+    <Compile Include="DynConditionObject\Specifications\ISpecifications.cs" />
+    <Compile Include="DynConditionObject\Specifications\LambdaExpressionGenrator.cs" />
+    <Compile Include="DynConditionObject\Specifications\Specifications.cs" />
+    <Compile Include="DynConditionObject\TransProvider\BetweenTransformProvider.cs" />
+    <Compile Include="DynConditionObject\TransProvider\DateBlockTransFormProvider.cs" />
+    <Compile Include="DynConditionObject\TransProvider\InTransformProvider.cs" />
+    <Compile Include="DynConditionObject\TransProvider\ITransFormProvider.cs" />
+    <Compile Include="DynConditionObject\TransProvider\LikeTransformProvider.cs" />
+    <Compile Include="DynConditionObject\TransProvider\UnixTimeTransformProvider.cs" />
+    <Compile Include="DynConditionObject\TypeUtil.cs" />
+    <Compile Include="DynConditionObject\UnixTime.cs" />
+    <Compile Include="Exceptions\AccessControlException.cs" />
+    <Compile Include="Exceptions\AppException.cs" />
+    <Compile Include="Exceptions\Assert.cs" />
+    <Compile Include="Exceptions\AuthenticationException.cs" />
+    <Compile Include="Exceptions\AuthorizationException.cs" />
+    <Compile Include="Exceptions\BusinessException.cs" />
+    <Compile Include="Exceptions\BusinessValidationException.cs" />
+    <Compile Include="Exceptions\FrameException.cs" />
+    <Compile Include="Exceptions\SysException.cs" />
+    <Compile Include="Exceptions\WebException.cs" />
+    <Compile Include="Helper\Base64Helper.cs" />
+    <Compile Include="Helper\SerialNumberHelper.cs" />
+    <Compile Include="ImportExport\AsposeExcelExporter.cs" />
+    <Compile Include="ImportExport\AsposeExcelImporter.cs" />
+    <Compile Include="ImportExport\AsposeWordExporter.cs" />
+    <Compile Include="ImportExport\Constant.cs" />
+    <Compile Include="ImportExport\Extensions.cs" />
+    <Compile Include="ImportExport\FileHelper.cs" />
+    <Compile Include="ImportExport\IExporter.cs" />
+    <Compile Include="ImportExport\IImporter.cs" />
+    <Compile Include="ImportExport\IWordExporter.cs" />
+    <Compile Include="ImportExport\Models\ColumnInfo.cs" />
+    <Compile Include="ImportExport\Models\Configs\CellConfig.cs" />
+    <Compile Include="ImportExport\Models\Configs\ExcelConfig.cs" />
+    <Compile Include="ImportExport\Models\Configs\Metadatas\DefaultExcelMetadataStorage.cs" />
+    <Compile Include="ImportExport\Models\Configs\Metadatas\ExcelMetadata.cs" />
+    <Compile Include="ImportExport\Models\Configs\Metadatas\IExcelMetadataStorage.cs" />
+    <Compile Include="ImportExport\Models\Configs\TableConfig.cs" />
+    <Compile Include="ImportExport\Models\ExcelCellInfo.cs" />
+    <Compile Include="ImportExport\Models\ExcelData.cs" />
+    <Compile Include="ImportExport\Models\ExcelRowInfo.cs" />
+    <Compile Include="ImportExport\Models\ExcelTableInfo.cs" />
+    <Compile Include="ImportExport\Models\Vaildation\CellErrorInfo.cs" />
+    <Compile Include="ImportExport\Models\Vaildation\CellValidationArgs.cs" />
+    <Compile Include="ImportExport\IExporterForm.cs" />
+    <Compile Include="Interfaces\AlarmService.cs" />
+    <Compile Include="Interfaces\CalendarService.cs" />
+    <Compile Include="Interfaces\IAlarmService.cs" />
+    <Compile Include="Interfaces\ICalendarService.cs" />
+    <Compile Include="Service\FileStoreOuterService.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="HttpModule\ScriptModule.cs" />
+    <Compile Include="Interfaces\AppStart.cs" />
+    <Compile Include="Interfaces\DataLogService.cs" />
+    <Compile Include="Interfaces\EnumService.cs" />
+    <Compile Include="Interfaces\IDataLogService.cs" />
+    <Compile Include="Interfaces\IEnumService.cs" />
+    <Compile Include="Interfaces\IMessageService.cs" />
+    <Compile Include="Interfaces\IOrgService.cs" />
+    <Compile Include="Interfaces\IResService.cs" />
+    <Compile Include="Interfaces\IRoleService.cs" />
+    <Compile Include="Interfaces\ISingleton.cs" />
+    <Compile Include="Interfaces\IUserService.cs" />
+    <Compile Include="Interfaces\IWorkflowService.cs" />
+    <Compile Include="Interfaces\MessageService.cs" />
+    <Compile Include="Interfaces\OrgService.cs" />
+    <Compile Include="Interfaces\ResService.cs" />
+    <Compile Include="Interfaces\RoleService.cs" />
+    <Compile Include="Interfaces\UserService.cs" />
+    <Compile Include="Interfaces\WorkflowService.cs" />
+    <Compile Include="Logging\Log4NetConfig.cs" />
+    <Compile Include="Helper\CacheHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Helper\EnumBaseHelper.cs" />
+    <Compile Include="Helper\ExcelIOHelper.cs" />
+    <Compile Include="Helper\JsonHelper.cs" />
+    <Compile Include="Helper\StringHelper.cs" />
+    <Compile Include="FormulaHelper.cs" />
+    <Compile Include="Logging\LogWriter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryableExtend.cs" />
+    <Compile Include="QueryHelperExtend.cs" />
+    <Compile Include="SearchCondition.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Business\Config\Config.Logic\Config.Logic.csproj">
+      <Project>{822f8b67-dfaa-47d1-9939-fc95014925a4}</Project>
+      <Name>Config.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

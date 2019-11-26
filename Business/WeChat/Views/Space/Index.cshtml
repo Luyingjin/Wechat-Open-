@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "微信管理";
+}
+@Styles.Render("~/Scripts/Tab/tab.css")
+@{
+    <div class="tabs1402-headers">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" class="tabs1402-header">
+            <tr>
+                <td class="tabs1402-space">
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td style="white-space: nowrap;">
+                                <a class="mini-button" id="showBtn" iconcls="icon-switch" onclick="showAtEl" plain="true"
+                                    tooltip="切换公众号">切换公众号</a>当前公众号：
+                            </td>
+                            <td style="width: 350px;">
+                                <input name="currentMp" value="@ViewBag.MpInfo.ID" onvaluechanged="onValueChanged" class="mini-combobox" style="width: 100%;" textfield="Name" valuefield="ID"
+                                    data="relationMp"   />
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="mini-fit">
+        <div id="mainLayout" class="mini-layout" style="width: 100%; height: 100%;" splitsize="3">
+            <div title="导航" showheader="false" region="west" width="180" expanded="true" showspliticon="true"
+                style="border-top: 0px;">
+                <ul id="mytree" class="mini-tree" style="width: 100%; height: 100%;" showtreeicon="true"
+                    textfield="Name" idfield="ID" enablehottrack="false" parentfield="ParentID" resultastree="false"
+                    expandonload="4" onnodeclick="onNodeClick" imgField="IconUrl" ondrawnode="onDrawNode">
+                </ul>
+            </div>
+            <div title="center" region="center" style="border-top: 0px;">
+                <div class="mini-fit">
+                    <div id="mainTab" class="mini-tabs" activeindex="0" style="width: 100%; height: 100%;"
+                        borderstyle="border:0;"  onbeforecloseclick="onTabBeforeCloseClick">
+                        <div title="Title" url="@ViewBag.DefaultUrl" showheader="false" headerstyle="display:none;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="chooseWin" class="mini-window" title="切换公众号" style="width: 700px; height: 450px;"
+        showmaxbutton="false" showcollapsebutton="false" showshadow="true" showtoolbar="false"
+        showfooter="false" showmodal="true" allowresize="false" allowdrag="false">
+            <div id="maintabl" class="mini-tabs" activeindex="0" style="width: 100%; height: 100%;"
+                borderstyle="border:0;">
+                <div title="常用公众号">
+                    <div class="mini-toolbar" style="padding: 0px; border-bottom: 0;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 100%;">
+                                </td>
+                                <td style="white-space: nowrap;">
+                                    <input id="actkey" class="mini-buttonedit gw-searchbox" emptytext="请输入公众号名称" onenter="quickSearch('Name',{gridId:'myMpGrid',queryBoxId:'actkey'});"
+                                        onbuttonclick="quickSearch('Name',{gridId:'myMpGrid',queryBoxId:'actkey'});" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mini-fit">
+                        <div id="myMpGrid" url="GetMyMpInfo" class="mini-datagrid" style="width: 100%;
+                            height: 100%;" idfield="ID" multiselect="true" ondrawcell="onDrawingCell">
+                            <div property="columns">
+                                <div field="Enter" width="60" headeralign="center" align="center">
+                                    切换</div>
+                                <div field="Cancel" width="60" headeralign="center" align="center">
+                                    取消常用</div>
+                                <div field="Name" width="100" headeralign="center" allowsort="true" align="left">
+                                    公众号</div>
+                                <div field="Type" width="120" headeralign="center" allowsort="true" align="center">
+                                    类型</div>
+                                <div field="Remark" width="*" headeralign="center" allowsort="true" align="left">
+                                    描述</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div title="全部公众号">
+                    <div class="mini-toolbar" style="padding: 0px; border-bottom: 0;">
+                        <table style="width: 100%;">
+                            <tr>
+                                <td style="width: 100%;">
+                                </td>
+                                <td style="white-space: nowrap;">
+                                    <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入公众号名称" onenter="quickSearch('Name',{gridId:'allMpGrid'});"
+                                        onbuttonclick="quickSearch('Name',{gridId:'allMpGrid'});" />
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mini-fit">
+                        <div id="allMpGrid" url="GetAllMpInfo" class="mini-datagrid" style="width: 100%;
+                            height: 100%;" idfield="ID" multiselect="true" ondrawcell="onDrawingCell">
+                            <div property="columns">
+                                <div field="Enter" width="60" headeralign="center" align="center">
+                                    切换</div>
+                                <div field="Mark" width="60" headeralign="center" align="center">
+                                    常用</div>
+                                <div field="Name" width="100" headeralign="center" allowsort="true" align="left">
+                                    公众号</div>
+                                <div field="Type" width="120" headeralign="center" allowsort="true" align="center">
+                                    类型</div>
+                                <div field="Remark" width="*" headeralign="center" allowsort="true" align="left">
+                                    描述</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script type="text/javascript">
+        var mpInfo= @Html.Raw(ViewBag.MpJson); 
+        var relationMp = @Html.Raw(ViewBag.RelationMp);
+
+        @Html.GetEnum("WeChat.MpType")
+
+        var treeDefaultLoadUrl = changeToFullUrl("GetSpaceMenu").split('?')[0];
+        $("#mytree").attr("url", treeDefaultLoadUrl);
+    </script>
+    <script type="text/javascript">
+        addGridEnum("myMpGrid", "Type", "MpType");
+        addGridEnum("allMpGrid", "Type", "MpType");
+
+        function onValueChanged(e) {
+            addExecuteParam("MpID", e.value);
+            execute("SetDefaultMp", { onComplete: function (data) {
+                var url = window.location.href.split('?')[0] + "?MpID=" + e.value;
+                window.location.href = url;
+            }
+            });
+        }
+
+        function onDrawingCell(e) {
+            var record = e.record, column = e.column, field = e.field, value = e.value;
+            if (field == "Enter")
+                e.cellHtml = '<span class="Enter"  title="进入" onclick="javascript:ChangeMp(\'' + record.ID + '\')"><span>';
+            if (field == "Cancel")
+                e.cellHtml = '<span class="Mark"  title="取消常用" onclick="javascript:CancelMp(\'' + record.ID + '\')"><span>';
+            if (field == "Mark")
+                e.cellHtml = '<span class="Mark" title="设为常用"onclick="javascript:SetFocusMp(\'' + record.ID + '\')"></span>';
+        }
+
+        function onDrawNode(e) {
+            if (e.node.AuthType != "FullControl") {
+                e.nodeStyle = 'color:gray;';
+            }
+        }
+
+        function showAtEl(e) {
+            var win = mini.get("chooseWin");
+            win.showAtEl(e.sender.el, {
+                xAlign: "center",
+                yAlign: "below"
+            });
+        }
+
+        function ChangeMp(MpID) {
+            addExecuteParam("MpID", MpID);
+            execute("SetDefaultMp", { onComplete: function (data) {
+                var url = window.location.href.split('?')[0] + "?MpID=" + MpID;
+                window.location.href = url;
+            }
+            });
+        }
+
+        function CancelMp(MpID) {
+            addExecuteParam("MpID", MpID);
+            execute("CancelFocusMp", { onComplete: function (data) {
+                mini.get("allMpGrid").reload();
+                mini.get("myMpGrid").reload();
+            }
+            });
+        }
+
+        function SetFocusMp(MpID) {
+            addExecuteParam("MpID", MpID);
+            execute("SetFocusMp", { onComplete: function (data) {
+                mini.get("allMpGrid").reload();
+                mini.get("myMpGrid").reload();
+            }
+            });
+        }
+
+        function hiddenMore() {
+            $("#menu").hide();
+        }
+
+        function showMore() {
+            $("#menu").show();
+        }
+
+        function onNodeClick(e) {
+            var mainTabs = mini.get("mainTab");
+            var tab = mainTabs.getTab(e.node.ID);
+            if (!(e.node.Url && e.node.Url != "")) return;
+            if (!tab) {
+                var linkUrl = "";
+                if (e.node.Url.indexOf("?") >= 0) {
+                    linkUrl = e.node.Url + "&MpID=" + mpInfo.ID;
+                }
+                else {
+                    linkUrl = e.node.Url + "?MpID=" + mpInfo.ID;
+                }
+
+                var tab = {};
+                tab.name = e.node.ID;
+                tab.title = e.node.Name;
+                tab.url = linkUrl;
+                tab.showCloseButton = true;
+                tab.onload = function () {
+                    var iframe = this.getTabIFrameEl(this.getActiveTab());
+                    if ($.trim(e.node.text) != "") {
+                        $(iframe.contentWindow.document).attr("title", e.node.text);
+                    }
+                };
+                if (mainTabs.getTabs().length >= 5)//最多5个
+                    mainTabs.removeTab(0);
+                mainTabs.addTab(tab);
+            }
+            if (tab) {
+                mainTabs.activeTab(tab);
+                mainTabs.reloadTab(tab);
+            }
+        } 
+        
+        function onTabBeforeCloseClick(e) {
+            var tabs = e.sender;
+            var ifm = tabs.getTabIFrameEl(e.tab);
+            destroyIframeMemory(ifm);
+        }
+
+    </script>
+    <style type="text/css">
+        .Root
+        {
+            background: url(/CommonWebResource/RelateResource/image/icons/catalog.gif) no-repeat;
+        }
+        .Catalog
+        {
+            background: url(/CommonWebResource/RelateResource/image/icons/catalog.gif) no-repeat;
+        }
+        .Feature
+        {
+            background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+        }
+        .Mark, .Enter
+        {
+            width: 16px;
+            height: 16px;
+            overflow: hidden;
+            margin: auto;
+            text-align: center;
+            display: block;
+            cursor: hand;
+            background: url(/CommonWebResource/Theme/Default/MiniUI/icons/preview.png) no-repeat;
+        }
+        .Enter
+        {
+            background: url(/CommonWebResource/Theme/Default/MiniUI/icons/goto.gif) no-repeat;
+        }
+        .mini-tabs-bodys
+        {
+            padding: 0 0 0 0;
+            width:100%;
+            height:100%;
+        }
+        .icon-switch
+        {
+            background: url(/WeChat/Scripts/Tab/switch.png) no-repeat;
+        }
+        .icon-tree
+        {
+            background: url(/WeChat/Scripts/Tab/tree.png) no-repeat;
+        }
+       
+    </style>
+}

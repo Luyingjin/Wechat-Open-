@@ -1,0 +1,141 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" allowresize="true">
+    <div size="150px" minsize="100px" showcollapsebutton="false">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetTree" textfield="Name" idfield="ID" parentfield="ParentID" resultastree="false" onnodeselect="onNodeSelect"
+                expandonload="1">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-splitter" style="width: 100%; height: 100%;" borderstyle="border:0px">
+            <div minsize="100px" showcollapsebutton="false" style="border-left: 0px">
+                <div class="mini-toolbar gw-grid-toolbar" style="border-left: 0px; border-right: 0px">
+                    <table>
+                        <tr>
+                            <td>
+                                <a id="btnAddDef" class="mini-button" iconcls="icon-add" onclick="add({url:'DefEdit?CategoryID={ID}',paramFrom:'dataTree',height:'300px'});">增加</a>
+                                <a id="btnEditDef" class="mini-button" iconcls="icon-edit" onclick="edit({url:'DefEdit',height:'300px'});">编辑</a>
+                                <a id="btnDeleteDef" class="mini-button" iconcls="icon-remove" onclick="del({action:'DeleteDef'});">删除</a>
+                            </td>
+                            <td class="gw-toolbar-right">
+                                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name');" onbuttonclick="quickSearch('Code,Name');" style="width: 150px" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mini-fit">
+                    <div id="dataGrid" class="mini-datagrid" onselectionchanged="onDataGridRowClick" url="GetDefList" style="width: 100%; height: 100%;" sortfield="SortIndex" sortorder="asc" multiselect="true"
+                        borderstyle="border-left:0px;border-right:0px;border-bottom:0px">
+                        <div property="columns">
+                            <div type="checkcolumn"></div>
+                            <div field="Type" width="60" allowsort="true">类型</div>
+                            <div field="Code" width="100" allowsort="true">编号</div>
+                            <div field="Name" width="200" allowsort="true">名称</div>
+                            <div field="Description" width="*">描述</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div size="35%" minsize="100px" showcollapsebutton="false" style="border-right: 0px">
+                <div class="mini-toolbar gw-grid-toolbar" style="border-left: 0px; border-right: 0px">
+                    <table>
+                        <tr>
+                            <td>
+                                <a id="btnAddEnumItem" class="mini-button" iconcls="icon-add" onclick="add({url:'ItemEdit?EnumDefID={ID}',paramFrom:'dataGrid',gridId:'enumItemGrid',height:'300px'});">增加</a>
+                                <a id="btnEditEnumItem" class="mini-button" iconcls="icon-edit" onclick="edit({url:'ItemEdit?ID={ID}', gridId:'enumItemGrid',height:'300px'});">编辑</a>
+                                <a id="btnDeleteEnumItem" class="mini-button" iconcls="icon-remove" onclick="del({action:'DeleteItem', gridId:'enumItemGrid'});">删除</a>
+                            </td>
+                            <td class="gw-toolbar-right">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mini-fit">
+                    <div id="enumItemGrid" borderstyle="border-left:0px;border-right:0px;border-bottom:0px" class="mini-datagrid" style="width: 100%; height: 100%;" multiselect="true">
+                        <div property="columns">
+                            <div type="checkcolumn"></div>
+                            <div id="itemCode" field="Code" allowsort="true">编号</div>
+                            <div field="Name" allowsort="true">名称</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+@Html.GetEnum(typeof(Base.Logic.EnumType));
+addGridEnum("dataGrid","Type","EnumType");
+ jQuery(".gw-grid-toolbar .mini-button").hide();
+</script>
+<script type="text/javascript">
+
+    //树节点点击事件
+    function onNodeSelect(e) {
+        if (e.isLeaf) {
+            jQuery(".gw-grid-toolbar .mini-button").show();
+            var dataGrid = mini.get("dataGrid");
+            dataGrid.setUrl("GetDefList?CategoryID=" + e.node.FullID.split('.')[1]);
+            dataGrid.load();
+        }
+        else {
+            var dataGrid = mini.get("dataGrid");
+            dataGrid.setUrl("GetDefList");
+            dataGrid.load();
+            jQuery(".gw-grid-toolbar .mini-button").hide();
+        }
+
+        if (e.node.Code == "") {
+            mini.get("btnAddDef").hide();
+            mini.get("btnEditDef").hide();
+            mini.get("btnDeleteDef").hide();
+        }
+        else {
+            mini.get("btnAddDef").show();
+            mini.get("btnEditDef").show();
+            mini.get("btnDeleteDef").show();
+        }
+
+    }
+
+    //dataGrid行点击事件
+    function onDataGridRowClick(e) {
+
+        var enumItemGrid = mini.get("enumItemGrid");
+        if (e.selected) {
+
+            if (e.selected.Type == "Normal") {
+                mini.get("btnAddEnumItem").show();
+                mini.get("btnEditEnumItem").show();
+                mini.get("btnDeleteEnumItem").show();
+                enumItemGrid.columns[1].allowSort = true;
+                enumItemGrid.columns[2].allowSort = true;
+            }
+            else {
+                mini.get("btnAddEnumItem").hide();
+                mini.get("btnEditEnumItem").hide();
+                mini.get("btnDeleteEnumItem").hide();
+
+                enumItemGrid.columns[1].allowSort = false;
+                enumItemGrid.columns[2].allowSort = false;
+            }
+
+            enumItemGrid.setUrl("GetItemList?EnumDefID=" + e.selected.ID + "&EnumType=" + e.selected.Type);
+        }
+        else {
+            mini.get("btnAddEnumItem").hide();
+            mini.get("btnEditEnumItem").hide();
+            mini.get("btnDeleteEnumItem").hide();
+
+            enumItemGrid.columns[1].allowSort = false;
+            enumItemGrid.columns[2].allowSort = false;
+
+            enumItemGrid.setUrl("GetItemList?EnumDefID=&EnumType=");
+
+        }
+
+
+        enumItemGrid.load();
+    }
+
+</script>

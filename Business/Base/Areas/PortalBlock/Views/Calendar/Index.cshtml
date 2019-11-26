@@ -1,0 +1,548 @@
+﻿@section scripts{
+    <link href="@Url.Content("/CommonWebResource/CoreLib/FullCalendar/fullcalendar.css")" rel="stylesheet" />
+    <link href="@Url.Content("/CommonWebResource/CoreLib/FullCalendar/fullcalendar.print.css")" rel='stylesheet' media='print' />
+    <script src="@Url.Content("/CommonWebResource/CoreLib/Basic/jQuery/jquery-ui.custom.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("/CommonWebResource/CoreLib/FullCalendar/fullcalendar.min.js")" type="text/javascript"></script>
+}
+<style>
+    .box
+    {
+        border: 1px #999999 solid;
+        background: #FFF;
+    }
+    .tit
+    {
+        font-size: 12px;
+        padding: 0;
+        margin: 0;
+        height: 31px;
+        background: url(/CommonWebResource/RelateResource/image/calendar/titbg.gif) center top repeat-x #CBE4EF;
+    }
+    .tit a
+    {
+        float: left;
+        margin-left: 10px;
+        display: inline;
+        margin-top: 8px;
+        text-decoration: none;
+        color: #000;
+    }
+    .content
+    {
+        font-size: 12px;
+    }
+    /*圆角边框*/
+    .lt, .rt, .lb, .rb
+    {
+        background-image: url(/CommonWebResource/RelateResource/image/calendar/abg.png);
+        filter: alpha(opacity=10);
+        -moz-opacity: .1;
+        opacity: .1;
+        line-height: 0;
+    }
+    .lt, .rt, .lb, .rb
+    {
+        height: 6px;
+        width: 6px;
+    }
+    .t, .b, .l, .r
+    {
+        background: #000000;
+        filter: alpha(opacity=10);
+        -moz-opacity: .1;
+        opacity: .1;
+        line-height: 0;
+    }
+    .l, .r
+    {
+        width: 6px;
+    }
+    .t, .b
+    {
+        height: 6px;
+    }
+    .lt
+    {
+        background-position: 0 0;
+    }
+    .rt
+    {
+        background-position: right 0;
+    }
+    .lb
+    {
+        background-position: 0 bottom;
+    }
+    .rb
+    {
+        background-position: right bottom;
+    }
+    /*小三角*/
+    .s_left
+    {
+        position: absolute;
+        bottom: 8px;
+        _bottom: -2px;
+        left: 30px;
+        _left: 13px;
+        display: block;
+        height: 0;
+        width: 0;
+        font-size: 0;
+        line-height: 0;
+    }
+    .s_right
+    {
+        position: absolute;
+        bottom: 8px;
+        _bottom: -2px;
+        right: 60px;
+        _right: 43px;
+        display: block;
+        height: 0;
+        width: 0;
+        font-size: 0;
+        line-height: 0;
+    }
+    
+    .odiv
+    {
+        position: absolute;
+        width: 258px;
+        z-index: 9999;
+    }
+    
+    .box ul
+    {
+        line-height: 27px;
+        list-style-type: none;
+        width: 176px;
+        margin: 0;
+        padding: 0;
+        overflow: visible;
+    }
+    .box ul li
+    {
+        float: left;
+        width: 176px;
+        background: #ffffff;
+        border-bottom: 1px dotted #CCC;
+    }
+    
+    
+    .calendar_main
+    {
+        margin: 5px;
+    }
+    .calendar_main table
+    {
+        margin-bottom: 3px;
+    }
+    .calendar_blue
+    {
+        background-color: #3A87AD;
+        color: #FFF;
+        font-size: 12px;
+    }
+    .calendar_green
+    {
+        background-color: #20b983;
+        color: #FFF;
+        font-size: 12px;
+    }
+    .calendar_orange
+    {
+        background-color: #eba935;
+        color: #FFF;
+        font-size: 12px;
+    }
+</style>
+<div class="mini-toolbar">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" iconcls="icon-cutover" onclick="cutOver();">切换到列表</a>
+            </td>
+            <td class="gw-toolbar-right">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="divFullCalendar" style="overflow: hidden; height: 100%; width: 100%;">
+        <div id='calendar'></div>
+    </div>
+</div>
+<form id="form1" method="post">
+<div class="odiv" id="divEvent" style="display: none">
+    <input id="id" name="id" class="mini-hidden" />
+    <table border="0" cellpadding="0" cellspacing="0">
+        <tr>
+            <td class="lt">
+            </td>
+            <td class="t">
+            </td>
+            <td class="rt">
+            </td>
+        </tr>
+        <tr>
+            <td class="l">
+            </td>
+            <td class="box">
+                <div class="tit" id="divButton" style="display: none"><a href="javascript:void(0)"
+                    onclick="updateEvent()">
+                    <img src="/CommonWebResource/RelateResource/image/calendar/save.gif" width="14" height="14"
+                        border="0" align="absmiddle" />
+                    保存</a>
+                    <a href="javascript:void(0)" onclick="deleteEvent()">
+                        <img src="/CommonWebResource/RelateResource/image/calendar/remove.gif" width="16"
+                            height="16" border="0" align="absmiddle" />
+                        删除</a>
+                </div>
+                <div class="content">
+                    <table border="0" cellspacing="10" cellpadding="0">
+                        <tr>
+                            <td width="37">
+                                时间
+                            </td>
+                            <td width="186" id="tdTimePeriod">
+                            </td>
+                        </tr>
+                        <tr name="trText">
+                            <td>
+                                标题
+                            </td>
+                            <td>
+                                <span style="border: solid 1px #a5acb5; width: 180px; margin: 0px; padding: 0px;
+                                    display: block; overflow: hidden">
+                                    <input id="title" name="title" style="width: 100%; border: 0px; margin: 0px; padding: 0px;
+                                        font-family: Tahoma, Verdana, 宋体" />
+                                </span>
+                            </td>
+                        </tr>
+                        <tr name="trText">
+                            <td>
+                                内容
+                            </td>
+                            <td>
+                                <span style="height: auto; border: solid 1px #a5acb5; width: 180px; margin: 0px;
+                                    padding: 0px; display: block; overflow: hidden">
+                                    <textarea id="description" style="width: 100%; height: 48px; border: 0px; margin: 0px;
+                                        padding: 0px; font-family: Tahoma, Verdana, 宋体">
+                                    </textarea>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr id="trLink" style="display: none">
+                            <td>
+                                标题
+                            </td>
+                            <td>
+                                <a href="#" id="aLink"></a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </td>
+            <td class="r">
+            </td>
+        </tr>
+        <tr>
+            <td class="lb">
+            </td>
+            <td class="b">
+            </td>
+            <td class="rb">
+            </td>
+        </tr>
+    </table>
+    <s id="sArrow" class="s_right"><img id="imgArrow" src="/CommonWebResource/RelateResource/image/calendar/arrow_d.gif" width="20" height="10" /></s>
+</div>
+</form>
+<script type="text/javascript">
+    var form = new mini.Form("#form1");
+</script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var calendar = $('#calendar').fullCalendar({
+            width: $("#divFullCalendar").width(),
+            height: $("#divFullCalendar").height(),
+            events: getEvents,
+            defaultView: 'agendaWeek',
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'agendaDay,agendaWeek,month'
+            },
+            axisFormat: "HH:mm",
+            monthNames: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
+            monthNamesShort: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+            dayNames: ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'],
+            dayNamesShort: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+            buttonText: {
+                prev: "<span class='fc-text-arrow'>&lsaquo;</span>",
+                next: "<span class='fc-text-arrow'>&rsaquo;</span>",
+                prevYear: "<span class='fc-text-arrow'>&laquo;</span>",
+                nextYear: "<span class='fc-text-arrow'>&raquo;</span>",
+                today: '今天',
+                month: '月',
+                week: '周',
+                day: '日'
+            },
+            allDayText: "全天",
+            titleFormat: {
+                month: 'yyyy年MMMM',
+                week: " yyyy年MMM月d{日'&#8212;'[yyyy年][MMM月]d日}",
+                day: "yyyy年MMM月d日'('dddd')'"
+            },
+            timeFormat: 'H:mm',
+            columnFormat: {
+                month: 'ddd',
+                week: "M/d'('ddd')'",
+                day: "M/d '('dddd')'"
+            },
+            selectable: true,
+            selectHelper: true,
+            unselectAuto: false,
+            select: function (start, end, allDay) {
+                openWindow("Edit?Start=" + start.format("yyyy-MM-dd|hh:mm") + "&End=" + end.format("yyyy-MM-dd|hh:mm") + "&AllDay=" + allDay, {
+                    title: "添加日程",
+                    width: "420px",
+                    height: "360px",
+                    showMaxButton: false,
+                    onDestroy: function (event) {
+                        if (typeof (event) != "undefined" && typeof (event) != "string") {
+                            addExecuteParam("formData", mini.encode(event));
+                            execute("/Base/PortalBlock/Calendar/Save", {
+                                onComplete: function (data) {
+                                    calendar.fullCalendar('renderEvent', {
+                                        id: data.ID,
+                                        title: data.Title,
+                                        description: data.Description,
+                                        start: data.StartTime,
+                                        end: data.EndTime,
+                                        allDay: allDay,
+                                        editable: true,
+                                        startEditable: true,
+                                        endEditable: true,
+                                        type: "Schedule"
+                                    });
+                                }
+                            });
+                        }
+                        calendar.fullCalendar('unselect');
+                    }
+                });
+            },
+            eventClick: eventClick,
+            eventDrop: eventDrop,
+            eventResize: eventResize,
+            dayClick: dayClick,
+            windowResize: onWindowResize
+        });
+    });
+
+    function getEvents(start, end, callback) {
+        //获取个人日程
+        addExecuteParam("start", start.format("yyyy-MM-dd hh:mm:ss"));
+        addExecuteParam("end", end.format("yyyy-MM-dd hh:mm:ss"));
+        execute("/Base/PortalBlock/Calendar/GetPersonalSchedules", {
+            onComplete: function (events) {
+                $.each(events, function (i, item) {
+                    events[i].type = "Schedule";
+                });
+                callback(events);
+            }
+        });
+    }
+
+    function onWindowResize(view) {
+        var width = $("#divFullCalendar").width() - 10;
+        $('#calendar').fullCalendar("option", "width", width);
+        var height = $("#divFullCalendar").height();
+        $('#calendar').fullCalendar("option", "height", height);
+    }
+
+    function dayClick(date, allDay, jsEvent, view) {        
+        //miniCal.setValue(date);
+    }
+
+    function eventClick(calEvent, jsEvent, view) {
+        form.setData(calEvent);
+        form.setChanged(false);
+        $("#title").val(calEvent.title);
+        $("#description").val(calEvent.description);
+        if (calEvent.end != null)
+            $("#tdTimePeriod").html(calEvent.start.format("yyyy-MM-dd hh:mm") + "<br/>～" + calEvent.end.format("yyyy-MM-dd hh:mm"));
+        else
+            $("#tdTimePeriod").html(calEvent.start.format("yyyy-MM-dd hh:mm"));
+        if (calEvent.type == "Schedule") {
+            $("#divButton").show();
+            $("tr[name='trText']").show();
+            $("#trLink").hide();
+        }
+        else {
+            $("#divButton").hide();
+            $("tr[name='trText']").hide();
+            $("#trLink").show();
+            var $link = $("#aLink");
+            $link.text(calEvent.title);
+            $link.unbind();           
+        }
+        locateEventDiv(this);
+    }
+
+    function locateEventDiv(ctrl) {
+        var $div = $("#divEvent");
+        var divTop = $(ctrl).offset().top - $div.height() + 6;
+        if (divTop < 0) {
+            divTop = $(ctrl).offset().top + $(ctrl).height();
+            if ((divTop + $div.height()) > $("body").height())
+                divTop = $(ctrl).offset().top - 6;
+            $("#imgArrow").hide();
+        }
+        else {
+            $("#imgArrow").show();
+        }
+        var divLeft = $(ctrl).offset().left - 6;
+        if (divTop != ($(ctrl).offset().top - 6)) {
+            if ((divLeft + $div.width()) > $("body").width()) {
+                divLeft = $(ctrl).offset().left - ($div.width() - $(ctrl).width()) + 6;
+                $("#sArrow").removeClass("s_left");
+                $("#sArrow").addClass("s_right");
+            }
+            else {
+                $("#sArrow").removeClass("s_right");
+                $("#sArrow").addClass("s_left");
+            }
+        }
+        else {
+            divLeft = $(ctrl).offset().left + $(ctrl).width() - 6;
+            if (divLeft + $div.width() > $("body").width())
+                divLeft = $(ctrl).offset().left - $div.width() + 6;
+        }
+        $div.css("top", divTop);
+        $div.css("left", divLeft);
+        $div.show();
+
+    }
+
+    function updateEvent() {
+        var data = form.getData();
+        data = $.extend(data, {
+            title: $("#title").val(),
+            description: $("#description").val()
+        });
+        saveEvent(data, updateEventComplete);
+    }
+
+    function updateEventComplete(event) {
+        var events = $('#calendar').fullCalendar("clientEvents", event.id);
+        $.each(events, function (i, item) {
+            events[i].title = event.title;
+            events[i].description = event.description;
+            $('#calendar').fullCalendar("updateEvent", events[i]);
+        });
+        $("#divEvent").hide()
+        form.clear();
+    }
+
+    function deleteEvent() {
+        var id = mini.get("id").getValue();
+        if ($.trim(id)) {
+            msgUI("确认删除？", 2, function (action) {
+                if (action == "ok") {
+                    execute("/Base/PortalBlock/Calendar/Delete?ID=" + id, {
+                        onComplete: function (rtn) {
+                            $("#divEvent").hide();
+                            form.clear();
+                            $('#calendar').fullCalendar("removeEvents", id);
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    $(document).ready(function () {
+        $("#divEvent").hover(
+        function () {
+        },
+        function () {
+            $("#divEvent").hide();
+        });
+    });
+
+    function eventDrop(event, dayDelta, minuteDelta, allDay, revertFunc) {
+        //保存拖拽值
+        if (allDay) {
+            if (event.start != null)
+                event.start = new Date(event.start.toDateString());
+            if (event.end != null)
+                event.end = new Date(event.end.toDateString());
+        }
+        saveEvent(event, null, revertFunc);
+    }
+
+    function eventResize(event, dayDelta, minuteDelta, revertFunc) {
+        //保存调整时间
+        saveEvent(event, null, revertFunc);
+    }
+
+    function saveEvent(event, commitFunc, revertFunc) {
+        //保存拖拽值
+        addExecuteParam("formData", mini.encode({
+            ID: event.id,
+            Title: event.title,
+            StartTime: event.start,
+            EndTime: event.end,
+            Description: $.trim(event.description)
+        }));
+        execute("/Base/PortalBlock/Calendar/Save", {
+            onComplete: function (rtn) {
+                if (typeof (commitFunc) != "undefined" && commitFunc != null) {
+                    commitFunc(event);
+                }
+            },
+            onFail: function (msg) {
+                if (typeof (revertFunc) != "undefined" && revertFunc != null)
+                    revertFunc();
+            }
+        });
+    }
+
+    function cutOver() {
+        window.location.href = "List";
+    }
+
+    Date.prototype.format = function (format) {
+        /* 
+        * eg:format="yyyy-MM-dd hh:mm:ss"; 
+        */
+        var o = {
+            "M+": this.getMonth() + 1, // month  
+            "d+": this.getDate(), // day  
+            "h+": this.getHours(), // hour  
+            "m+": this.getMinutes(), // minute  
+            "s+": this.getSeconds(), // second  
+            "q+": Math.floor((this.getMonth() + 3) / 3), // quarter  
+            "S": this.getMilliseconds()
+            // millisecond  
+        }
+
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+                        - RegExp.$1.length));
+        }
+
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                            ? o[k]
+                            : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
+    }
+</script>

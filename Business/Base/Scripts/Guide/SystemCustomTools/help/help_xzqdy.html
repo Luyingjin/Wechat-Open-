@@ -1,0 +1,48 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3c.org/TR/1999/REC-html401-19991224/loose.dtd">
+<!-- saved from url=(0087)http://www.17sucai.com/preview/62869/2014-12-10/背景与banner一起变换的焦点图/index.html -->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><HTML 
+xmlns="http://www.w3.org/1999/xhtml"><HEAD><META content="IE=10.000" 
+http-equiv="X-UA-Compatible">
+ 
+<META http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+<TITLE>banner</TITLE> 
+<SCRIPT src="images/jquery-1.7.2.min.js" type="text/javascript"></SCRIPT>
+ 
+<SCRIPT src="images/jquery.SuperSlide.2.1.1.js" type="text/javascript"></SCRIPT>
+ <LINK href="images/style.css" rel="stylesheet" type="text/css"> 
+<META name="GENERATOR" content="MSHTML 10.00.9200.17183"></HEAD> 
+<BODY>
+<DIV class="banner-box">
+<DIV class="bd">
+<UL>
+  <LI style="background: rgb(204, 204, 204);">
+  <DIV class="m-width"><A href="javascript:void(0);"><IMG src="images/help_xzqdy01.jpg"></A></DIV></LI>
+   
+  </UL></DIV>
+<DIV class="banner-btn"><A class="prev" href="javascript:void(0);"></A><A class="next" 
+href="javascript:void(0);"></A>
+<DIV class="hd">
+<UL></UL></DIV></DIV></DIV>
+<SCRIPT type="text/javascript">
+$(document).ready(function(){
+
+	$(".prev,.next").hover(function(){
+		$(this).stop(true,false).fadeTo("show",0.9);
+	},function(){
+		$(this).stop(true,false).fadeTo("show",0.4);
+	});
+	
+	$(".banner-box").slide({
+		titCell:".hd ul",
+		mainCell:".bd ul",
+		effect:"fold",
+		interTime:12500,
+		delayTime:500,
+		autoPlay:true,
+		autoPage:true, 
+		trigger:"click" 
+	});
+
+});
+</SCRIPT>
+ </BODY></HTML>

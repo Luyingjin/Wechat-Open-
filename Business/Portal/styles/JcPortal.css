@@ -1,0 +1,230 @@
+﻿@charset "utf-8";
+
+.portaltop
+{
+    display:inline-block;
+	width:100%;
+	height:50px;
+	background-image:url(../images/top_bg.gif);
+	background-repeat:repeat-x;
+}
+.portaltop_div
+{
+	width:100%;
+	height:2px;
+	background-image:url(../images/top_topbarbg1.gif);
+	background-position:top;
+	background-repeat:repeat-x;
+}
+.portal_logo
+{
+	float:left;
+	margin-left:10px;
+	margin-top:8px;
+	width:197px;
+	height:32px;
+	background-image:url(../images/logo.gif);
+}
+.portal_toolbar
+{
+	float:right;
+	margin-top:0;
+	margin-right:0;
+	background-image:url(../images/top_toolbarbg.gif);
+	width:390px;
+	height:23px;
+}
+.portal_toolbartable
+{
+	width:100%;
+	height:23px;
+	table-layout:fixed;
+}
+.portal_toolbartable_left
+{
+	width:2px;
+	background-image:url(../images/top_topbarleft.gif);
+}
+.portal_toolbartable_center
+{
+}
+    
+.portal_toolbartable_right
+{
+	display:none;
+}
+.portal_toolbarSeperate
+{
+	width:2px;
+	margin-left:5px;
+	margin-right:5px;
+}
+.portal_toolbarSeperate img
+{
+	width:2px;
+	height:12px;
+	background-image:url(../images/top_topbarSeperate.gif);
+}
+.portal_toolbar_welico
+{
+	width:16px;
+	height:16px;
+	margin-left:5px;
+	margin-top:3px;
+}
+.portal_toolbar_welico img
+{
+	width:16px;
+	height:16px;
+	background-image:url(../images/首页图标/人力资源.gif);
+}
+.portal_toolbar_weltext
+{
+	font-family:"宋体";
+	font-size:12px;
+	color:#000;
+	text-decoration: none;
+	height:18px;
+}
+.portal_toolbar_weltext a
+{
+	font-family:"宋体";
+	font-size:12px;
+	color:#000;
+	text-decoration: none;
+
+}
+.portal_toolbar_message
+{
+	margin:1px;
+}
+.portal_toolbar_message_img1
+{
+	width:16px;
+	height:16px;
+
+	border:none;
+	margin-top:0;
+}
+.portal_toolbar_message_img2
+{
+	width:16px;
+	height:16px;
+
+	border:none;
+	margin-top:0;
+}
+.portal_toolbar_message_img3
+{
+	width:16px;
+	height:16px;
+
+	border:none;
+	margin-top:0;
+}
+.portal_toolbar_message span
+{
+	font-family:"宋体";
+	font-size:12px;
+	text-decoration: none;
+	height:16px;
+	color:#000;
+	padding-left:1px;
+}
+.portal_toolbar_message a:link,.portal_toolbar_message a:visited
+{
+	font-family:"宋体";
+	font-size:12px;
+	color:#000;
+	text-decoration: none;
+	border-style:solid;
+	border-width:0;
+	
+	
+	height:18px;
+	padding:0 2px 0 3px;
+}
+.portal_toolbar_message a:hover,.portal_toolbar_message  a:active
+{
+	font-family:"宋体";
+	font-size:12px;
+	color:#000;
+	text-decoration: none;
+	border:1px solid #BABABA;
+	background-color:#FBDC89;
+	padding:0 2px 0 1px;
+}
+.footbar
+{
+	height:22px;
+	width:100%;
+	background-image:url(../images/footbar_bg.gif);
+}
+.footbar_url
+{
+	font-family:"宋体";
+	font-size:12px;
+	color:#000;
+	text-decoration: none;
+	border:none !important;
+	background:none !important;
+	height:12px;
+	padding-top:2px;
+	padding-left:10px;
+}
+.footbar_url a
+{
+	border:none !important;
+	background:none !important;
+	margin-top:2px;
+	text-decoration: none;
+	color:#000;
+}
+/*-------------------文件夹视图------------------------------*/
+.font12gray1
+{
+	font-size:12px;
+	color:#767676;	
+	text-decoration: none;
+}
+.table_tags
+{
+	border:1px solid #A5A5A5;
+}
+.tags_span
+{
+	border:1px solid #E6E6E6;
+	padding:2px;
+	float:left;
+	margin-right:10px;
+}
+.tagsbar_div
+{
+	float:left;
+	margin-right:10px;
+}
+.tagspic_div
+{
+	float:left;
+	margin-right:20px;
+	margin-bottom:10px;
+}
+
+.portaltop_headnavi
+{
+    background-image: url(../images/headnavi_bg.gif);
+}
+
+.jctoolbar_BtnTable
+{
+    FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0, startColorStr=#fafafa, endColorStr=#c7c7c7);
+	height:28px;
+}
+
+
+.jctoolbar_Div
+{
+	display:block;
+	position: absolute;
+	width:1500px;
+}

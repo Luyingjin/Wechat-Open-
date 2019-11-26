@@ -1,0 +1,86 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="addRow({Enabled:'true',Visible:'true'},{isLast:true});">添加</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" iconcls="icon-save" onclick="saveLayoutButton();">保存</a>
+                <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" allowcellvalid="true"
+        multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false"
+        url="GetLayoutButton">
+        <div property="columns">
+            <div type="checkcolumn"></div>  
+            <div field="id" width="80">按钮ID
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>          
+            <div field="text" width="80">按钮名称
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+            <div field="URL" width="*">URL
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>           
+            <div type="comboboxcolumn" field="iconcls" width="100" autoshowpopup="true" align="center">
+                图标
+                <input property="editor" class="mini-combobox" style="width: 80%;" value="left" data="iconEnum"
+                    onitemclick="commitEdit" shownullitem="true" allowinput="true" />
+            </div>     
+            <div type="checkboxcolumn" field="Enabled"  truevalue="true" falsevalue="false" width="60">是否可用 </div>
+            <div type="checkboxcolumn" field="Visible" truevalue="true" falsevalue="false" width="60">是否显示 </div>
+            <div field="Settings" width="60"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function saveLayout() {
+        addExecuteParam("Layout", mini.get("dataGrid").getData());
+        execute("SaveLayout", { actionTile: '保存', closeWindow: true });
+    }
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }
+
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    } 
+</script>
+<script type="text/javascript">
+    addGridButton("dataGrid", "Settings", { linkText: '详细', onButtonClick: function (row) {
+        var url = "SettingsButton";
+        openWindow(url, { width: 350, title: "按钮编辑", data: row["Settings"], onDestroy: function (data) {
+            if (data != "close")
+                row["Settings"] = mini.encode(data);
+        }
+        });
+    }
+    });
+</script>
+<script type="text/javascript">
+
+    function saveLayoutButton() {
+        addExecuteParam("layoutButton", mini.get("dataGrid").getData());
+        execute("SaveLayoutButton", { actionTitle: "保存" });
+    }
+</script>
+<script type="text/javascript">   
+    var iconEnum = @Html.Raw(ViewBag.IconEnum);
+</script>

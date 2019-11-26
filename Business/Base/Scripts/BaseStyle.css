@@ -1,0 +1,49 @@
+﻿/*---------------功能类似按钮型link区域样式begin---------------*/
+
+.menu_tab_a_bg
+{
+    background-color: #f0f0f0;
+    width: 100%;
+    border-bottom: #b9b9b9 solid 1px;
+    overflow: hidden;
+    padding-bottom: 2px;
+}
+ul.menu_tab_a
+{
+    padding: 0px;
+    margin: 0px;
+    list-style: none;
+    float: left;
+    clear: left;
+}
+ul.menu_tab_a li
+{
+    float: left;
+}
+ul.menu_tab_a li a
+{
+    float: left;
+    text-decoration: none;
+    color: #000;
+    padding: 1px 10px 1px 10px;
+    font: 12px "Microsoft YaHei" , "Arial" , Helvetica, sans-serif;
+    background: url(/images/right_a_line.gif) no-repeat top right;
+    white-space: nowrap;
+    margin: 2px;
+    border: 1px #f0f0f0 solid;
+}
+ul.menu_tab_a li a:hover
+{
+    color: #005d91;
+    text-decoration: none;
+    background: url(/images/right_a_hover_line.gif) no-repeat top right;
+    border: 1px #a9acb5 solid;
+}
+ul.menu_tab_a li a.current
+{
+    background: url(/images/right_a_hover_line.gif) #fff no-repeat top center;
+    color: #000;
+    border: 1px #a9acb5 solid;
+}
+
+/*---------------功能类似按钮型link区域样式end---------------*/

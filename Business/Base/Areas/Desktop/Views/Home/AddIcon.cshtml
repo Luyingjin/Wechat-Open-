@@ -1,0 +1,152 @@
+﻿@{
+    ViewBag.Title = "添加快捷方式";
+}
+<style type="text/css">
+html body .addicon_remove .mini-buttonedit-icon
+{
+    background:url(/CommonWebResource/Theme/Default/MiniUI/images/buttonedit/close.gif) no-repeat 50% 50%;
+}
+</style>
+<link href="@Url.Content("~/Scripts/Desktop/themes/default/css/filemanager.css")" type="text/css" rel="stylesheet" />
+<!-- 工具条 -->
+<div class="mini-toolbar gw-form-toolbar">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" iconcls="icon-save" onclick="save({action:'SaveIcon',closeWindow:true,refresh:false,actionTitle:'',onComplete:addIcon});">
+                    保存</a>
+                <a class="mini-button" iconcls="icon-cancel" onclick="closeAddIconWindow()">取消</a>
+            </td>
+            <td class="gw-toolbar-right">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <!-- 表单内容部分 -->
+    <form id="dataForm" method="post">
+    <input name="ID" class="mini-hidden" />
+    <input name="IsUse" class="mini-hidden" value="T" />
+    <input name="Type" class="mini-hidden" value="Normal" />
+    <input name="PageIndex" class="mini-hidden" value="@ViewBag.PageIndex" />
+    <div class="basediv">
+        <table width="90%" cellpadding="2" cellspacing="0" border="0">
+            <tr style="height: 0px">
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    快捷方式名称
+                </td>
+                <td>
+                    <input id="Name" name="Name" style="width: 90%" class="mini-buttonedit" vtype="maxLength:200" onbuttonclick="choiceResource"
+                        required="true" />
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    快捷方式地址
+                </td>
+                <td colspan="3">
+                    <input id="Url" name="Url" style="width: 90%" class="mini-textbox" vtype="maxLength:200"
+                        required="true" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    排序号
+                </td>
+                <td>
+                    <input name="SortIndex" class="mini-textbox" style="width: 90%" vtype="float" />
+                </td>
+                <td>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    快捷方式图标
+                </td>
+                <td>
+                    <input id="IconImage" name="IconImage" style="width: 90%" class="mini-buttonedit addicon_remove" allowInput="false" onbuttonclick="onIconButtonClick" />
+                </td>
+                <td colspan="3" style="text-align:left;color:Red;font-weight:bold;">
+                    请点击下面图标进行选择！
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+    <div id="filesView" class="filesView">
+        @foreach (var icon in ViewBag.Icons)
+        {
+            <a class="file" href="javascript:void(0)" onclick="SelectIcon('@icon');return false;" hidefocus="">
+                <img class="file-image" src="@Url.Content("~/Scripts/Desktop/icon/" + icon)"><span
+                    class="file-text">@icon</span></a>
+        }
+        <div style="clear: both;">
+        </div>
+    </div>
+</div>
+<script language="javascript" type="text/javascript">
+    function addIcon(json) {
+        var data = {
+            'id': json.ID,
+            'title': json.Name,
+            'iconSrc': "@Url.Content("/Desktop/")" + (json.IconImage || '001.png'),
+            'url': json.Url,
+            'IsUse': 'T',
+            'winWidth': 900,
+            'winHeight': 600
+        }
+
+        //调用父级窗口的添加应用函数	
+        parent.addIcon(data);
+        parent.closeWindow(@ViewBag.PageIndex);
+    }
+
+    function choiceResource(e){
+        openWindow("/MvcConfig/Auth/Res/Selector?RootFullID=a1b10168-61a9-44b5-92ca-c5659456deb5",{
+            width: 350,
+            height: "80%",
+            title: "入口选择",
+            onDestroy: function(res) {
+                if (typeof(res) == "object"){
+                    mini.get("Name").setText($.trim(res[0].Name));
+                    mini.get("Name").setValue($.trim(res[0].Name));
+                    mini.get("Url").setValue($.trim(res[0].Url));
+                }
+            }
+        });
+    }
+
+    function closeAddIconWindow()
+    {
+        closeWindow();
+        parent.closeWindow(@ViewBag.PageIndex);
+    }
+
+    function SelectIcon(icon)
+    {
+        mini.get("IconImage").setValue(icon);
+        mini.get("IconImage").setText(icon);
+    }
+
+    function onIconButtonClick(e) {
+        e.sender.setValue("");
+        e.sender.setText("");
+    }
+</script>

@@ -1,0 +1,581 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E2AC205B-59F3-4AE5-9827-2C07A483A327}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Portal</RootNamespace>
+    <AssemblyName>Portal</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <IncludeIisSettings>true</IncludeIisSettings>
+    <IncludeAppPool>true</IncludeAppPool>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=4.1.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Base\packages\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\..\Base\packages\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.DataSetExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.Entity">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Data.Entity.dll</HintPath>
+    </Reference>
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.Drawing.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices">
+      <HintPath>C:\Program Files\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.0\System.EnterpriseServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AjaxService.aspx" />
+    <Content Include="BaseHomeBoard.aspx" />
+    <Content Include="DeptHomeboard.aspx" />
+    <Content Include="Door\BaseBlockData.aspx" />
+    <Content Include="Door\BlockData.aspx" />
+    <Content Include="Door\css\Door.css" />
+    <Content Include="Door\image\add.gif" />
+    <Content Include="Door\image\add2.gif" />
+    <Content Include="Door\image\box.gif" />
+    <Content Include="Door\image\close.gif" />
+    <Content Include="Door\image\closetab.gif" />
+    <Content Include="Door\image\color.gif" />
+    <Content Include="Door\image\edit.gif" />
+    <Content Include="Door\image\urgency.png" />
+    <Content Include="Door\image\loading.gif" />
+    <Content Include="Door\image\open.gif" />
+    <Content Include="Door\image\refresh.gif" />
+    <Content Include="Door\image\reset.gif" />
+    <Content Include="Door\image\sms.gif" />
+    <Content Include="Door\js\drag.js" />
+    <Content Include="Door\js\follow.js" />
+    <Content Include="Door\js\prototype.js" />
+    <Content Include="Door\tp1.jpg" />
+    <Content Include="Door\tp2.jpg" />
+    <Content Include="Door\tp3.jpg" />
+    <Content Include="Global.asax" />
+    <Content Include="HomeBoard.aspx" />
+    <Content Include="HomeBoardIframe3.aspx" />
+    <Content Include="HomeBoardIframe.aspx" />
+    <Content Include="IEConfig.aspx" />
+    <Content Include="ImagePage\SystemManage.aspx" />
+    <Content Include="images\Index\Default\email_shine.gif" />
+    <Content Include="images\Index\Default\ico16_message.gif" />
+    <Content Include="images\Index\Default\ico16_tesk.gif" />
+    <Content Include="images\Index\Default\ico16_tesk_shine.gif" />
+    <Content Include="images\SSEC_top_bg.gif" />
+    <Content Include="images\Top_bg.jpg" />
+    <Content Include="image\bg.jpg" />
+    <Content Include="image\IESetup01.jpg" />
+    <Content Include="image\IESetup02.jpg" />
+    <Content Include="image\IESetup03.jpg" />
+    <Content Include="image\install01.jpg" />
+    <Content Include="image\install02.jpg" />
+    <Content Include="image\install03.jpg" />
+    <Content Include="image\lgoAV.gif" />
+    <Content Include="image\lgoFlash.gif" />
+    <Content Include="image\lgoFTP.gif" />
+    <Content Include="image\lgoIE.gif" />
+    <Content Include="image\lgoVV.gif" />
+    <Content Include="image\lgoXML.gif" />
+    <Content Include="image\system.jpg" />
+    <Content Include="image\TitleIE.jpg" />
+    <Content Include="image\TitleSupport.jpg" />
+    <Content Include="image\TitleTools.jpg" />
+    <Content Include="image\warning.gif" />
+    <Content Include="install\ClientInstall.htm" />
+    <Content Include="install\header_fill.jpg" />
+    <Content Include="install\ico\cs_body_bg.jpg" />
+    <Content Include="install\ico\silverlight.png" />
+    <Content Include="install\loading.gif" />
+    <Content Include="install\Silverlight.exe" />
+    <Content Include="MenuBlock.aspx" />
+    <Content Include="Portal.aspx" />
+    <Content Include="images\12_top_br_bg.gif" />
+    <Content Include="images\footbar_bg.gif" />
+    <Content Include="images\headnavi_bg.gif" />
+    <Content Include="images\Index\Default\人力资源.gif" />
+    <Content Include="images\Index\Default\刷新2.gif" />
+    <Content Include="images\Index\Default\前进2.gif" />
+    <Content Include="images\Index\Default\后退2.gif" />
+    <Content Include="images\Index\Default\退出系统.gif" />
+    <Content Include="images\Index\Default\门户首页.gif" />
+    <Content Include="images\Index\Default\ico16_time.gif" />
+    <Content Include="images\top_bg.gif" />
+    <Content Include="images\Login\bg.jpg" />
+    <Content Include="images\Login\loginbegin.jpg" />
+    <Content Include="images\Login\loginbegin_btn1.gif" />
+    <Content Include="images\Login\loginbegin_btn2.gif" />
+    <Content Include="images\Login\login_bg.jpg" />
+    <Content Include="images\Login\login_main.jpg" />
+    <Content Include="images\logo.gif" />
+    <Content Include="images\top_toolbarbg.gif" />
+    <Content Include="images\top_topbarbg1.gif" />
+    <Content Include="images\top_topbarleft.gif" />
+    <Content Include="images\top_topbarSeperate.gif" />
+    <Content Include="images\控制面板.gif" />
+    <Content Include="LoginBegin.aspx" />
+    <Content Include="LoginError.aspx" />
+    <Content Include="Logout.aspx" />
+    <Content Include="images\Scripts\AC_RunActiveContent.js" />
+    <Content Include="PublicInfo\Pic.swf" />
+    <Content Include="PublicInfo\PicNews.aspx" />
+    <Content Include="SecurityTip.aspx" />
+    <Content Include="styles\dept\downbutton.png" />
+    <Content Include="styles\dept\female.png" />
+    <Content Include="styles\dept\male.png" />
+    <Content Include="styles\dept\more.png" />
+    <Content Include="styles\dept\search.png" />
+    <Content Include="styles\dept\style.css" />
+    <Content Include="styles\dept\upbutton.png" />
+    <Content Include="styles\dept\user.png" />
+    <Content Include="styles\dept\user_photo.jpg" />
+    <Content Include="styles\dropmenu\1x1.gif" />
+    <Content Include="styles\dropmenu\bg.jpg" />
+    <Content Include="styles\dropmenu\flash.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_footbg.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_footleft.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_footright.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_logobg.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_menuline.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_mianlineh.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_mianlinex.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_titleline1.gif" />
+    <Content Include="styles\dropmenu\hbdl_nov_topbg.gif" />
+    <Content Include="styles\dropmenu\icon\advance.gif" />
+    <Content Include="styles\dropmenu\icon\back.gif" />
+    <Content Include="styles\dropmenu\icon\desktop.gif" />
+    <Content Include="styles\dropmenu\icon\feedback.gif" />
+    <Content Include="styles\dropmenu\icon\home.gif" />
+    <Content Include="styles\dropmenu\icon\logon.gif" />
+    <Content Include="styles\dropmenu\icon\refresh.gif" />
+    <Content Include="styles\dropmenu\icon\shortcut.gif" />
+    <Content Include="styles\dropmenu\km_more_1.gif" />
+    <Content Include="styles\dropmenu\km_more_2.gif" />
+    <Content Include="styles\dropmenu\km_nov_22.gif" />
+    <Content Include="styles\dropmenu\km_nov_23.gif" />
+    <Content Include="styles\dropmenu\km_nov_24.gif" />
+    <Content Include="styles\dropmenu\km_nov_37.gif" />
+    <Content Include="styles\dropmenu\km_nov_38.gif" />
+    <Content Include="styles\dropmenu\km_nov_5810x10.gif" />
+    <Content Include="styles\dropmenu\km_nov_58_2.gif" />
+    <Content Include="styles\dropmenu\km_nov_81.gif" />
+    <Content Include="styles\dropmenu\km_nov_ffbg.gif" />
+    <Content Include="styles\dropmenu\km_nov_ffbgl.gif" />
+    <Content Include="styles\dropmenu\km_nov_ffbgr.gif" />
+    <Content Include="styles\dropmenu\km_nov_mbg.gif" />
+    <Content Include="styles\dropmenu\km_nov_mbgl.gif" />
+    <Content Include="styles\dropmenu\km_nov_mbgr.gif" />
+    <Content Include="styles\dropmenu\logo.jpg" />
+    <Content Include="styles\dropmenu\menu\end.gif" />
+    <Content Include="styles\dropmenu\menu\expand-0.gif" />
+    <Content Include="styles\dropmenu\menu\expand-1.gif" />
+    <Content Include="styles\dropmenu\menu\mt_style.css" />
+    <Content Include="styles\dropmenu\nov_menubg.gif" />
+    <Content Include="styles\dropmenu\nov_menubg_left.gif" />
+    <Content Include="styles\dropmenu\nov_menubg_right.gif" />
+    <Content Include="styles\dropmenu\nov_toptbg.gif" />
+    <Content Include="styles\dropmenu\nov_toptf.gif" />
+    <Content Include="styles\dropmenu\nov_toptline.gif" />
+    <Content Include="styles\dropmenu\nov_toptt.gif" />
+    <Content Include="styles\dropmenu\style.css" />
+    <Content Include="styles\dropmenu\top_bg.jpg" />
+    <Content Include="styles\dropmenu\weather.gif" />
+    <Content Include="styles\JcPortal.css" />
+    <Content Include="styles\dropmenu\mt_dropdownC.js" />
+    <Content Include="styles\login-bg.jpg" />
+    <Content Include="styles\login_bg2.png" />
+    <Content Include="styles\login_bg_gray.jpg" />
+    <Content Include="styles\login_bt.gif" />
+    <Content Include="styles\login_bt_on.gif" />
+    <Content Include="styles\login_input_gray.jpg" />
+    <Content Include="styles\Pass_bg_gray.jpg" />
+    <Content Include="styles\Pass_input_gray.jpg" />
+    <Content Include="styles\style.css" />
+    <Content Include="styles\treemenu\blue\1x1.gif" />
+    <Content Include="styles\treemenu\blue\bg.jpg" />
+    <Content Include="styles\treemenu\blue\bt_left.gif" />
+    <Content Include="styles\treemenu\blue\bt_right.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_footbg.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_footleft.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_footright.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_logobg.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_menubg.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_menuline.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_mianlineh.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_mianlinex.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_titleline1.gif" />
+    <Content Include="styles\treemenu\blue\hbdl_nov_topbg.gif" />
+    <Content Include="styles\treemenu\blue\icon\advance.gif" />
+    <Content Include="styles\treemenu\blue\icon\advance2.gif" />
+    <Content Include="styles\treemenu\blue\icon\assignment.gif" />
+    <Content Include="styles\treemenu\blue\icon\assignment_d.gif" />
+    <Content Include="styles\treemenu\blue\icon\back.gif" />
+    <Content Include="styles\treemenu\blue\icon\back2.gif" />
+    <Content Include="styles\treemenu\blue\icon\delete.gif" />
+    <Content Include="styles\treemenu\blue\icon\delete2.gif" />
+    <Content Include="styles\treemenu\blue\icon\desktop.gif" />
+    <Content Include="styles\treemenu\blue\icon\desktop2.gif" />
+    <Content Include="styles\treemenu\blue\icon\feedback.gif" />
+    <Content Include="styles\treemenu\blue\icon\feedback2.gif" />
+    <Content Include="styles\treemenu\blue\icon\home.gif" />
+    <Content Include="styles\treemenu\blue\icon\home2.gif" />
+    <Content Include="styles\treemenu\blue\icon\logon.gif" />
+    <Content Include="styles\treemenu\blue\icon\logon2.gif" />
+    <Content Include="styles\treemenu\blue\icon\message.gif" />
+    <Content Include="styles\treemenu\blue\icon\message_d.gif" />
+    <Content Include="styles\treemenu\blue\icon\message_exist.png" />
+    <Content Include="styles\treemenu\blue\icon\message_no.png" />
+    <Content Include="styles\treemenu\blue\icon\refresh.gif" />
+    <Content Include="styles\treemenu\blue\icon\refresh2.gif" />
+    <Content Include="styles\treemenu\blue\icon\shortcut.gif" />
+    <Content Include="styles\treemenu\blue\icon\shortcut2.gif" />
+    <Content Include="styles\treemenu\blue\icon\task_exist.png" />
+    <Content Include="styles\treemenu\blue\icon\task_no.png" />
+    <Content Include="styles\treemenu\blue\icon\time.gif" />
+    <Content Include="styles\treemenu\blue\icon\user.gif" />
+    <Content Include="styles\treemenu\blue\icon\warning_exist.png" />
+    <Content Include="styles\treemenu\blue\icon\warning_no.png" />
+    <Content Include="styles\treemenu\blue\km_nov_22.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_23.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_24.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_38.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_5810x10.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_58_2.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_81.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_ffbg.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_ffbgl.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_ffbgr.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_mbg.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_mbgl.gif" />
+    <Content Include="styles\treemenu\blue\km_nov_mbgr.gif" />
+    <Content Include="styles\treemenu\blue\logo.gif" />
+    <Content Include="styles\treemenu\blue\logo.jpg" />
+    <Content Include="styles\treemenu\blue\nov_menubg.gif" />
+    <Content Include="styles\treemenu\blue\nov_menubg_left.gif" />
+    <Content Include="styles\treemenu\blue\nov_menubg_right.gif" />
+    <Content Include="styles\treemenu\blue\nov_menuline.gif" />
+    <Content Include="styles\treemenu\blue\nov_toptbg.gif" />
+    <Content Include="styles\treemenu\blue\nov_toptf.gif" />
+    <Content Include="styles\treemenu\blue\nov_toptline.gif" />
+    <Content Include="styles\treemenu\blue\nov_toptt.gif" />
+    <Content Include="styles\treemenu\blue\style.css" />
+    <Content Include="styles\treemenu\blue\top_bg.jpg" />
+    <Content Include="styles\treemenu\Vista\1x1.gif" />
+    <Content Include="styles\treemenu\Vista\bg.jpg" />
+    <Content Include="styles\treemenu\Vista\bt_left.gif" />
+    <Content Include="styles\treemenu\Vista\bt_right.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_footbg.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_footleft.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_footright.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_logobg.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_menubg.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_menuline.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_mianlineh.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_mianlinex.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_titleline1.gif" />
+    <Content Include="styles\treemenu\Vista\hbdl_nov_topbg.gif" />
+    <Content Include="styles\treemenu\Vista\icon\advance.gif" />
+    <Content Include="styles\treemenu\Vista\icon\advance2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\assignment.gif" />
+    <Content Include="styles\treemenu\Vista\icon\assignment_d.gif" />
+    <Content Include="styles\treemenu\Vista\icon\back.gif" />
+    <Content Include="styles\treemenu\Vista\icon\back2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\delete.gif" />
+    <Content Include="styles\treemenu\Vista\icon\delete2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\desktop.gif" />
+    <Content Include="styles\treemenu\Vista\icon\desktop2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\feedback.gif" />
+    <Content Include="styles\treemenu\Vista\icon\feedback2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\home.gif" />
+    <Content Include="styles\treemenu\Vista\icon\home2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\logon.gif" />
+    <Content Include="styles\treemenu\Vista\icon\logon2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\message.gif" />
+    <Content Include="styles\treemenu\Vista\icon\message_d.gif" />
+    <Content Include="styles\treemenu\Vista\icon\message_exist.png" />
+    <Content Include="styles\treemenu\Vista\icon\message_no.png" />
+    <Content Include="styles\treemenu\Vista\icon\refresh.gif" />
+    <Content Include="styles\treemenu\Vista\icon\refresh2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\shortcut.gif" />
+    <Content Include="styles\treemenu\Vista\icon\shortcut2.gif" />
+    <Content Include="styles\treemenu\Vista\icon\task_exist.png" />
+    <Content Include="styles\treemenu\Vista\icon\task_no.png" />
+    <Content Include="styles\treemenu\Vista\icon\time.gif" />
+    <Content Include="styles\treemenu\Vista\icon\user.gif" />
+    <Content Include="styles\treemenu\Vista\icon\warning-high.png" />
+    <Content Include="styles\treemenu\Vista\icon\warning-lower.png" />
+    <Content Include="styles\treemenu\Vista\icon\warning-normal.png" />
+    <Content Include="styles\treemenu\Vista\icon\warning_exist.png" />
+    <Content Include="styles\treemenu\Vista\icon\warning_no.png" />
+    <Content Include="styles\treemenu\Vista\icon\warning_tip.gif" />
+    <Content Include="styles\treemenu\Vista\icon\warning_tip_d.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_22.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_23.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_24.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_38.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_5810x10.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_58_2.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_81.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_ffbg.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_ffbgl.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_ffbgr.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_mbg.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_mbgl.gif" />
+    <Content Include="styles\treemenu\Vista\km_nov_mbgr.gif" />
+    <Content Include="styles\treemenu\Vista\logo.gif" />
+    <Content Include="styles\treemenu\Vista\logo.jpg" />
+    <Content Include="styles\treemenu\Vista\nov_menubg.gif" />
+    <Content Include="styles\treemenu\Vista\nov_menubg_left.gif" />
+    <Content Include="styles\treemenu\Vista\nov_menubg_right.gif" />
+    <Content Include="styles\treemenu\Vista\nov_menuline.gif" />
+    <Content Include="styles\treemenu\Vista\nov_toptbg.gif" />
+    <Content Include="styles\treemenu\Vista\nov_toptf.gif" />
+    <Content Include="styles\treemenu\Vista\nov_toptline.gif" />
+    <Content Include="styles\treemenu\Vista\nov_toptt.gif" />
+    <Content Include="styles\treemenu\Vista\style.css" />
+    <Content Include="styles\treemenu\Vista\top_bg.jpg" />
+    <Content Include="UpdatePwd.aspx" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AjaxService.aspx.cs">
+      <DependentUpon>AjaxService.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Door\AuthHelper.cs" />
+    <Compile Include="BaseHomeBoard.aspx.cs">
+      <DependentUpon>BaseHomeBoard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BasePage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DeptHomeboard.aspx.cs">
+      <DependentUpon>DeptHomeboard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DeptHomeboard.aspx.designer.cs">
+      <DependentUpon>DeptHomeboard.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Door\BaseBlockData.aspx.cs">
+      <DependentUpon>BaseBlockData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Door\Block.cs" />
+    <Compile Include="Door\BaseBlock.cs" />
+    <Compile Include="Door\BlockData.aspx.cs">
+      <DependentUpon>BlockData.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Door\DoorBlock.cs" />
+    <Compile Include="Door\Utility\Channel.cs" />
+    <Compile Include="Door\Utility\ChannelCollection.cs" />
+    <Compile Include="Door\Utility\Feed.cs" />
+    <Compile Include="Door\Utility\Item.cs" />
+    <Compile Include="Door\Utility\ItemCollection.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="HomeBoard.aspx.cs">
+      <DependentUpon>HomeBoard.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HomeBoardIframe3.aspx.cs">
+      <DependentUpon>HomeBoardIframe3.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HomeBoardIframe3.aspx.designer.cs">
+      <DependentUpon>HomeBoardIframe3.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="HomeBoardIframe.aspx.cs">
+      <DependentUpon>HomeBoardIframe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="HomeBoardIframe.aspx.designer.cs">
+      <DependentUpon>HomeBoardIframe.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="IEConfig.aspx.cs">
+      <DependentUpon>IEConfig.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImagePage\SystemManage.aspx.cs">
+      <DependentUpon>SystemManage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ImagePage\SystemManage.aspx.designer.cs">
+      <DependentUpon>SystemManage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="MenuBlock.aspx.cs">
+      <DependentUpon>MenuBlock.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MenuBlock.aspx.designer.cs">
+      <DependentUpon>MenuBlock.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Portal.aspx.cs">
+      <DependentUpon>Portal.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Portal.aspx.designer.cs">
+      <DependentUpon>Portal.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoginBegin.aspx.cs">
+      <DependentUpon>LoginBegin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoginBegin.aspx.designer.cs">
+      <DependentUpon>LoginBegin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="LoginError.aspx.cs">
+      <DependentUpon>LoginError.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="LoginError.aspx.designer.cs">
+      <DependentUpon>LoginError.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="PublicInfo\PicNews.aspx.cs">
+      <DependentUpon>PicNews.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SecurityTip.aspx.cs">
+      <DependentUpon>SecurityTip.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePwd.aspx.cs">
+      <DependentUpon>UpdatePwd.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UpdatePwd.aspx.designer.cs">
+      <DependentUpon>UpdatePwd.aspx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PublicInfo\images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Base\Formula\Formula.csproj">
+      <Project>{4f19c14a-5d4d-447c-862e-b4b9608dbe8f}</Project>
+      <Name>Formula</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Config\Config.Logic\Config.Logic.csproj">
+      <Project>{822f8b67-dfaa-47d1-9939-fc95014925a4}</Project>
+      <Name>Config.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>11121</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

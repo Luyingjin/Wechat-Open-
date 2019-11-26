@@ -1,0 +1,118 @@
+﻿<div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 100;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save" onclick="save({action:'SaveSerialNumberSettings'});">保存</a>
+                <a class="mini-button" id="btnCancel" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" id="btnHelp" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" style="top: 30px; position: relative;" url="GetSerialNumberSettings">
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        编号模板
+                    </td>
+                    <td colspan="3">
+                        <input name="Tmpl" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        重复规则
+                    </td>
+                    <td colspan="3">
+                        <input name="ResetRule" class="mini-checkboxlist" style="width: 100%;" valuefield="value" data="ResetRuleEnum" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        分类
+                    </td>
+                    <td>
+                        <input name="CategoryCode" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                    <td>
+                        分支
+                    </td>
+                    <td>
+                        <input name="SubCategoryCode" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        规范记录顺序号
+                    </td>
+                    <td>
+                        <input name="OrderNumCode" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                    <td>
+                        项目编号
+                    </td>
+                    <td>
+                        <input name="PrjCode" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        组织编号
+                    </td>
+                    <td>
+                        <input name="OrgCode" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                    <td>
+                        用户编号
+                    </td>
+                    <td>
+                        <input name="UserCode" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<br />
+<br />
+<div style="margin-left: 50px;">说明<br />
+    年：YYYY或YY<br />
+    月：MM<br />
+    日：DD<br />
+    分类：CategoryCode<br />
+    分支：SubCategoryCode<br />
+    规范记录顺序：OrderNumCode<br />
+    项目：PrjCode<br />
+    组织：OrgCode<br />
+    用户：UserCode<br />
+</div>
+<script type="text/javascript">
+    var ResetRuleEnum = [
+        { value: 'YearCode', text: '年' },
+        { value: 'MonthCode', text: '月' },
+        { value: 'DayCode', text: '日' },
+        { value: 'CategoryCode', text: '分类' },
+        { value: 'SubCategoryCode', text: '分支' },
+        { value: 'OrderNumCode', text: '规范记录顺序' },
+        { value: 'PrjCode', text: '项目' },
+        { value: 'OrgCode', text: '组织' },
+        { value: 'UserCode', text: '用户' }
+    ];
+</script>

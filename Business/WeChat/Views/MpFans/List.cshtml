@@ -1,0 +1,157 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+            @Html.ExportButton()
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入昵称或备注" style="width: 200px;"
+                    onenter="quickSearch('NickName,Remark');" onbuttonclick="quickSearch('NickName,Remark');" />
+                    <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="OpenID" width="120" headeralign="center" align="left" >
+                openid</div>
+            <div field="NickName" width="120" headeralign="center" align="left" >
+                昵称</div>
+            <div field="GroupID" width="60" headeralign="center" align="center" allowsort='true' >
+                分组</div>
+            <div field="Remark" width="*" headeralign="center" align="left" >
+                备注</div>
+            <div field="Sex" width="50" headeralign="center" align="center" allowsort='true' >
+                性别</div>
+            <div field="Country" width="60" headeralign="center" align="center" allowsort='true' >
+                国家</div>
+            <div field="Province" width="60" headeralign="center" align="center"  allowsort='true' >
+                省份</div>
+            <div field="City" width="60" headeralign="center" align="center"  allowsort='true' >
+                城市</div>
+            <div field="SubscribeTime" width="140" headeralign="center" align="center" dateFormat="yyyy-MM-dd HH:mm:ss"  allowsort='true' >
+                关注时间</div>
+            <div field="HeadImgUrl" width="200" headeralign="center" align="center" >
+                头像地址</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 175px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    昵称
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$NickName" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    备注
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Remark" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    性别
+                </td>
+                <td width="23%" align="left">
+                    <input name="$In$Sex" class="mini-ComboBox" data='MpFansSex' style="width: 75%" />
+                </td>
+            </tr>
+            <tr>
+                <td width="10%" align="center">
+                    国家
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Country" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    省份
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Province" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    城市
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$City" class="mini-textbox" style="width: 75%" />
+                </td>
+            </tr>
+            <tr>
+                <td width="10%" align="center">关注时间</td>
+                <td width="23%"  align="left"><input name="$FR$SubscribeTime" class="mini-datepicker"  style='width:75%'/></td>
+                <td width="10%" align="center">到</td>
+                <td width="23%"  align="left"><input name="$LT$SubscribeTime" class="mini-datepicker"  style='width:75%'/></td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+            <tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    @Html.GetEnum("WeChat.MpFansSex")
+    var GroupEnum = @Html.Raw(ViewBag.groupenum);
+    addGridEnum("dataGrid", "Sex", "MpFansSex");
+    addGridEnum("dataGrid", "GroupID", "GroupEnum");
+    
+    //注册Grid链接列
+    addGridLink("dataGrid", "NickName", "/WeChat/MpFans/Edit?ID={ID}", { refresh: true
+    , width: 400, height: "50%", title: "修改备注"
+    });
+    //注册Grid链接列
+    addGridLink("dataGrid", "GroupID", "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpGroup&MpID={MpID}", { refresh: false, onDestroy: moveGroup
+    , width: 399, height: "60%", title: "移动分组"
+    });
+
+    function moveGroup(data, settings){
+        if (data == undefined || data == "close")
+            return;       
+        var node = mini.get("dataGrid").getSelected();
+
+        addExecuteParam("ID", node.ID);
+        addExecuteParam("GroupID",data[0].ID);
+        execute("MoveGroup", { actionTitle: "设置" });
+    }
+
+
+    
+
+    function updataAllFans(){
+        if(confirm("确定要更新粉丝数据吗？")){
+            var grid = mini.get("dataGrid");
+            grid.mask('更新中，请勿关闭页面');
+            $.ajax({
+                url: "UpdataAllFans",
+                data: { MpID: getQueryString("MpID") },
+                type: "post",
+                dataType: "json",
+                success: function (json) {
+                    msgUI("更新成功，请关闭粉丝管理再重新打开");
+                    grid.unmask();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    msgUI("更新失败，原因："+jqXHR.responseText);
+                    grid.unmask();
+                }
+            });
+        }
+    }
+</script>

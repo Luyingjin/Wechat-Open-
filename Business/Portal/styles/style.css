@@ -1,0 +1,36 @@
+@charset "utf-8";
+/* CSS Document */
+body,td,th {
+	font-family:microsoft yahei, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+}
+body {
+	background-image: url(login-bg.jpg);
+	background-color:#e4eaec;
+	background-repeat: no-repeat;
+	background-position:center top;
+	margin:0px;
+	padding:0px;
+}
+#login_div {
+	padding-top:376px;
+	width:361px;
+	height:91px;
+	margin-left:47.58%;
+	z-index:9999;
+}
+
+.div_top{ width:321px; padding-bottom:28px; padding-right:40px; text-align:right; float:right;}
+.div_foot{ width:311px; padding-top:5px; padding-left:50px; float:left; text-align:left;}
+.div_bt{ width:54px; padding-right:10px; float:right;}
+.div_input{ width:250px; height:54px; float:left;}
+.div_input_bg1{ width:180px; float:left; padding-left:80px; padding-top:2px; padding-bottom:9px;}
+.div_input_bg2{ width:180px; float:left; padding-left:80px;}
+.div_input_bg{background-color:transparent; border: 0px; height:20px; width:180px; color:#333333}
+.text_login{ color:#000}
+.login_bg{
+	background-image: url(login_bg2.png);
+	background-repeat: no-repeat;
+	background-position:center top;
+	height:251px;
+}

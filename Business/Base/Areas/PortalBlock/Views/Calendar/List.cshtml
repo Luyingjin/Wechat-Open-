@@ -1,0 +1,93 @@
+﻿<div class="mini-toolbar" style="border-width:1px 1px 0px 1px">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" iconcls="icon-cutover" onclick="cutOver();">切换到日历</a>
+            </td>
+            <td class="gw-toolbar-right">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入标题或内容" style="width: 200px;"
+                    onenter="quickSearch('title,description');" onbuttonclick="quickSearch('title,description');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" style="width: 100%;
+        height: 100%;" allowMoveColumn="false" sortField="start">
+        <div property="columns">
+            <div field="start" width="150" dateFormat="yyyy-MM-dd HH:mm:ss" headeralign="center" allowsort="true" align="center">
+                开始时间</div>
+            <div field="endtime" width="150" dateFormat="yyyy-MM-dd HH:mm:ss" headeralign="center" allowsort="true" align="center">
+                结束时间</div>
+            <div field="title" width="200" headeralign="center" allowsort="true"
+                align="left">
+                标题</div>
+            <div field="description" width="*" headeralign="center"
+                align="left">
+                内容</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="15%" align="center">
+                    开始时间
+                </td>
+                <td width="35%" align="left">
+                    <input name="$FR$start" style="width: 100px;" class="mini-datepicker" />
+                    -
+                    <input name="$TO$start" style="width: 100px;" class="mini-datepicker" />
+                </td>
+                <td width="15%" align="center">
+                    结束时间
+                </td>
+                <td width="35%" align="left">
+                    <input name="$FR$endtime" style="width: 100px;" class="mini-datepicker" />
+                    -
+                    <input name="$TO$endtime" style="width: 100px;" class="mini-datepicker" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    标题
+                </td>
+                <td align="left">
+                     <input name="$LK$title" style="width: 213px" class="mini-textbox" /> 
+                </td>
+                <td align="center">
+                    内容
+                </td>
+                <td align="left">
+                     <input name="$LK$description" style="width: 213px" class="mini-textbox" /> 
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var EventType = [{ "value": "Schedule", "text": "个人日程" }, { "value": "Task", "text": "任务" }, { "value": "News", "text": "消息"}];
+</script>
+<script type="text/javascript">
+    //为Grid枚举列指定枚举定义
+    addGridEnum("dataGrid", "type", "EventType");
+
+    function cutOver() {
+        window.location.href = "Index";
+    }
+
+    function closeWindows() {
+        mini.get("dataGrid").load();
+    }
+</script>

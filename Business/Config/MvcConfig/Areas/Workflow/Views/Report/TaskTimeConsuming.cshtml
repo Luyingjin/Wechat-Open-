@@ -1,0 +1,59 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+            </td>
+            <td class="gw-toolbar-right">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入流程名称或流程编号" onenter="quickSearch('FlowName,FlowCode');" onbuttonclick="quickSearch('FlowName,FlowCode');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetFlowTimeConsuming" onshowrowdetail="onShowRowDetail" showpager="false">
+        <div property="columns">
+            <div type="expandcolumn"></div>
+            <div field="FlowCode" width="200">流程编号</div>
+            <div field="FlowName" width="*">流程名称</div>
+            <div field="CategoryID" width="100">所属模块</div>
+            <div field="FlowCount" width="80" align="center">实例数量</div>
+            <div field="TimeConsuming" width="120" align="center">平均耗时(小时)</div>
+        </div>
+    </div>
+</div>
+<div id="detailGrid_Form" style="display: none; margin-left: 20px">
+    <div id="dataGridDetail" class="mini-datagrid" style="width: 100%; height: 200px;" url="GetTaskTimeConsuming" showpager="false">
+        <div property="columns">
+            <div field="StepName" width="*">环节名称</div>
+            <div field="TaskCount" width="80" align="center">执行次数</div>
+            <div field="TimeConsuming" width="120" align="center">平均耗时（小时）</div>
+            <div field="NoticePer" width="80" align="center">超时通知百分比</div>
+            <div field="AlarmPer" width="80" align="center">超时警告百分比</div>
+            <div field="DeadlinePer" width="80" align="center">超时过期百分比</div>
+            <div field="NormalPer" width="80" align="center">正常通过百分比</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var category=@Html.Raw(ViewBag.Category);
+    addGridEnum("dataGrid","CategoryID","category");
+</script>
+<script type="text/javascript">
+    var detailGrid_Form;
+    var dataGridDetail;
+    function pageLoad() {
+        dataGridDetail = mini.get("dataGridDetail");
+        detailGrid_Form = document.getElementById("detailGrid_Form");
+    }
+
+    function onShowRowDetail(e) {
+        var grid = e.sender;
+        var row = e.record;
+
+        var td = grid.getRowDetailCellEl(row);
+        td.appendChild(detailGrid_Form);
+        detailGrid_Form.style.display = "block";
+
+        dataGridDetail.load({ FlowName: row.FlowName });
+    }
+</script>

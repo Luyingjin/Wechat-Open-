@@ -1,0 +1,57 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="delegateFlow();">委托</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%"></td>
+                    <td width="35%"></td>
+                    <td width="15%"></td>
+                    <td width="35%"></td>
+                </tr>
+                <tr>
+                    <td>被委托人</td>
+                    <td>
+                        <input name="BeDelegateUserID" textname="BeDelegateUserName" class="mini-buttonedit" style="width: 100%;" required="true" />
+                    </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>开始时间</td>
+                    <td>
+                        <input name="BeginTime" class="mini-datepicker" style="width: 100%" required="true"/>
+                    </td>
+                    <td>结束时间</td>
+                    <td>
+                        <input name="EndTime" class="mini-datepicker" style="width: 100%;" required="true"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+    addSingleUserSelector("BeDelegateUserID");
+</script>
+<script type="text/javascript">
+    function delegateFlow() {
+        execute("DelegateFlow", { closeWindow: true });
+    }
+</script>

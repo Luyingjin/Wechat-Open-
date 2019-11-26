@@ -1,0 +1,67 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="addExecUser();">添加</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="delExecUser();">删除</a>
+            </td>
+            <td class="gw-toolbar-right">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%" url="GetTaskExecList"
+        multiselect="true" showpager="false">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="Status" width="100" align="center">状态</div>
+            <div field="TaskUserName" width="100" align="center">接收人</div>
+            <div field="ExecUserName" width="100" align="center">执行人</div>
+            <div field="replaceUser" width="*" align="center">置换</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function addExecUser() {
+        url = urlConstant.singleUser;
+        openWindow(url, { title: '单选人', width: 520, height: 480, onDestroy: function (data) {
+            if (data == undefined || data == "close" || data.length == 0)
+                return;
+            data = mini.decode(data);
+            var userID = getValues(data, "ID");
+            var userName = getValues(data, "Name");
+            if (userID == "") return;
+            addExecuteParam("UserID", userID);
+            addExecuteParam("UserName", userName);
+            execute("AddTaskExec");
+        }
+        });
+    }
+
+    function delExecUser() {
+        del({ action: "DelTaskExec" });
+    }
+
+    addGridButton("dataGrid", "replaceUser", { linkText: "替换"
+    , onFilter: function (e) { if (e.row["ExecTime"]) return false; else return true }
+    , onButtonClick: function (row) {
+        openWindow(urlConstant.singleUser, { title: '单选人', width: 520, height: 480, TaskExecID: row["ID"]
+        , onDestroy: function (data, settings) {
+            if (data == undefined || data == "close" || data.length == 0)
+                return;
+            data = mini.decode(data);
+            var userID = getValues(data, "ID");
+            var userName = getValues(data, "Name");
+            if (userID == "") return;
+            addExecuteParam("TaskExecID", settings.TaskExecID);
+            addExecuteParam("UserID", userID);
+            addExecuteParam("UserName", userName);
+            execute("ReplaceExecUser");
+        }
+        });
+    }
+
+
+    });
+</script>

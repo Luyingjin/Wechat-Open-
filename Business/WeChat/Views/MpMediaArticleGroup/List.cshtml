@@ -1,0 +1,94 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" id="btnSave" iconcls="icon-add" onclick="add({title:'添加群发多图文',height:'500px'})" plain="true">
+                    增加</a> <a class="mini-button" iconcls="icon-edit" onclick="edit({title:'编辑群发多图文',height:'500px'});"
+                        plain="true">编辑</a> <a class="mini-button" iconcls="icon-search" onclick="viewArticle()"
+                            plain="true">预览</a><a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a>
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入名称" style="width: 200px;"
+                    onenter="quickSearch('Name');" onbuttonclick="quickSearch('Name');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Name" headeralign="center" width="*" align="left">
+                名称</div>
+        </div>
+    </div>
+</div>
+
+<div id="editWindow" class="mini-window" title="多图文预览" style="width:250px;" 
+    showModal="true" allowResize="true" allowDrag="true"
+    >
+    <div id="editform" class="form" >
+        <table style="width:100%;">
+            <tr>
+                <td style="width:80px;">用户昵称：</td>
+                <td style="width:120px;"><input name="nickname" class="mini-textbox" /></td>
+            </tr>
+            <tr>
+                <td style="text-align:center;padding-top:5px;padding-right:20px;" colspan="2" >
+                    <a class="Update_Button" href="javascript:updateData()">提交</a> &nbsp;&nbsp;&nbsp;
+                    <a class="Cancel_Button" href="javascript:cancelData()">取消</a>
+                </td>                
+            </tr>
+       
+        </table>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+    mini.parse();
+    var editWindow = mini.get("editWindow");
+    var grid = mini.get("dataGrid");
+    function viewArticle() {
+        var rows = grid.getSelecteds();
+        if (rows.length != 1) {
+            msgUI("请选中一行！");
+        }
+        else {
+            editWindow.show();
+            var form = new mini.Form("#editform");
+            form.clear();
+        }
+    }
+
+    function cancelData() {
+        editWindow.hide();
+    }
+    function updateData() {
+        var form = new mini.Form("#editform");
+        var o = form.getData();
+        form.loading();
+        var mediaid = getValues(grid.getSelecteds(), "MediaID");
+        $.ajax({
+            type: "POST",
+            url: "ViewGroupArticle",
+            data: { MpID: getQueryString("MpID"), MediaID: mediaid, NickName: o.nickname },
+            success: function (json) {
+                form.unmask();
+                if (json.error != "") {
+                    msgUI(json.error);
+                }
+                else {
+                    editWindow.hide();
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                form.unmask();
+                alert(jqXHR.responseText);
+            }
+        });
+
+    }
+</script>

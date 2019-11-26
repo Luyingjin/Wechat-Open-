@@ -1,0 +1,674 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{8C4886CE-0A10-468E-99B9-792B22266150}</ProjectGuid>
+    <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WeChat</RootNamespace>
+    <AssemblyName>WeChat</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;demoData</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime">
+      <HintPath>..\..\Base\packages\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Base\packages\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.JScript" />
+    <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.4.5.6\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Ninject">
+      <HintPath>..\..\Base\packages\Ninject.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\..\Base\packages\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\..\BaseFrame\Resource\Dll\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.Net.Http.2.0.20710.0\lib\net40\System.Net.Http.WebRequest.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.Core.4.0.20710.0\lib\net40\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.WebApi.WebHost.4.0.20710.0\lib\net40\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Mvc.4.0.20710.0\lib\net40\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.20710.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\..\packages\Microsoft.AspNet.WebPages.2.0.20710.0\lib\net40\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivator">
+      <HintPath>..\..\..\BaseFrame\Resource\Dll\WebActivator.dll</HintPath>
+    </Reference>
+    <Reference Include="WebGrease">
+      <HintPath>..\..\Base\packages\WebGrease.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\MpAccountController.cs" />
+    <Compile Include="Controllers\MpEventController.cs" />
+    <Compile Include="Controllers\MpFansController.cs" />
+    <Compile Include="Controllers\MpGroupController.cs" />
+    <Compile Include="Controllers\MpImageController.cs" />
+    <Compile Include="Controllers\MpKeyWordReplyController.cs" />
+    <Compile Include="Controllers\MpMediaArticleController.cs" />
+    <Compile Include="Controllers\MpMediaArticleGroupController.cs" />
+    <Compile Include="Controllers\MpMediaController.cs" />
+    <Compile Include="Controllers\MpMediaImageController.cs" />
+    <Compile Include="Controllers\MpMediaVideoController.cs" />
+    <Compile Include="Controllers\MpMediaVoiceController.cs" />
+    <Compile Include="Controllers\MpMenuController.cs" />
+    <Compile Include="Controllers\MpMessageController.cs" />
+    <Compile Include="Controllers\MpOAuth2WhiteListController.cs" />
+    <Compile Include="Controllers\MpRedPacketController.cs" />
+    <Compile Include="Controllers\MpRedPacketLogController.cs" />
+    <Compile Include="Controllers\MpSelfArticleController.cs" />
+    <Compile Include="Controllers\MpSelfArticleGroupController.cs" />
+    <Compile Include="Controllers\SpaceController.cs" />
+    <Compile Include="Controllers\WxApiController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\wechatfile\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\china-zh.js" />
+    <Content Include="Scripts\ECharts\asset\css\bootstrap-responsive.css" />
+    <Content Include="Scripts\ECharts\asset\css\bootstrap-theme.css" />
+    <Content Include="Scripts\ECharts\asset\css\bootstrap-theme.min.css" />
+    <Content Include="Scripts\ECharts\asset\css\bootstrap.css" />
+    <Content Include="Scripts\ECharts\asset\css\bootstrap.min.css" />
+    <Content Include="Scripts\ECharts\asset\css\carousel.css" />
+    <Content Include="Scripts\ECharts\asset\css\codemirror.css" />
+    <Content Include="Scripts\ECharts\asset\css\echartsHome.css" />
+    <Content Include="Scripts\ECharts\asset\css\flexslider.css" />
+    <Content Include="Scripts\ECharts\asset\css\google-code-prettify.css" />
+    <Content Include="Scripts\ECharts\asset\css\monokai.css" />
+    <Content Include="Scripts\ECharts\asset\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Scripts\ECharts\asset\ico\favicon.png" />
+    <Content Include="Scripts\ECharts\asset\ico\K线图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\仪表盘.png" />
+    <Content Include="Scripts\ECharts\asset\ico\力导向图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\和弦图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\地图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\折线图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\散点图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\柱状图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\漏斗图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\雷达图.png" />
+    <Content Include="Scripts\ECharts\asset\ico\饼状图.png" />
+    <Content Include="Scripts\ECharts\asset\img\about\chenwei.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\denghongqi.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\echarts1.png" />
+    <Content Include="Scripts\ECharts\asset\img\about\erik.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\huangyue.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\huangzhimin.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\linfeng.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\lizhan.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\loutongbing.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\shenhao.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\shenyi.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\sushuang.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\tanhe.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\wangjunting.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\weitaiyun.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\yangji.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\yaofeifei.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\zhangyanru.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\zhouyang.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\about\zrender1.png" />
+    <Content Include="Scripts\ECharts\asset\img\about\zuming.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\architecture.png" />
+    <Content Include="Scripts\ECharts\asset\img\banner1.png" />
+    <Content Include="Scripts\ECharts\asset\img\banner2.png" />
+    <Content Include="Scripts\ECharts\asset\img\banner3.png" />
+    <Content Include="Scripts\ECharts\asset\img\banner4.png" />
+    <Content Include="Scripts\ECharts\asset\img\bg_direction_nav.png" />
+    <Content Include="Scripts\ECharts\asset\img\blacktocat.png" />
+    <Content Include="Scripts\ECharts\asset\img\connect.gif" />
+    <Content Include="Scripts\ECharts\asset\img\creativity.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\custom.png" />
+    <Content Include="Scripts\ECharts\asset\img\dataDancing.mp3" />
+    <Content Include="Scripts\ECharts\asset\img\dataRange.gif" />
+    <Content Include="Scripts\ECharts\asset\img\dataView.gif" />
+    <Content Include="Scripts\ECharts\asset\img\datazoom.gif" />
+    <Content Include="Scripts\ECharts\asset\img\device.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\axisBoundaryGap.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\axisBoundaryGap1.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\doc\axisDetail.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\doc\axisDetail.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\axisScale1.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\axisScale2.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\barTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\charts.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\doc\chordTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\dataRange.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\dataZoom.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\forceTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\grid.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\doc\kTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\legend.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\lineTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\mapTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\multiControl.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\doc\pieTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\radarTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\roamController.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\scatterTheme.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\timeline.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\title.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\toolbox.png" />
+    <Content Include="Scripts\ECharts\asset\img\doc\tooltip1.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\doc\tooltip2.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\draggable.gif" />
+    <Content Include="Scripts\ECharts\asset\img\dynamic1.gif" />
+    <Content Include="Scripts\ECharts\asset\img\dynamic2.gif" />
+    <Content Include="Scripts\ECharts\asset\img\echarts-logo.png" />
+    <Content Include="Scripts\ECharts\asset\img\echarts-logo2.png" />
+    <Content Include="Scripts\ECharts\asset\img\effect.gif" />
+    <Content Include="Scripts\ECharts\asset\img\example\axis.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar10.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar11.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar12.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar13.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar14.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar15.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar5.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar6.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar7.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar8.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bar9.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bmap1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\bmap2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\cache.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\chord.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\chord1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\chord2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\chord3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\chord4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\dataRange.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\dataRange1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\dataZoom.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\dataZoom1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\dynamicLineBar.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\dynamicPieRadar.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\dynamicScatterK.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\EChartsTheme.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\example\event.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\eventRiver1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\eventRiver2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\force.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\force1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\force2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\force4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\funnel.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\funnel1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\funnel2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\funnel3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\funnel4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\gauge.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\gauge1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\gauge2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\gauge3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\gauge4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\gauge5.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\import.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\k.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\k1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\lasagna.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line5.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line6.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\line7.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\loading.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map10.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map11.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map12.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map13.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map14.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map15.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map16.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map17.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map18.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map19.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map20.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map5.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map6.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map7.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map8.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\map9.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix10.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix11.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix5.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix6.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix7.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix8.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\mix9.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie5.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie6.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\pie7.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\radar.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\radar1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\radar2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\radar3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\scatter.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\scatter1.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\scatter2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\scatter3.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\scatter4.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\scatter5.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\scatter6.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\theme.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\tooltip.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\webkit-dep.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\webkit-dep2.png" />
+    <Content Include="Scripts\ECharts\asset\img\example\wormhole.png" />
+    <Content Include="Scripts\ECharts\asset\img\explorer.png" />
+    <Content Include="Scripts\ECharts\asset\img\feature1.png" />
+    <Content Include="Scripts\ECharts\asset\img\feature2.png" />
+    <Content Include="Scripts\ECharts\asset\img\feature3.png" />
+    <Content Include="Scripts\ECharts\asset\img\fork.png" />
+    <Content Include="Scripts\ECharts\asset\img\glyphicons-halflings-white.png" />
+    <Content Include="Scripts\ECharts\asset\img\glyphicons-halflings.png" />
+    <Content Include="Scripts\ECharts\asset\img\groovepaper.png" />
+    <Content Include="Scripts\ECharts\asset\img\icon-bar.png" />
+    <Content Include="Scripts\ECharts\asset\img\legendSelected.gif" />
+    <Content Include="Scripts\ECharts\asset\img\magicType.gif" />
+    <Content Include="Scripts\ECharts\asset\img\mark.gif" />
+    <Content Include="Scripts\ECharts\asset\img\mix.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\multiStack.png" />
+    <Content Include="Scripts\ECharts\asset\img\scatter.gif" />
+    <Content Include="Scripts\ECharts\asset\img\slide-01.png" />
+    <Content Include="Scripts\ECharts\asset\img\slide-02.png" />
+    <Content Include="Scripts\ECharts\asset\img\slide-03.png" />
+    <Content Include="Scripts\ECharts\asset\img\slide-04.png" />
+    <Content Include="Scripts\ECharts\asset\img\slide-05.jpg" />
+    <Content Include="Scripts\ECharts\asset\img\subMapType.png" />
+    <Content Include="Scripts\ECharts\asset\img\ticks.png" />
+    <Content Include="Scripts\ECharts\asset\img\tweed.png" />
+    <Content Include="Scripts\ECharts\asset\img\zrender.png" />
+    <Content Include="Scripts\ECharts\asset\js\application.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-affix.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-alert.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-button.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-carousel.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-collapse.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-dropdown.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-modal.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-popover.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-scrollspy.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-tab.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-tooltip.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-transition.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap-typeahead.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap.js" />
+    <Content Include="Scripts\ECharts\asset\js\bootstrap.min.js" />
+    <Content Include="Scripts\ECharts\asset\js\codemirror.js" />
+    <Content Include="Scripts\ECharts\asset\js\dataDancing.js" />
+    <Content Include="Scripts\ECharts\asset\js\echartsConfig.js" />
+    <Content Include="Scripts\ECharts\asset\js\echartsDoc.js" />
+    <Content Include="Scripts\ECharts\asset\js\echartsExample.js" />
+    <Content Include="Scripts\ECharts\asset\js\echartsHome.js" />
+    <Content Include="Scripts\ECharts\asset\js\echartsTheme.js" />
+    <Content Include="Scripts\ECharts\asset\js\echartsThemeDesigner.js" />
+    <Content Include="Scripts\ECharts\asset\js\esl\css.js" />
+    <Content Include="Scripts\ECharts\asset\js\esl\esl.js" />
+    <Content Include="Scripts\ECharts\asset\js\esl\js.js" />
+    <Content Include="Scripts\ECharts\asset\js\google-code-prettify.js" />
+    <Content Include="Scripts\ECharts\asset\js\html5shiv.js" />
+    <Content Include="Scripts\ECharts\asset\js\javascript.js" />
+    <Content Include="Scripts\ECharts\asset\js\jquery.flexslider.js" />
+    <Content Include="Scripts\ECharts\asset\js\jquery.js" />
+    <Content Include="Scripts\ECharts\asset\js\jquery.min.js" />
+    <Content Include="Scripts\ECharts\js\chart\bar.js" />
+    <Content Include="Scripts\ECharts\js\chart\chord.js" />
+    <Content Include="Scripts\ECharts\js\chart\eventRiver.js" />
+    <Content Include="Scripts\ECharts\js\chart\force.js" />
+    <Content Include="Scripts\ECharts\js\chart\funnel.js" />
+    <Content Include="Scripts\ECharts\js\chart\gauge.js" />
+    <Content Include="Scripts\ECharts\js\chart\k.js" />
+    <Content Include="Scripts\ECharts\js\chart\line.js" />
+    <Content Include="Scripts\ECharts\js\chart\map.js" />
+    <Content Include="Scripts\ECharts\js\chart\pie.js" />
+    <Content Include="Scripts\ECharts\js\chart\radar.js" />
+    <Content Include="Scripts\ECharts\js\chart\scatter.js" />
+    <Content Include="Scripts\ECharts\js\echarts-all.js" />
+    <Content Include="Scripts\ECharts\js\echarts.js" />
+    <Content Include="Scripts\images\1-11114L %282%29.png" />
+    <Content Include="Scripts\images\1-11114S %282%29.png" />
+    <Content Include="Scripts\images\1-11114T.png" />
+    <Content Include="Scripts\images\1-120H4N.png" />
+    <Content Include="Scripts\images\increaseDown.gif" />
+    <Content Include="Scripts\images\increaseUp.gif" />
+    <Content Include="Scripts\images\bg_prompt_border.png" />
+    <Content Include="Scripts\images\choose_l.gif" />
+    <Content Include="Scripts\images\file_search_bg.gif" />
+    <Content Include="Scripts\images\file_top_bg.gif" />
+    <Content Include="Scripts\images\file_top_titlebg.gif" />
+    <Content Include="Scripts\images\icon1001.gif" />
+    <Content Include="Scripts\images\left_hover_line.gif" />
+    <Content Include="Scripts\images\right_a_hover_line.gif" />
+    <Content Include="Scripts\images\right_a_line.gif" />
+    <Content Include="Scripts\images\right_hover_line.gif" />
+    <Content Include="Scripts\jquery.vector-map.css" />
+    <Content Include="Scripts\jquery.vector-map.js" />
+    <Content Include="Scripts\marketstyle.css" />
+    <Content Include="Scripts\images\1x1.gif" />
+    <Content Include="Scripts\images\icon_mian_1.gif" />
+    <Content Include="Scripts\images\icon_mian_2.gif" />
+    <Content Include="Scripts\images\icon_mian_3.gif" />
+    <Content Include="Scripts\images\icon_mian_4.gif" />
+    <Content Include="Scripts\images\icon_mian_text.gif" />
+    <Content Include="Scripts\images\icon_small.gif" />
+    <Content Include="Scripts\images\left_bt.gif" />
+    <Content Include="Scripts\images\left_search_bg.gif" />
+    <Content Include="Scripts\images\left_search_bt.gif" />
+    <Content Include="Scripts\images\mian_bg.gif" />
+    <Content Include="Scripts\images\right_a_bg.png" />
+    <Content Include="Scripts\images\right_a_bg2.png" />
+    <Content Include="Scripts\images\right_a_line.png" />
+    <Content Include="Scripts\reportcenterstyle.css" />
+    <Content Include="Scripts\images\WebResource.gif" />
+    <Content Include="Scripts\Tab\check_16_ns.png" />
+    <Content Include="Scripts\Tab\more.png" />
+    <Content Include="Scripts\Tab\pencil_16_ns.png" />
+    <Content Include="Scripts\Tab\pencil_add[2].png" />
+    <Content Include="Scripts\Tab\pencil_ruler[1].png" />
+    <Content Include="Scripts\Tab\switch.png" />
+    <Content Include="Scripts\Tab\tab.css" />
+    <Content Include="Scripts\Tab\tree.png" />
+    <None Include="Properties\PublishProfiles\配置文件1.pubxml" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="Views\MpMediaImage\Edit.cshtml" />
+    <Content Include="Views\MpMediaVoice\List.cshtml" />
+    <Content Include="Views\MpMediaVoice\Edit.cshtml" />
+    <Content Include="Views\MpMediaArticle\List.cshtml" />
+    <Content Include="Views\MpMediaArticle\Edit.cshtml" />
+    <Content Include="Views\MpMediaArticleGroup\List.cshtml" />
+    <Content Include="Views\MpMediaArticleGroup\Edit.cshtml" />
+    <Content Include="Views\MpMediaVideo\List.cshtml" />
+    <Content Include="Views\MpMediaVideo\Edit.cshtml" />
+    <Content Include="Views\MpKeyWordReply\List.cshtml" />
+    <Content Include="Views\MpKeyWordReply\Edit.cshtml" />
+    <Content Include="Views\MpEvent\Edit.cshtml" />
+    <Content Include="Views\MpGroup\Tree.cshtml" />
+    <Content Include="Views\MpGroup\Edit.cshtml" />
+    <Content Include="Views\MpFans\List.cshtml" />
+    <Content Include="Views\MpFans\Edit.cshtml" />
+    <Content Include="Views\MpMessage\List.cshtml" />
+    <Content Include="Views\MpMessage\Edit.cshtml" />
+    <Content Include="Views\MpSelfArticle\List.cshtml" />
+    <Content Include="Views\MpSelfArticle\Edit.cshtml" />
+    <Content Include="Views\MpSelfArticleGroup\List.cshtml" />
+    <Content Include="Views\MpSelfArticleGroup\Edit.cshtml" />
+    <Content Include="Views\MpOAuth2WhiteList\List.cshtml" />
+    <Content Include="Views\MpOAuth2WhiteList\Edit.cshtml" />
+    <Content Include="Views\MpRedPacket\List.cshtml" />
+    <Content Include="Views\MpRedPacket\Edit.cshtml" />
+    <Content Include="Views\MpRedPacketLog\List.cshtml" />
+    <None Include="Web References\wechatfile\FsFileInfo1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\wechatfile\MasterService.disco" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Web References\wechatfile\MasterService.wsdl" />
+    <None Include="Web References\wechatfile\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\wechatfile\RootFolderInfo1.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Areas\" />
+    <Folder Include="Models\App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Base\Formula\Formula.csproj">
+      <Project>{4F19C14A-5D4D-447C-862E-B4B9608DBE8F}</Project>
+      <Name>Formula</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Base\MvcAdapter\MvcAdapter.csproj">
+      <Project>{B2B29C1D-D397-49D0-A4A7-E9D6B785D6E6}</Project>
+      <Name>MvcAdapter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Base\Senparc.Weixin.MP\Senparc.Weixin.MP.csproj">
+      <Project>{1D815FBF-451C-4E23-939C-CB80172F445C}</Project>
+      <Name>Senparc.Weixin.MP</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Base\Senparc.Weixin\Senparc.Weixin.csproj">
+      <Project>{814092CD-9CD0-4FB7-91E8-D147F476F1FB}</Project>
+      <Name>Senparc.Weixin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WeChat.Logic\WeChat.Logic.csproj">
+      <Project>{AF0AF732-A583-48F7-A64A-0EB1FA31E5F8}</Project>
+      <Name>WeChat.Logic</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Config\Config.Logic\Config.Logic.csproj">
+      <Project>{822F8B67-DFAA-47D1-9939-FC95014925A4}</Project>
+      <Name>Config.Logic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LayoutTab.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_FusionChartsLayout.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\ECharts\asset\css\bootstrap-theme.css.map" />
+    <None Include="Scripts\ECharts\asset\css\bootstrap.css.map" />
+    <None Include="Scripts\ECharts\asset\fonts\glyphicons-halflings-regular.eot" />
+    <None Include="Scripts\ECharts\asset\fonts\glyphicons-halflings-regular.ttf" />
+    <None Include="Scripts\ECharts\asset\fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Scripts\ECharts\asset\js\jquery-1.10.2.min.map" />
+    <None Include="Scripts\ECharts\asset\js\jquery.min.map" />
+    <Content Include="Views\MpAccount\Edit.cshtml" />
+    <Content Include="Views\MpAccount\List.cshtml" />
+    <Content Include="Views\MpAccount\View.cshtml" />
+    <Content Include="Views\MpMenu\Tree.cshtml" />
+    <Content Include="Views\MpMedia\ImageList.cshtml" />
+    <Content Include="Views\Space\Index.cshtml" />
+    <Content Include="Views\MpMenu\Edit.cshtml" />
+    <Content Include="Views\MpMediaImage\List.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="http://localhost:8025/FileStore/Services/MasterService.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\wechatfile\</RelPath>
+      <UpdateFromURL>http://localhost:8025/FileStore/Services/MasterService.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WeChat_localwechatfile_MasterService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>11137</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

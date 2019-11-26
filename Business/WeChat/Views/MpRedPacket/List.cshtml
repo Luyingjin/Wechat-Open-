@@ -1,0 +1,104 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" id="btnSave" iconcls="icon-add" onclick="add({title:'添加红包活动',height:'400px'})" plain="true">
+                    增加</a> <a class="mini-button" iconcls="icon-edit" onclick="edit({title:'编辑红包活动',height:'400px'});"
+                        plain="true">编辑</a><a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a>
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入名称或Token" style="width: 200px;"
+                    onenter="quickSearch('Name,Token');" onbuttonclick="quickSearch('Name,Token');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Operation" width="100" renderer="onRPRender" headeralign="center" align="center" >
+                活动日志</div>
+            <div field="Name" width="200" headeralign="center" align="left" allowsort="true" >
+                活动名称</div>
+            <div field="Token" headeralign="center" width="*" align="left allowsort="true" >
+                Token</div>
+            <div field="StartDate" width="200" headeralign="center" align="center" allowsort="true" dateFormat="yyyy-MM-dd HH:mm:ss" >
+                活动开始时间</div>
+            <div field="EndDate" width="200" headeralign="center" align="center" allowsort="true" dateFormat="yyyy-MM-dd HH:mm:ss" >
+                活动结束时间</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    活动名称
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Name" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    Token
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Token" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+
+<script language="javascript" type="text/javascript">
+    mini.parse();
+    var grid = mini.get("dataGrid");
+
+    function onRPRender(e) {
+        return '<a href="#" onclick="onOperationLinkClick(\'' + e.record.ID + '\',\'活动日志-' + e.record.Name + '\');" >查看</a>';
+    }
+    function onOperationLinkClick(id, name) {
+        window.parent.$("#MyTabs").show();
+        window.parent.$("#mainiframe").hide();
+        var tabs = window.parent.mini.get("MyTabs");
+        var tab = tabs.getTab(id);
+        if (!tab) {
+            var tab = {};
+            tab.name = id;
+            tab.title = name;
+            tab.url = "/Wechat/MpRedPacketLog/List?RPID=" + id;
+            tab.showCloseButton = true;
+            tab.onload = function () {
+                var iframe = this.getTabIFrameEl(this.getActiveTab());
+                if ($.trim(name) != "") {
+                    $(iframe.contentWindow.document).attr("title", name);
+                }
+            };
+            if (tabs.getTabs().length >= 5)//最多5个
+                tabs.removeTab(0);
+            tabs.addTab(tab);
+        }
+        if (tab) {
+            tabs.activeTab(tab);
+            tabs.reloadTab(tab);
+        }
+    }
+</script>

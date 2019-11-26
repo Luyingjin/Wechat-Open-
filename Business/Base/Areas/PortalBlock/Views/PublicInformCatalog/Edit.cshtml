@@ -1,0 +1,115 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save">保存</a> 
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table width="100%">
+                <tr style="height: 0px">
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        栏目名称
+                    </td>
+                    <td>
+                        <input name="CatalogName" style="width: 100%" class="mini-textbox" vtype="maxLength:50"
+                            required="true" />
+                    </td>
+                    <td>
+                        栏目Key
+                    </td>
+                    <td>
+                        <input name="CatalogKey" style="width: 100%" class="mini-textbox" vtype="maxLength:50" onvalidation="onKeyValidation"
+                            required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        显示行数
+                    </td>
+                    <td>
+                        <input name="InHomePageNum" class="mini-textbox" style="width: 100%;" required="true" value="5" vtype="int" />
+                    </td>
+                    <td>
+                        排序
+                    </td>
+                    <td>
+                        <input name="SortIndex" class="mini-textbox" style="width: 100%" vtype="int" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script language="javascript" type="text/javascript">
+    @Html.GetEnum("System.TrueOrFalse")
+</script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").bind("click", function () {
+            var id = getQueryString("ID");
+            if (id == null || id == "")
+                save({ closeWindow: true, onComplete: onSaveComplete });
+            else
+                save({ closeWindow: true, onComplete: onSaveComplete });
+
+        });
+    });
+
+    function pageLoad() {
+        if (getQueryString("FuncType").toLowerCase() != "view" && getQueryString("ID") != "") {
+            mini.getbyName("CatalogKey").setReadOnly(true);
+        }
+    }
+
+    function onSaveComplete(text, setting) {
+        var form = new mini.Form("#dataForm");
+        //添加对应门户块
+        if (form != undefined) {
+            var data = form.getData();
+            addExecuteParam("CatalogName", data.CatalogName);
+            addExecuteParam("CatalogKey", data.CatalogKey);
+            execute("/Base/PortalBlock/DoorBlock/AddByCatalog", {
+                closeWindow: true
+            });
+        }
+    }
+
+    function onKeyValidation(e) {
+        var val = e.sender.getValue();
+        var regex = /^[a-zA-Z]+[a-zA-Z0-9_]*$/;
+        if ($.trim(val) == "") {
+            e.errorText = "不能为空";
+            e.isValid = false;
+        }
+        else {
+            if (!regex.test(val)) {
+                e.errorText = "必须字母开头且特殊字符只包含下划线";
+                e.isValid = false;
+            }
+        }
+    }
+
+</script>

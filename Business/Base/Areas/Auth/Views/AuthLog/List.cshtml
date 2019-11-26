@@ -1,0 +1,24 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+            </td>
+            <td class="gw-toolbar-right">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入对象或操作" onenter="quickSearch('Operation,OperationTarget');" onbuttonclick="quickSearch('Operation,OperationTarget');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetList" multiselect="true">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="OperationTarget" width="100" allowsort="true">对象</div>
+            <div field="Operation" width="200" allowsort="true">操作</div>
+            <div field="RelateData" width="*" allowsort="true">关联数据</div>
+            <div field="ModifyUserName" width="100" allowsort="true">操作人员</div>
+            <div field="ModifyTime" dateFormat="yyyy-MM-dd HH:mm" width="120" allowsort="true">操作时间</div>
+            <div field="ClientIP" width="100" allowsort="true">ClientIP</div>
+        </div>
+    </div>
+</div>

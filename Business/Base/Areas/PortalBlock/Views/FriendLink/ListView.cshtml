@@ -1,0 +1,75 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+            </td>
+            <td class="gw-toolbar-right">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入名称或链接地址" style="width: 200px;"
+                    onenter="quickSearch('Name,Url');" onbuttonclick="quickSearch('Name,Url');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetListView" style="width: 100%;
+        height: 100%;"  allowMoveColumn="false" sortField="SortIndex">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Name" headeralign="center" renderer="onLinkRenderer" align="left" width="200" allowsort="true">
+                名称</div>
+           <div field="Url" headeralign="center" align="left" width="200" allowsort="true">
+                链接地址</div>
+            <div field="SortIndex" width="45" headeralign="center" allowsort="true" align="right">
+                排序</div>
+      </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="15%" align="center">
+                    名称
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$Name" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="15%" align="center">
+                    链接地址
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$Url" style="width: 75%;" class="mini-textbox" />
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    listConfig.title = "友情链接";
+</script>
+<script type="text/javascript">
+    function onLinkRenderer(e) {
+        var rec = e.record;
+        var s = "<a href=\"javascript:void(0);\" onclick=\"openFriendLink('" + $.trim(rec.Url) + "','" + $.trim(rec.Name) + "')\">" + e.value + "</a>";
+        return s;
+    }
+   
+
+    function openFriendLink(url, name) {
+        if (url.indexOf("http://") == -1 && url.indexOf("https://") == -1)
+            url = "http://" + url;
+        window.open(url, "_blank");
+    }
+
+</script>

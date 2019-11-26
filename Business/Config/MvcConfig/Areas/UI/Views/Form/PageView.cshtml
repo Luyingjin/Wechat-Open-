@@ -1,0 +1,86 @@
+﻿@if (!string.IsNullOrEmpty(Request["IsPreView"]))
+{
+}
+else if (!string.IsNullOrEmpty(Request["FlowCode"]) || !string.IsNullOrEmpty(Request["TaskExecID"]))
+{
+    <div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 1000;">
+        @Html.GetFlowbar()
+    </div>
+}
+else
+{
+    <div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 100;">
+        <table>
+            <tr>
+                <td>
+                    <a id="btnSave" class="mini-button" plain="true" iconcls="icon-save" onclick="save();">保存</a>
+                    <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+                </td>
+                <td id="btnRight">
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+<form id="dataForm" method="post" align="center" autogetdata="false" style="top: 30px; position: relative;">
+<input name="ID" class="mini-hidden" />
+@Html.Raw(ViewBag.HiddenHtml)
+<div class="formDiv">
+    @Html.Raw(ViewBag.FormHtml)
+</div>
+</form>
+<script type="text/javascript">
+@Html.Raw(ViewBag.Script)
+var formData=@Html.Raw(ViewBag.FormData)
+</script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var form = new mini.Form("dataForm");
+        form.setData(formData);
+        form.setChanged(false);
+
+        //大字段赋值给Grid
+        $("form .mini-datagrid").each(function () {
+            var id = $(this).attr("id");
+            if ((formData || 0)[id] != undefined)
+                mini.get(id).setData(mini.decode(formData[id]));
+        });
+
+        //调用界面上的onFormSetValue方法
+        if (typeof (onFormSetData) != "undefined")
+            onFormSetData(formData);
+
+        //流程：加载FlowBar
+        var flowMenubar = mini.get("flowMenubar");
+        if (flowMenubar != undefined) {
+            flowLoadMenubar(formData);
+        }
+    });
+</script>
+<script type="text/javascript">
+    function onSummaryRenderer(e) {
+        var title = "";
+        switch (e.column.summaryType) {
+            case "count":
+                title = "总数：";
+                break;
+            case "max":
+                title = "最大：";
+                break;
+            case "min":
+                title = "最小：";
+                break;
+            case "sum":
+                title = "总计：";
+                break;
+            case "avg":
+                title = "平均：";
+                break;
+        }
+        e.cellHtml = "<div style='width:100%;text-align:right;'>" + title + e.cellHtml + "</div>";
+        return e.cellHtml;
+    }
+</script>
+<script type="text/javascript">
+    $("table").css("border-collapse", "collapse");
+</script>

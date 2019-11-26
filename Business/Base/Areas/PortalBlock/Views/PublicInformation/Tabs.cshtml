@@ -1,0 +1,50 @@
+﻿@section scripts{
+    <link href="@Url.Content("/Base/Scripts/BaseStyle.css")" rel="stylesheet" type="text/css" />
+}
+<div>
+    <div class="menu_tab_a_bg">
+        <ul class="menu_tab_a" id="ulMenu">
+        </ul>
+    </div>
+</div>
+<div style="overflow: hidden;" class="mini-fit" style="width: 100%; height: 100%">
+    <iframe id="content" name="content" src="" scrolling="no" width="100%" height="100%"
+        frameborder="no"></iframe>
+</div>
+<script language="javascript">
+    $(document).ready(function () {
+        $.ajax({
+            url: "/Base/PortalBlock/PublicInformCatalog/GetList",
+            type: "post",
+            success: function (text) {
+                var data = text.data;
+                data.splice(0, 0, { ID: "", CatalogName: "全部" });
+                $.each(data, function (i, val) {
+                    val.url = "/Base/PortalBlock/PublicInformation/List";
+                    val.url += $.trim(val.ID) == "" ? "" : "?CatalogId=" + val.ID;
+                    $("#ulMenu").append($("<li></li>").append("<a target=\"content\" href=\"" + val.url + "\">" + val.CatalogName + "</a>"));
+                });
+                $("#ulMenu a").bind("click", function (e) {
+                    var url = e.srcElement.href;
+                    if ($("#content").attr("src") != url) {
+                        $("#content").attr("src", url);
+                        //设置背景颜色
+                        for (var i = 0, len = $("a").length; i < len; i++) {
+                            if ($("a")[i].href == url)
+                                $("a")[i].className = "current";
+                            else
+                                $("a")[i].className = "";
+                        }
+                    }
+                    return false;
+                });
+
+                $("#ulMenu a")[0].click(); //默认触发.
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                msgUI(jqXHR.responseText,4);
+            }
+        });
+
+    });
+</script>

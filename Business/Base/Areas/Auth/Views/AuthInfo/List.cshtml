@@ -1,0 +1,36 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="add();">增加</a>
+                <a class="mini-button" iconcls="icon-edit" onclick="edit();">编辑</a>
+            </td>
+            <td id="btnRight">
+                <input id="key" class="mini-textbox" emptytext="请输入名称" style="width: 200px;" onenter="quickSearch('Name');" />
+                <a class="mini-button" onbuttonclick="quickSearch('Name');" iconcls="icon-search">查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetList" multiselect="true">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="Name" width="200">名称</div>
+            <div field="Description" width="*">描述</div>
+            <div field="role" width="60"></div>
+            <div field="res" width="60"></div>
+            <div field="resrole" width="60"></div>
+            <div field="user" width="60"></div>
+            <div field="org" width="60"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    addGridLink("dataGrid", "role", "../Role/List?GroupID={RoleGroupID}", { title: "角色维护", linkText: "角色维护", width: 1200 });
+    addGridLink("dataGrid", "res", "../Res/Tree?RootFullID={ResRootFullID}", { title: "权限维护", linkText: "权限维护", width: 1200 });
+    addGridLink("dataGrid", "resrole", "../ResRole/Tree?RootFullID={ResRootFullID}", { title: "授权", linkText: "授权", width: 1200 });
+    addGridLink("dataGrid", "user", "../User/List?GroupID={UserGroupID}", { title: "用户维护", linkText: "用户维护", width: 1200 });
+    addGridLink("dataGrid", "org", "../OrgUser/Tree?RootFullID={OrgRootFullID}&GroupID={UserGroupID}", { title: "组织维护", linkText: "组织维护", width: 1200 });
+    listConfig.title = "权限信息";
+</script>

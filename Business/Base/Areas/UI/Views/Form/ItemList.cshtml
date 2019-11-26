@@ -1,0 +1,184 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="addRow({FieldType:'nvarchar(200)',ItemType:'TextBox',Enabled:'true',Visible:'true',Group:'基本信息'},{createId:true,isLast:true})">添加</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" iconcls="icon-import" onclick="importItem();">导入</a>
+                <a class="mini-button" iconcls="icon-save" onclick="saveItemList();">保存</a>
+                <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+                <a class="mini-button" iconcls="icon-copy" onclick="cloneRow();">克隆</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetItemList" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false"
+        allowunselect="false">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="settings" width="80">详细设置</div>
+            <div type="comboboxcolumn" field="FieldType" width="100" autoshowpopup="true" align="center">字段类型
+                <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="fieldType" onitemclick="commitEdit" />
+            </div>
+            <div type="comboboxcolumn" field="ItemType" width="100" autoshowpopup="true" align="center">控件类型
+                <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="ItemType" onitemclick="commitEdit" onvaluechanged="itemTypeChanged" />
+            </div>
+            <div field="Name" width="200" vtype="required;">控件标题
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+            <div field="Code" width="100">控件编号
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+            <div type="checkboxcolumn" field="Enabled" truevalue="true" falsevalue="false" width="60">是否可用 </div>
+            <div type="checkboxcolumn" field="Visible" truevalue="true" falsevalue="false" width="60">是否显示 </div>
+            <div type="checkboxcolumn" field="Unique" truevalue="true" falsevalue="false" width="60">验证唯一 </div>
+            <div field="DefaultValue" width="*">默认值
+                <input property="editor" class="mini-combobox" style="width: 100%" shownullitem="true" allowinput="true" data="dafaultValues"  onitemclick="commitEdit"/>
+            </div>
+            <div field="Group" width="60">分组
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var ItemType = [
+        { value: 'TextBox', text: '单行文本框' },
+        { value: 'TextArea', text: '多行文本框' },
+        { value: 'DatePicker', text: '日期选择框' },
+        { value: 'CheckBoxList', text: '多选框列表' },
+        { value: 'RadioButtonList', text: '单选框列表' },
+        { value: 'ComboBox', text: '组合下拉框' },
+        { value: 'ButtonEdit', text: '弹出选择框' },
+        { value: 'SingleFile', text: '单附件上传' },
+        { value: 'MultiFile', text: '多附件上传' },
+        { value: 'AuditSign', text: '流程签字框' },
+        { value: 'CheckBox', text: '复选框' },
+        { value: 'SubTable', text: '子表' }
+    ];
+
+    var fieldType = [
+        { value: 'nvarchar(50)', text: '字符串（50）' },
+        { value: 'nvarchar(200)', text: '字符串（200）' },
+        { value: 'nvarchar(500)', text: '字符串（500）' },
+        { value: 'nvarchar(2000)', text: '字符串（2000）' },
+        { value: 'nvarchar(max)', text: '字符串（max）' },
+        { value: 'ntext', text: '字符串（text）' },
+        { value: 'int', text: '整型' },
+        { value: 'float', text: '浮点型' },
+        { value: "decimal(18 2)", text: '小数（2位）' },
+        { value: "decimal(18 4)", text: '小数（4位）' },
+        { value: 'datetime', text: '日期型' }
+    ];
+
+    function itemTypeChanged(e) {
+        var grid = mini.get("dataGrid");
+        var row = grid.getEditorOwnerRow(e.sender);
+        row["Settings"] = "";
+        var type = row["ItemType"];
+        if (type == "SubTable")
+            row["FieldType"] = "";
+        else if (type == "TextArea" || type == "MultiFile")
+            row["FieldType"] = "nvarchar(500)";
+        else if (type == "AuditSign")
+            row["FieldType"] = "nvarchar(max)";
+        else if (type == "DatePicker")
+            row["FieldType"] = "datetime";
+        else if (type == "TextBox")
+            row["FieldType"] = "nvarchar(200)";
+        grid.updateRow(row);
+    }
+
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    }
+    function getitemTypeText(value) {
+        for (var i = 0; i < ItemType.length; i++) {
+            if (ItemType[i]["value"] == value)
+                return ItemType[i]["text"];
+        }
+    }
+
+    addGridButton("dataGrid", "settings", { linkText: '详细', onButtonClick: function (row) {
+        var type = row["ItemType"];
+        if (!type) { msgUI('请先选择控件类型!'); return; }
+        var url = "Settings" + type;
+        var title = getitemTypeText(type);
+        var width = 350;
+        if (type == "SubTable")
+            width = 1000;
+        openWindow(url, { width: width, title: title, data: row["Settings"], onDestroy: function (data) {
+            if (data != "close")
+                row["Settings"] = mini.encode(data);
+        }
+        });
+    }
+    });
+
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }        
+</script>
+<script type="text/javascript">
+    function importItem() {
+        msgUI("确认从布局导入吗？", 2, function (act) {
+            if (act == "ok") {
+                execute("ImportItemFromLayout", { onComplete: function (data) {
+                    var grid = mini.get("dataGrid");
+                    grid.setData(mini.decode(data));
+                }
+                });
+            }
+        });
+    }
+
+    function saveItemList() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+        grid.validate();
+        if (grid.isValid() == false) {
+            msgUI("输入数据有误！");
+            return;
+        }
+        addExecuteParam("ItemList", grid.getData());
+        execute("SaveItemList", { actionTitle: "保存", validateForm: false });
+    }
+
+    function cloneRow() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        if (rows.length != 1) {
+            msgUI("请选择一行");
+            return;
+        }
+        var row = mini.clone(rows[0]);
+        execute("GetGuid", { onComplete: function (text) { row["ID"] = text; } });
+        dataGrid.addRow(row);
+    }
+
+    var dafaultValues = [
+    { value: "{CurrentTime}", text: "{CurrentTime}" },
+    { value: "{CurrentUserID}", text: "{CurrentUserID}" },
+    { value: "{CurrentUserName}", text: "{CurrentUserName}" },
+    { value: "{CurrentUserOrgID}", text: "{CurrentUserOrgID}" },
+    { value: "{CurrentUserOrgName}", text: "{CurrentUserOrgName}" },
+    { value: "{CurrentUserID},{CurrentUserName}", text: "{CurrentUserID},{CurrentUserName}" },
+    { value: "{CurrentUserOrgID},{CurrentUserOrgName}", text: "{CurrentUserOrgID},{CurrentUserOrgName}" }
+    ];
+</script>

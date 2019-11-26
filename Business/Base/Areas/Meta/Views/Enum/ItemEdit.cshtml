@@ -1,0 +1,70 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="save({action:'SaveItem'});">保存</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" url="GetItem">
+<input name="ID" class="mini-hidden" />
+<input name="EnumDefID" class="mini-hidden" />
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%"></td>
+                    <td width="35%"></td>
+                    <td width="15%"></td>
+                    <td width="35%"></td>
+                </tr>
+                <tr>
+                    <td>名称</td>
+                    <td>
+                        <input name="Name" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                    <td>编号</td>
+                    <td>
+                        <input name="Code" class="mini-textbox" style="width: 100%"  required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>分类</td>
+                    <td>
+                        <input name="Category" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                    <td>子分类</td>
+                    <td>
+                        <input name="SubCategory" class="mini-textbox" style="width: 100%"  />
+                    </td>
+                </tr>
+                <tr>
+                    <td>排序号</td>
+                    <td>
+                        <input name="SortIndex" class="mini-textbox" style="width: 100%" vtype="float" required="true" />
+                    </td>
+                    <td></td>
+                    <td></td>
+@*                    <td>子枚举编号</td>
+                    <td>
+                        <input name="SubEnumDefCode" class="mini-textbox" style="width: 100%" />
+                    </td>*@
+                </tr>
+                <tr>
+                    <td>描述</td>
+                    <td colspan="3">
+                        <input name="Description" class="mini-textarea" style="width: 100%;" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>

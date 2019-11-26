@@ -1,0 +1,46 @@
+@charset "utf-8";
+/* CSS Document */
+body { font-family:"Helvetica Neue", Helvetica, Microsoft Yahei, Hiragino Sans GB, WenQuanYi Micro Hei, sans-serif;}
+.jh-item-frame { width:350px; position:fixed; top:30px; right:70px;}
+.jh-itemall-sash {border-radius:10px; background-color:#e9f0f3; padding:8px 15px; margin-bottom:2px;}
+.jh-table { width:100%; max-width:100%; border-collapse:collapse; border-spacing:0px;}
+.jh-table tr td {padding:5px 8px; vertical-align:middle; border-top:1px #abd2f4 solid;}
+.jh-itemall-textb { font-size:24px;}
+.jh-itemall-texts { font-size:18px;}
+.jh-item-name { font-size:16px;}
+.jh-item-progress { margin:5px 0px;}
+.jh-item-info { color:#666}
+
+
+
+.jh-bg {background:#dcdcdc}
+.jh-hbg {background-color:#507de9;}
+.jh-mh {min-height:42px; line-height:42px}
+.jh-th {min-height:82px;}
+.jh-color {color:#FFF}
+.nav-justified a { text-align:center;}
+.nav-justified li { width:33.3%}
+.nav { margin-bottom:10px;}
+.jh-active { border-bottom:3px #507de9 solid;}
+.jh-tab { background-color:#f8f8f8; padding:2px 10px 0px 10px;}
+.jh-tab ul li a {padding:5px 0px; font-size:15.5px;}
+.jh-main { margin:0px 10px;}
+.jh-mainl { margin:0px 0px 8px 0px;}
+.jh-mainf { border-radius:5px; background:#FFF;box-shadow: 1px 2px 3px #acacac; padding-top:15px; }
+.jh-tabs { height:33px; line-height:33px; font-size:15.5px;}
+.jh-textr { color:#F00}
+.jh-textl { color:#0C0}
+.jh-textg { color:#999}
+.jh-textzxr {height:16px; line-height:16px;}
+.jh-simg img{ margin-left:5px;}
+.jh-mainm { margin:10px 10px 0px 10px;}
+.jh-mainp p {margin:0px;}
+.jh-mainc { font-size:15px; margin:8px 0px; float:right;}
+.jh-mainrf { margin:0px 10px;}
+.jh-mainreply {border-radius:5px; margin-bottom:8px; padding:7px 10px; border:1px solid #e6e6e6; background-color:#f5f5f5;}
+.jh-mainbt { background-color:#f7f7f7; border-radius:0px 0px 5px 5px; border-top:1px solid #e6e6e6;}
+.jh-mainbts { line-height:32px; height:32px}
+.jh-mainbts p { font-size:14px; border-left:1px solid #e6e6e6;}
+.jh-mainbts p img{ margin-right:5px;}
+.jh-mainbtc { color:#777; vertical-align:middle;}
+.jh-mainbtcon { color:#507de9; vertical-align:middle;}

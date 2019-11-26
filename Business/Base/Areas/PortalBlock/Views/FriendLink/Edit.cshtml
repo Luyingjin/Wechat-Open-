@@ -1,0 +1,95 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save">保存</a> 
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input id="ID" name="ID" class="mini-hidden" />
+<div class="basediv">
+    <fieldset>
+    <legend><span>基本信息</span></legend>
+        <table width="100%">
+            <tr style="height: 0px">
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+                <td width="15%">
+                </td>
+                <td width="35%">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    名称
+                </td>
+                <td>
+                    <input name="Name" id="Name"  class="mini-textbox" style="width:100%" required="true" />
+                </td>
+                <td>
+                    链接地址
+                </td>
+                <td>
+                    <input name="Url" id="Url"  class="mini-textbox" style="width:100%" required="true" />
+                </td>
+            </tr>
+            <tr>
+@*                <td>
+                    图标
+                </td>
+                <td>
+                    <input name="Icon" id="Icon"  class="mini-singlefile"  filter="图片文件|*.gif;*.bmp;*.icon;*.jpeg;*.png" style="width:100%" />
+                </td>*@
+                <td>
+                    排序
+                </td>
+                <td>
+                    <input name="SortIndex" id="SortIndex"  class="mini-textbox" style="width:100%" vtype="int"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    相关部门
+                </td>
+                <td colspan="3">
+                    <input name="DeptId" textName="DeptName" style="width: 100%" class="mini-buttonedit" allowinput="false" /> 
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    相关人员
+                </td>
+                <td colspan="3">
+                    <input name="UserId" textName="UserName" style="width: 100%" class="mini-buttonedit" /> 
+                </td>
+            </tr>
+            <tr>
+                <td>备注</td>
+                <td colspan="3">
+                    <textarea class="mini-textarea" name="Remark" style="WIDTH:100%;height:200px"></textarea>
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<script language="javascript" type="text/javascript">
+    addMultiOrgSelector("DeptId");
+    addMultiUserSelector("UserId");
+</script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").bind("click", function () {
+            save({ closeWindow: true });
+        });
+    });
+
+
+</script>

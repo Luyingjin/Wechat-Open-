@@ -1,0 +1,103 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="save({action:'SaveDef'});">保存</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" url="GetDef">
+<input name="ID" class="mini-hidden" />
+<input name="CategoryID" class="mini-hidden" />
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%"></td>
+                    <td width="35%"></td>
+                    <td width="15%"></td>
+                    <td width="35%"></td>
+                </tr>
+                <tr>
+                    <td>名称</td>
+                    <td>
+                        <input name="Name" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                    <td>编号</td>
+                    <td>
+                        <input name="Code" class="mini-textbox" style="width: 100%" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>类型</td>
+                    <td>
+                        <input name="Type" class="mini-combobox" style="width: 100%;" data="EnumType" onvaluechanged="onTypeChange" required="true" />
+                    </td>
+                    <td></td>
+                    <td>
+                       
+                    </td>
+                </tr>
+                <tr name="TableEnum">
+                    <td>Sql</td>
+                    <td colspan="3">
+                        <input name="Sql" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr name="TableEnum">
+                    <td>Orderby</td>
+                    <td>
+                        <input name="Orderby" class="mini-textbox" style="width: 100%" />
+                    </td>
+                    <td>连接</td>
+                    <td>
+                        <input name="ConnName" class="mini-combobox" style="width: 100%;" data="ConnEnum" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>描述</td>
+                    <td colspan="3">
+                        <input name="Description" class="mini-textarea" style="width: 100%;" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+@Html.GetEnum(typeof(Base.Logic.EnumType));
+@Html.GetEnum("ConnEnum");
+</script>
+<script type="text/javascript">
+
+    function onFormSetData(data) {
+        setType(data["Type"]);
+    }
+
+    function onTypeChange(e) {
+        setType(e.value);
+    }
+
+    function setType(type) {
+        switch (type) {
+            case "Normal":
+                $("tr[name='TableEnum']").hide();
+                mini.getbyName("ConnName").required = false;
+                mini.getbyName("Sql").required = false;
+                break;
+            case "Table":
+                $("tr[name='TableEnum']").show();
+                mini.getbyName("ConnName").required = true;
+                mini.getbyName("Sql").required = true;
+                break;
+        }
+    }
+</script>

@@ -1,0 +1,93 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+            </td>
+            <td class="gw-toolbar-right">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name');" onbuttonclick="quickSearch('Code,Name');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetList" multiselect="true" allowunselect="false">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="Code" width="100px" allowsort="true" align="center">编号</div>
+            <div field="Name" width="200px" allowsort="true">名称</div>
+            <div field="Type" width="60px" allowsort="true" align="center">类型</div>
+            <div field="Description" width="170px">描述</div>
+            <div field="rule" width="60px"></div>
+            <div field="res" width="60px"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+@Html.GetEnum(typeof(Base.Logic.RoleType));
+</script>
+<script type="text/javascript">
+    function getRoleRes(contentWindow) {
+        var node = mini.get("dataGrid").getSelected();
+
+        execute("GetRoleRes?NodeID=" + node.ID, { onComplete: function (data, settings) {
+            contentWindow.setData(data);
+        }
+        });
+
+    }
+
+    function setRoleRes(data, settings) {
+        if (data == "close")
+            return;
+        var node = mini.get("dataGrid").getSelected();
+
+        addExecuteParam("NodeFullID", node.ID);
+        addExecuteParam("RelationData", mini.encode(data));
+        addExecuteParam("FullRelation", false);
+
+        execute("SetRoleRes", { actionTitle: "设置", refresh: false });
+    }
+
+    function setRoleRule(data, settings) {
+        if (data == "close")
+            return;
+        var node = mini.get("dataGrid").getSelected();
+
+        addExecuteParam("NodeFullID", node.ID);
+        addExecuteParam("RelationData", mini.encode(data));
+        addExecuteParam("FullRelation", false);
+
+        execute("SetRoleRule", { actionTitle: "设置", refresh: false });
+    }
+
+
+    function getRoleUser(contentWindow) {
+        var node = mini.get("dataGrid").getSelected();
+
+        execute("GetRoleUser?NodeID=" + node.ID, { onComplete: function (data, settings) {
+            contentWindow.setData(data);
+        }
+        });
+    }
+
+    function setRoleUser(data, settings) {
+        if (data == undefined || data == "close")
+            return;
+        var node = mini.get("dataGrid").getSelected();
+
+        addExecuteParam("NodeFullID", node.ID);
+        addExecuteParam("RelationData", mini.encode(data));
+        addExecuteParam("FullRelation", false);
+
+        execute("SetRoleUser", { actionTitle: "设置", refresh: false });
+    }
+
+
+    addGridEnum("dataGrid", "Type", "RoleType");
+    addGridLink("dataGrid", "res", urlConstant.multiRes, { refresh: false, onLoad: getRoleRes, onDestroy: setRoleRes, linkText: "入口权限", title: "入口权限" });
+    addGridLink("dataGrid", "rule", urlConstant.multiRule, { refresh: false, onLoad: getRoleRes, onDestroy: setRoleRule, linkText: "规则权限", title: "规则权限" });
+
+
+
+    listConfig.title = "角色";
+</script>

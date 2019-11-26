@@ -1,0 +1,145 @@
+﻿<div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 100;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save" onclick="returnData();">确定</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" id="btnHelp" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" style="top: 30px; position: relative;" autogetdata="false">
+<div class="formDiv">
+    <table width="100%">
+        <tr class="hideRow">
+            <td width="15%">
+            </td>
+            <td width="35%">
+            </td>
+            <td width="15%">
+            </td>
+            <td width="35%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                子表SQL
+            </td>
+            <td colspan="3">
+                <input name="SQL" class="mini-textarea" style="width: 100%; height: 100px" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-toolbar" style="border-bottom: 0px;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnAdd" iconcls="icon-add" onclick="addRow({},{createId:true,isLast:true});">添加</a>
+                <a class="mini-button" id="btnDelete" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 305px;" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false">
+    <div property="columns">
+        <div type="checkcolumn"></div>
+        <div field="settings" width="80">详细设置</div>
+        <div type="comboboxcolumn" field="ItemType" width="100" autoshowpopup="true" align="center">字段类型
+            <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="ItemType" onitemclick="commitEdit" />
+        </div>
+        <div field="Code" width="200" vtype="required;">字段编号
+            <input property="editor" class="mini-textbox" style="width: 100%;" />
+        </div>
+        <div field="Name" width="*">字段说明
+            <input property="editor" class="mini-textbox" style="width: 100%;" />
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+    var EnumCategory = @Html.Raw(ViewBag.EnumCategory);   
+    var ItemType = [    
+        { value: 'Enum', text: '枚举' },
+        { value: 'Datetime', text: '日期时间' },
+        { value: 'Float', text: '浮点数' }
+    ];
+</script>
+<script type="text/javascript">
+
+
+    function itemTypeChanged(e) {
+        var grid = mini.get("dataGrid");
+        var row = grid.getEditorOwnerRow(e.sender);
+        row["Settings"] = "";
+    }
+
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    }
+    function getitemTypeText(value) {
+        for (var i = 0; i < ItemType.length; i++) {
+            if (ItemType[i]["value"] == value)
+                return ItemType[i]["text"];
+        }
+    }
+
+    addGridButton("dataGrid", "settings", { linkText: '详细', onButtonClick: function (row) {
+        var type = row["ItemType"];
+        if (!type) { msgUI('请先选择控件类型!'); return; }
+        var url = "Settings" + type;
+
+        var title = getitemTypeText(type);
+        openWindow(url, { width: 350, title: title, data: row["Settings"], onDestroy: function (data) {
+            if (data != "close")
+                row["Settings"] = mini.encode(data);
+        }
+        });
+    }
+    });
+
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }        
+</script>
+<script type="text/javascript">
+    function setData(data) {
+        if (data) {
+            var form = new mini.Form("dataForm");
+            var obj = mini.decode(data);
+
+            form.setData(obj.formData);
+            form.setChanged(false);
+
+            var grid = mini.get("dataGrid");
+            grid.setData(obj.listData);
+        }
+    }
+</script>
+<script type="text/javascript">
+    function returnData() {
+        var form = new mini.Form("dataForm");
+        var grid = mini.get("dataGrid");
+        var obj = {};
+        obj.formData = form.getData();
+        obj.listData = grid.getData();
+        closeWindow(obj);
+    }
+</script>

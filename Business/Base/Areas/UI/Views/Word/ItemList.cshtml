@@ -1,0 +1,105 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="addRow({},{createId:true,isLast:true})">添加</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" iconcls="icon-save" onclick="saveItemList();">保存</a>
+                <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetItemList" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="settings" width="80">详细设置</div>
+            <div type="comboboxcolumn" field="ItemType" width="100" autoshowpopup="true" align="center">字段类型
+                <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="ItemType" onitemclick="commitEdit" />
+            </div>
+            <div field="Code" width="200" vtype="required;">字段编号
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+            <div field="Name" width="*">字段说明
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var ItemType = [
+        { value: 'SubTable', text: '子表' },
+        { value: 'FieldTable', text: '大字段表' },
+        { value: 'Enum', text: '枚举' },
+        { value: 'Datetime', text: '日期时间' },
+        { value: 'Float', text: '浮点数' }
+    ];
+
+    function itemTypeChanged(e) {
+        var grid = mini.get("dataGrid");
+        var row = grid.getEditorOwnerRow(e.sender);
+        row["Settings"] = "";
+    }
+
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    }
+    function getitemTypeText(value) {
+        for (var i = 0; i < ItemType.length; i++) {
+            if (ItemType[i]["value"] == value)
+                return ItemType[i]["text"];
+        }
+    }
+
+    addGridButton("dataGrid", "settings", { linkText: '详细', onButtonClick: function (row) {
+        var type = row["ItemType"];
+        if (!type) { msgUI('请先选择控件类型!'); return; }
+        var url = "Settings" + type;
+        var title = getitemTypeText(type);
+        var width = 350;
+        if (type == "SubTable" || type == "FieldTable") {
+            width = 1000;
+            url = "SettingsSubTable";
+        }
+        openWindow(url, { width: width, title: title, data: row["Settings"], onDestroy: function (data) {
+            if (data != "close")
+                row["Settings"] = mini.encode(data);
+        }
+        });
+    }
+    });
+
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }        
+</script>
+<script type="text/javascript">
+
+    function saveItemList() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+        grid.validate();
+        if (grid.isValid() == false) {
+            msgUI("输入数据有误！");
+            return;
+        }
+        addExecuteParam("ItemList", grid.getData());
+        execute("SaveItemList", { actionTitle: "保存", validateForm: false });
+    }
+</script>

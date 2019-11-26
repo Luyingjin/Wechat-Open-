@@ -1,0 +1,38 @@
+﻿<form method="post">
+<input name="ID" class="mini-hidden" />
+<div class="formDiv">
+    <br />
+    部门弹出单选：
+    <input name="btnEdit1" textname="btnEdit1_Text" class="mini-buttonedit" allowinput="false" required="true" />
+    <br />
+    部门弹出多选：
+    <input name="btnEdit2" textname="btnEdit2_Text" class="mini-buttonedit" allowinput="false" />
+    <br />
+    人员弹出单选：
+    <input name="btnEdit3" textname="btnEdit3_Text" class="mini-buttonedit" allowinput="true" />
+    <br />
+    人员弹出多选：
+    <input name="btnEdit4" textname="btnEdit4_Text" class="mini-buttonedit" allowinput="true" />
+    <br />
+</div>
+<a class="mini-button" iconcls="icon-add" onclick="addRow({});">增加</a>
+<div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 300px" allowcelledit="true" allowcellselect="true" editnextonenterkey="true"
+    borderstyle="border-left:0px;border-right:0px;border-bottom:0px">
+    <div property="columns">
+        <div field="Code" width="150" allowsort="true">编号</div>
+        <div field="User" displayfield="UserName" width="150" allowsort="true">姓名
+            <input name="User" property="editor" class="mini-buttonedit" style="width: 100%;" />
+        </div>
+        <div field="Description" width="*">描述
+            <input property="editor" class="mini-textbox" style="width: 100%;" />
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+    addSingleOrgSelector("btnEdit1");
+    addMultiOrgSelector("btnEdit2");
+    addSingleUserSelector("btnEdit3");
+    addMultiUserSelector("btnEdit4");
+    addMultiUserSelector("User");
+</script>

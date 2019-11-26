@@ -1,0 +1,140 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="returnForm();">确定</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" autogetdata="false">
+<div class="formDiv">
+    <fieldset>
+        <legend>基本属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        弹出页标题：
+                    </td>
+                    <td>
+                        <input name="PopupTitle" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        弹出页宽度：
+                    </td>
+                    <td>
+                        <input name="PopupWidth" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        弹出页高度：
+                    </td>
+                    <td>
+                        <input name="PopupHeight" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        是否提醒：
+                    </td>
+                    <td>
+                        <input name="Confirm" class="mini-combobox" data="yesNo" shownullitem="true" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        选择模式：
+                    </td>
+                    <td>
+                        <input name="SelectMode" class="mini-combobox" value="true" data="selectMode" shownullitem="true" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        按钮ID：
+                    </td>
+                    <td>
+                        <input name="id" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        所属字段：
+                    </td>
+                    <td>
+                        <input name="Field" class="mini-combobox" data="fieldEnum" valuefield="field" textfield="header" shownullitem="true" allowinput="true" style="width: 100%" onvaluechanged="onFieldChanged"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        显示内容：
+                    </td>
+                    <td>
+                        <input name="DisplayContent" class="mini-combobox" data="displayContent" shownullitem="true" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>事件属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        按钮单击时发生：
+                    </td>
+                    <td>
+                        <input name="onclick" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        按钮选择变化时发生：
+                    </td>
+                    <td>
+                        <input name="oncheckedchanged" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+    var yesNo = [{ "value": "true", "text": "是" }, { "value": "false", "text": "否"}];
+    var selectMode = [{ value: 'mustSelectRow', text: '必须选中行' }, { value: 'mustSelectOneRow', text: '必须选中一行'}];
+    var displayContent = [{ value: 'buttonIcon', text: '按钮图标' }, { value: 'buttonName', text: '按钮名称' }, { value: 'data', text: '数据'}];
+    var fieldEnum=@Html.Raw(ViewBag.FieldEnum)
+    function setData(data) {
+        if (data) {
+            var form = new mini.Form("dataForm");
+            form.setData(mini.decode(data));
+            form.setChanged(false);
+        }
+    }
+</script>
+<script type="text/javascript">
+    function onFieldChanged(e) {
+        if (e.value == "")
+            mini.getbyName("DisplayContent").setValue("");
+    }
+</script>

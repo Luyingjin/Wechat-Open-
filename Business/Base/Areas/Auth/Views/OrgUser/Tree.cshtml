@@ -1,0 +1,175 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;">
+    <div size="250" showcollapsebutton="false">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetTree" contextmenu="#treeMenu" allowdrag="true" allowdrop="true" ongivefeedback="onNodeDroping"
+                onbeforedrop="onNodeDrop" allowleafdropin="true" showtreeicon="true" iconfield="Type" textfield="Name" idfield="ID" parentfield="ParentID" resultastree="false" onnodeselect="onNodeSelect"
+                expandonload="0" ondragstart="ChangeText">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" style="border-left: 0px">
+            <table>
+                <tr>
+                    <td>
+                        <a id="bsel" class="mini-button" iconcls="icon-refer" onclick="relationAppending(urlConstant.multiUser,{fullRelation:true,mustSelectNodeMsg:'请选择组织',title:'选择用户'});">选择</a>
+                        <a id="brmv" class="mini-button" iconcls="icon-remove" onclick="delRelation({fullRelation:true,actionTitle:'移除'});">移除</a>
+                        <a id="bedit" class="mini-button" iconcls="icon-edit" onclick="editRelationData();">编辑</a>
+                        <a id="badd" class="mini-button" iconcls="icon-add" onclick="addRelationData({fullRelation:true});">增加</a>
+                        <span class="separator" id="srole"></span><a id="brole" class="mini-button" iconcls="icon-user" onclick="SetOrgRoleUser();">设置组织角色</a>
+                        <span class="separator"></span><a id="borg" class="mini-button" iconcls="icon-org" onclick="SetCurrentOrg();">设置当前部门</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入账号或姓名或工号" onenter="quickSearch('Code,Name,WorkNo');" onbuttonclick="quickSearch('Code,Name,WorkNo');" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" borderstyle="border-left:0px" url="GetRelationList" multiselect="true">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="WorkNo" width="60px" allowsort="true" align="center">工号</div>
+                    <div field="Name" width="60px" allowsort="true" align="center">姓名</div>
+                    @* <div field="Sex" width="40px" allowsort="true" align="center">性别 </div>
+                    <div field="Code" width="60px" allowsort="true" align="center">账号</div>
+                    <div field="Phone" width="100px" allowsort="true" align="center">电话</div>
+                    <div field="MobilePhone" width="100px" allowsort="true" align="center">手机</div>
+                    <div field="RTX" width="100px" allowsort="true" align="center">RTX</div>*@
+                    <div field="OrgRoleName" width="200px">组织角色</div>
+                    <div field="UserRoleName" width="100px">系统角色</div>
+                    <div field="DeptName" width="100px" allowsort="true" align="center">当前部门 </div>
+                    <div field="DeptNames" width="200px">所属部门</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul id="treeMenu" class="mini-contextmenu">
+    <li iconcls="icon-add" onclick="nodeAdding();">增加组织</li>
+    <li iconcls="icon-edit" onclick="nodeEditing();">编辑组织</li>
+    <li iconcls="icon-remove" onclick="nodeDeleting();">删除组织</li>
+    <li iconcls="icon-discard" onclick="nodeDiscard();">作废组织</li>
+    <li iconcls="icon-setting2" onclick="relationSetting(urlConstant.multiRole+'&RoleType=OrgRole',{action:'SetOrgRole',getDataAction:'GetOrgRole?NodeFullID={FullID}',paramFrom:'dataTree' ,refresh:true,title:'设置组织角色'});">
+        设置组织角色</li>
+</ul>
+<script type="text/javascript">
+
+    function ChangeText(e) {
+        e.dragText = "<font size='2'>移动组织：" + e.node.Name + "</font>";
+
+    }
+
+    function onNodeSelect(e) {
+        var dataGrid = mini.get("dataGrid");
+        dataGrid.setUrl(dataGrid.url.split('?')[0] + "?NodeFullID=" + e.node.FullID);
+        dataGrid.load();
+        if (e.node.FullID.indexOf('.') > 0) {
+            $("#brmv").show();
+        }
+        else {
+            $("#brmv").hide();
+        }
+    }
+
+    function nodeDiscard() {
+
+        msgUI("作废组织将强制清除组织下的角色和所拥有的权限，确认吗？", 2, function (action) {
+            if (action == "ok") {
+                nodeDeleting({ action: 'AbortOrg', actionTitle: '作废', mustConfirm: false });
+            }
+        });
+    }
+
+    function pageLoad() {
+        var tree = mini.get("dataTree");
+        var node = tree.getRootNode();
+        node = tree.getChildNodes(node)[0];
+        tree.selectNode(node);
+        var e = {};
+        e.node = node;
+        onNodeSelect(e);
+    }
+
+    function onNodeDroping(e) {
+        //不能拖放到非同级节点的前后
+        if ((e.effect == "before" || e.effect == "after") && e.targetNode.ParentID != e.node.ParentID)
+            e.effect = "no";
+        if (e.effect == "add")
+            e.effect = "no";
+    }
+
+    treeConfig.title = "组织";
+    relationConfig.title = "用户";    
+
+</script>
+<script type="text/javascript">
+    addGridLink("dataGrid", "Name", "../User/Edit?ID={ID}&FuncType=View", { title: "查看用户", refresh: false });
+</script>
+<script type="text/javascript">
+    function SetOrgRoleUser() {
+        var node = mini.get("dataTree").getSelectedNode();
+        var userRows = mini.get("dataGrid").getSelecteds();
+
+        var len = userRows.length;
+        if (len == 0) {
+            msgUI("请先选择要设置组织角色的用户！");
+            return;
+        }
+        //        for (var i = 0; i < len; i++) {
+        //            if (userRows[i]["DeptID"] != node.ID) {
+        //                msgUI("用户“" + userRows[i]["Name"] + "”的当前部门不是“" + node.Name + "”，无法为其设置组织角色！");
+        //                return;
+        //            }
+        //        }
+
+        openWindow(urlConstant.multiRole + '&RoleType=OrgRole', { width: '450', onDestroy: function (rows) {
+            if (!rows || rows == "close") return;
+            var roleIDs = getValues(rows, "ID");
+            var userIDs = getValues(userRows, "ID");
+            var url = "SetOrgRoleUser?UserIDs=" + userIDs + "&OrgID=" + node.ID + "&RoleIDs=" + roleIDs;
+            execute(url);
+        }
+        });
+    }
+
+    function SetCurrentOrg() {
+
+        var userRows = mini.get("dataGrid").getSelecteds();
+        if (userRows.length == 0) {
+            msgUI("请先选择要设置当前部门的用户！");
+            return;
+        }
+        openWindow(urlConstant.singleOrg + "&OrgType=Org,Dept,ManufactureDept", { width: '320px', height: '580px', onDestroy: function (rows) {
+            if (!rows || rows == "close") return;
+            var deptIDs = getValues(rows, "ID");
+            var userIDs = getValues(userRows, "ID");
+            var url = "SetCurrentOrg?UserIDs=" + userIDs + "&DeptID=" + deptIDs;
+            execute(url);
+        }
+        });
+
+    }
+</script>
+<style type="text/css">
+    .Org
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/org.gif) no-repeat;
+    }
+    .Dept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/dept.gif) no-repeat;
+    }
+    .ManufactureDept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/cutover.png) no-repeat;
+    }
+    .SubDept
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+    .Post
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/user.png) no-repeat;
+    }
+</style>

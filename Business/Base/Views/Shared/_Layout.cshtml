@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <script src="@Url.Content("/CommonWebResource/CoreLib/Basic/jQuery/jquery-1.6.2.min.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("/CommonWebResource/CoreLib/MiniUI/miniui.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("/CommonWebResource/CoreLib/MiniUI/baseMiniuiExt.js")" type="text/javascript"></script>
+    <script src="@Url.Content("/CommonWebResource/CoreLib/MiniUI/customCtrl.js")" type="text/javascript"></script>   
+    <script src="@Url.Content("/MvcConfig/miniuiExt.js")" type="text/javascript"></script>           
+    <script src="@Url.Content("/CommonWebResource/Theme/" + @Html.GetGlobalColor() + "/MiniCssInc.js")" type="text/javascript"></script>
+</head>
+<body>
+    @RenderBody()
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">         
+        //GetBasicInfo参数分别为：当前用户信息、按钮字段权限、动态文件服务器地址和当前流程环节
+        //请根据具体需要调整true或false
+        @Html.GetBasicInfo(true, true, false, false);
+
+        preInit(); 
+        
+   </script>
+
+    <script src="@Url.Content("/CommonWebResource/CoreLib/Shortcut/shortcut.js")" type="text/javascript"></script>   
+    <script src="@Url.Content("/CommonWebResource/CoreLib/Feedback/feedback.js")" type="text/javascript"></script>   
+    <div id="divFloat" style="position:absolute;width:24px;cursor:move;display:none">
+        <a href="javascript:void(0);">
+            <img src="/CommonWebResource/RelateResource/image/System/Shortcut.png" id="imgShortCut" width="24px" height="24px" title="快捷入口"
+                    onmouseup="saveShortCut()" onmousedown="function(){ ifDrag = true; }"  onmousemove="function(){ ifDrag = false; }"
+                    onmouseover="MouseChange(this,'/CommonWebResource/RelateResource/image/System/Shortcut_on.png')"
+                    onmouseout="MouseChange(this,'/CommonWebResource/RelateResource/image/System/Shortcut.png')" border="0">
+        </a>
+        <a href="javascript:void(0);">
+            <img src="/CommonWebResource/RelateResource/image/System/Feedback.png" id="imgFeedback" width="24px" height="24px" title="问题反馈"
+                    onmouseup="showFeedback()" onmousedown="function(){ ifDrag = true; }"  onmousemove="function(){ ifDrag = false; }"
+                    onmouseover="MouseChange(this,'/CommonWebResource/RelateResource/image/System/Feedback_on.png')"
+                    onmouseout="MouseChange(this,'/CommonWebResource/RelateResource/image/System/Feedback.png')" border="0">
+        </a>
+    </div>
+    <script type="text/javascript">
+        function getId(id) { return document.getElementById(id) };
+
+        // 原生JS方法定义的拖动
+        var ifDrag = true;
+        function dragPrototype(dragControl, dragContent) {
+            var _x = 0, _y = 0, _drag = false, cw, ch, sw, sh;
+            var dragContent = typeof dragContent == "undefined" ? dragControl : dragContent;  //如果不存在第二个参数就把拖动对象设置为第一个参数
+
+            getId(dragControl).onmousedown = function (e) {
+                _drag = true;
+
+                e = window.event ? window.event : e;
+                cw = document.documentElement.clientWidth;
+                ch = document.documentElement.clientHeight;
+                sw = parseInt(getId(dragContent).offsetWidth);
+                sh = parseInt(getId(dragContent).offsetHeight);
+
+                _x = e.clientX - getId(dragContent).offsetLeft;  // 获取当前鼠标相对div原点的坐标
+                _y = e.clientY - getId(dragContent).offsetTop;
+
+                document.onmousemove = function (e) {
+                    if (_drag) {
+                        e = window.event ? window.event : e;
+                        window.getSelection ? window.getSelection().removeAllRanges() : document.selection.empty(); // 禁止拖放对象文本被选择的方法
+                        document.body.setCapture && getId(dragContent).setCapture(); // IE下鼠标超出视口仍可被监听
+
+                        var x = e.clientX - _x;
+                        var y = e.clientY - _y;
+
+                        x = x < 0 ? x = 0 : x < (cw - sw) ? x : (cw - sw); // 是否超出窗口的判断
+                        y = y < 0 ? y = 0 : y < (ch - sh) ? y : (ch - sh);
+
+                        getId(dragContent).style.left = x + "px";
+                        getId(dragContent).style.top = y + "px";
+                    };
+                };
+
+                document.onmouseup = function () {
+                    _drag = false;
+                    document.body.releaseCapture && getId(dragContent).releaseCapture();
+                };
+            };
+        }
+
+        $(function () {
+            if (window.parent.$("#divFloat").length == 0) {
+                var $divFloat = $("#divFloat");
+                if ($divFloat.length == 1) {
+                    $divFloat.show();
+                    var winW = $(window).width();
+                    var winH = $(window).height();
+                    $divFloat.css("left", winW - $divFloat.width() - 20).css("top", winH - $divFloat.height() - 30);
+                    dragPrototype("divFloat");
+                }
+            }
+        });
+    </script>
+</body>
+</html>

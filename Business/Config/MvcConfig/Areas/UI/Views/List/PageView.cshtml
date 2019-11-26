@@ -1,0 +1,23 @@
+﻿@Html.Raw(ViewBag.ListHtml)
+<script type="text/javascript">
+@Html.Raw(ViewBag.Script)
+</script>
+<script type="text/javascript">
+    function exportList() {
+        ExportExcel(getQueryString("TmplCode"), "dataGrid", "");
+    }
+
+    //Word导出
+    function exportWord(tmplCode) {
+        var grid = mini.get("dataGrid");
+        if (grid.getSelecteds().length != 1) {
+            msgUI("请选择一行记录");
+            return;
+        }
+        if (tmplCode == undefined)
+            tmplCode = getQueryString("TmplCode");
+        var url = "/MvcConfig/UI/Word/Export?TmplCode=" + tmplCode + "&ID={ID}";
+        url = replaceUrl(url);
+        window.open(url);
+    }
+</script>

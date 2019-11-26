@@ -1,0 +1,133 @@
+﻿<br />
+<br />
+<br />
+<h2 style="text-align: center;">
+    管理员维护</h2>
+<div class="formDiv" style="text-align: center; width: 100%;">
+    <table style="width: 350px;" class="center">
+        <tr>
+            <td width="40%">
+                请输入超级管理员密码：
+            </td>
+            <td>
+                <input name="pwd" class="mini-password" style="width: 100%" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                请选择管理员：
+            </td>
+            <td>
+                <input name="admin" class="mini-buttonedit" style="width: 100%" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td align="right">
+                <a href="#" onclick="showWindow('pwdWindow');">修改密码</a>
+                <a class="mini-button" plain="true" iconcls="icon-ok" onclick="saveAdmin();">确定</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="pwdWindow" class="mini-window" title="修改密码" style="width: 300px; height: 160px; display: none;">
+    <div class="queryDiv">
+        <table style="width: 100%;">
+            <tr>
+                <td width="30%">
+                    旧密码：
+                </td>
+                <td>
+                    <input name="OldPwd" class="mini-password" style="width: 100%" required="true" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    新密码：
+                </td>
+                <td>
+                    <input name="NewPwd" class="mini-password" style="width: 100%" required="true" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    重复新密码：
+                </td>
+                <td>
+                    <input name="NewPwd1" class="mini-password" style="width: 100%" required="true" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                </td>
+                <td align="right">
+                    <a class="mini-button" plain="true" iconcls="icon-ok" onclick="savePwd();">确定</a>
+                    <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="hideWindow('pwdWindow');">取消</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<style type="text/css">
+    .center
+    {
+        margin-right: auto;
+        margin-left: auto;
+        vertical-align: middle;
+    }
+</style>
+<script type="text/javascript">
+    addMultiUserSelector("admin");
+
+    function savePwd() {
+        var OldPwd = mini.getbyName("OldPwd").getValue();
+        var NewPwd = mini.getbyName("NewPwd").getValue();
+        var NewPwd1 = mini.getbyName("NewPwd1").getValue();
+        if (NewPwd != NewPwd1) {
+            msgUI("两次输入的新密码不一致！");
+            return;
+        }
+        addExecuteParam("oldPwd", OldPwd);
+        addExecuteParam("pwd", NewPwd);
+        execute("ChangePwd", { onComplete: function (text) {
+            msgUI("修改成功！！");
+        }
+        });
+    }
+
+    function saveAdmin() {
+
+        var pwd = mini.getbyName("pwd").getValue();
+        if (pwd == "") {
+            msgUI("请输入密码！");
+            return;
+        }
+
+        var admin = mini.getbyName("admin");
+
+        if (admin.getValue() == "") {
+            msgUI("请选择管理员！");
+            return;
+        }
+
+        addExecuteParam("pwd", pwd);
+        addExecuteParam("ids", admin.getValue());
+        addExecuteParam("names", admin.getText());
+
+        execute("SaveAdmin", { onComplete: function (text) {
+            msgUI("设置管理员成功！");
+        }
+        });
+    }
+
+    function pageLoad() {
+        execute("GetAdmin", { onComplete: function (text) {
+            var obj = mini.decode(text);
+            var ctrl = mini.getbyName("admin");
+            ctrl.setValue(obj.AdminIDs);
+            ctrl.setText(obj.AdminNames);
+        }
+        });
+    }
+</script>

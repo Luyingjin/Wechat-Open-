@@ -1,0 +1,241 @@
+﻿<div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 100;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save" onclick="returnData();">确定</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" id="btnHelp" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" style="top: 30px; position: relative;" autogetdata="false">
+<div class="formDiv">
+    <fieldset>
+        <legend>表格属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        是否多选：
+                    </td>
+                    <td>
+                        <input name="multiSelect" class="mini-combobox" value="true" data="yesNo" style="width: 100%" />
+                    </td>
+                    <td>
+                        显示斑马纹：
+                    </td>
+                    <td>
+                        <input name="allowAlternating" class="mini-combobox" value="false" data="yesNo" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        控件宽度：
+                    </td>
+                    <td>
+                        <input name="style_width" class="mini-textbox" value="100%" style="width: 100%" />
+                    </td>
+                    <td>
+                        控件高度：
+                    </td>
+                    <td>
+                        <input name="style_height" class="mini-textbox" value="50px" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        是否显示汇总条：
+                    </td>
+                    <td>
+                        <input name="showSummaryRow" class="mini-combobox" value="true" data="yesNo" style="width: 100%" />
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+<div class="mini-toolbar" style="border-bottom: 0px;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnAdd" iconcls="icon-add" onclick="addRow({FieldType:'nvarchar(200)',ItemType:'TextBox',Code:'',Visible:'true'},{createId:true,isLast:true});">添加</a>
+                <a class="mini-button" id="btnDelete" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </table>
+</div>
+<div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 305px;" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false">
+    <div property="columns">
+        <div type="checkcolumn"></div>
+        <div field="settings" width="60">详细设置</div>
+        <div field="ColumnSettings" width="60">列格式</div>
+        <div type="comboboxcolumn" field="FieldType" width="85" autoshowpopup="true" align="center">字段类型
+            <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="fieldType" onitemclick="commitEdit" onvaluechanged="itemTypeChanged" />
+        </div>
+        <div type="comboboxcolumn" field="ItemType" width="80" autoshowpopup="true" align="center">控件类型
+            <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="ItemType" onitemclick="commitEdit" onvaluechanged="itemTypeChanged" />
+        </div>
+        <div field="Name" width="150" vtype="required;">控件标题
+            <input property="editor" class="mini-textbox" style="width: 100%;" />
+        </div>
+        <div field="Code" width="100">控件编号
+            <input property="editor" class="mini-textbox" style="width: 100%;" />
+        </div>
+        <div field="width" width="50">宽度
+            <input property="editor" class="mini-textbox" style="width: 100%;" />
+        </div>
+        <div type="comboboxcolumn" field="align" width="50" autoshowpopup="true" align="center">对齐
+            <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="align" onitemclick="commitEdit" />
+        </div>
+        <div type="checkboxcolumn" field="Visible" truevalue="true" falsevalue="false" width="60">是否显示 </div>
+        <div type="checkboxcolumn" field="Unique" truevalue="true" falsevalue="false" width="60">验证唯一 </div>
+        <div field="DefaultValue">默认值
+            <input property="editor" class="mini-textbox" style="width: 100%;" />
+        </div>
+        <div type="comboboxcolumn" field="SummaryType" width="60" autoshowpopup="true" align="center">汇总方式
+            <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="summaryType" onitemclick="commitEdit" />
+        </div>
+    </div>
+</div>
+</form>
+<script type="text/javascript">
+    var yesNo = [{ "value": "true", "text": "是" }, { "value": "false", "text": "否"}];
+    var align = [{ value: 'left', text: '靠左' }, { value: 'center', text: '居中' }, { value: 'right', text: '靠右'}];
+</script>
+<script type="text/javascript">
+
+    var ItemType = [
+        { value: 'TextBox', text: '单行文本框' },
+        { value: 'DatePicker', text: '日期选择框' },
+        { value: 'ComboBox', text: '组合下拉框' },
+        { value: 'CheckBox', text: '复选框' },
+        { value: 'ButtonEdit', text: '弹出选择框' }
+    ];
+
+    var fieldType = [
+        { value: 'nvarchar(50)', text: '字符串（50）' },
+        { value: 'nvarchar(200)', text: '字符串（200）' },
+        { value: 'nvarchar(500)', text: '字符串（500）' },
+        { value: 'nvarchar(2000)', text: '字符串（2000）' },
+        { value: 'nvarchar(max)', text: '字符串（max）' },
+        { value: 'ntext', text: '字符串（text）' },
+        { value: 'int', text: '整型' },
+        { value: 'float', text: '浮点型' },
+        { value: 'decimal(18 2)', text: '小数（2位）' },
+        { value: 'decimal(18 4)', text: '小数（4位）' },
+        { value: 'datetime', text: '日期型' }
+    ];
+
+    var summaryType = [
+    { value: 'count', text: 'count' },
+    { value: 'min', text: 'min' },
+    { value: 'max', text: 'max' },
+    { value: 'sum', text: 'sum' },
+    { value: 'avg', text: 'avg'}];
+
+    function itemTypeChanged(e) {
+        var grid = mini.get("dataGrid");
+        var row = grid.getEditorOwnerRow(e.sender);
+        row["Settings"] = "";
+        var type = row["ItemType"];
+        
+        if (type == "DatePicker")
+            row["FieldType"] = "datetime";
+        else 
+            row["FieldType"] = "nvarchar(200)";
+        grid.updateRow(row);
+    }
+
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    }
+    function getitemTypeText(value) {
+        for (var i = 0; i < ItemType.length; i++) {
+            if (ItemType[i]["value"] == value)
+                return ItemType[i]["text"];
+        }
+    }
+
+    addGridButton("dataGrid", "settings", { linkText: '详细', onButtonClick: function (row) {
+        var type = row["ItemType"];
+        if (!type) { msgUI('请先选择控件类型!'); return; }
+        var url = "Settings" + type;
+        var title = getitemTypeText(type);
+        openWindow(url, { width: 350, title: title, data: row["Settings"], onDestroy: function (data) {
+            if (data != "close")
+                row["Settings"] = mini.encode(data);
+        }
+        });
+    }
+    });
+
+    addGridButton("dataGrid", "ColumnSettings", { linkText: '列格式', onButtonClick: function (row) {
+        var url = "SettingsGridColumn";
+        var title = "列格式";
+        openWindow(url, { width: 350, title: title, data: row["ColumnSettings"], onDestroy: function (data) {
+            if (data != "close")
+                row["ColumnSettings"] = mini.encode(data);
+        }
+        });
+    }
+    });
+
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }        
+</script>
+<script type="text/javascript">
+    function setData(data) {
+        if (data) {
+            var form = new mini.Form("dataForm");
+            var obj = mini.decode(data);
+
+            form.setData(obj.formData);
+            form.setChanged(false);
+
+            var grid = mini.get("dataGrid");
+            grid.setData(obj.listData);
+        }
+    }
+</script>
+<script type="text/javascript">
+    function returnData() {
+        var form = new mini.Form("dataForm");
+        var grid = mini.get("dataGrid");
+        var obj = {};
+        obj.formData = form.getData();
+        obj.listData = grid.getData();
+        closeWindow(obj);
+    }
+</script>

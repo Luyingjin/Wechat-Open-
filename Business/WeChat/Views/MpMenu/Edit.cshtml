@@ -1,0 +1,193 @@
+﻿<div class="mini-toolbar" style="padding: 2px; border-bottom: 0;">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 100%; text-align: left">
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="save">确定</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td style="white-space: nowrap;">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+    <input name="ID" class="mini-hidden" />
+    <input name="IsDelete" class="mini-hidden" />
+    <input name="MpID" class="mini-hidden" />
+    <input name="ParentID" class="mini-hidden" />
+    <input name="FullPath" class="mini-hidden" />
+    <input name="ChildCount" class="mini-hidden" />
+    <input name="Length" class="mini-hidden" />
+    <input name="ArticleID" class="mini-hidden" />
+    <input name="ArticleGroupID" class="mini-hidden" />
+    <input name="ImageID" class="mini-hidden" />
+    <input name="VideoID" class="mini-hidden" />
+    <input name="VoiceID" class="mini-hidden" />
+    <input name="ArticleMediaID" class="mini-hidden" />
+    <input name="ArticleGroupMediaID" class="mini-hidden" />
+    <input name="ImageMediaID" class="mini-hidden" />
+    <input name="VideoMediaID" class="mini-hidden" />
+    <input name="VoiceMediaID" class="mini-hidden" />
+    <div class="basediv">
+        <table width="100%" cellpadding="5" cellspacing="0" border="1" bordercolor="#333333"
+            bordercolordark="#FFFFFF">
+            <tr>
+                <td width="10%">名称&nbsp;&nbsp;<b style="color: red;">*</b>
+                </td>
+                <td width="35%">
+                    <input name="Name" class="mini-textbox" style="width: 100%;" required="true" vtype="maxLength:25;" />
+                </td>
+                <td width="10%">类型&nbsp;&nbsp;<b style="color: red;">*</b>
+                </td>
+                <td width="35%">
+                    <input class="mini-combobox" name="Type" style="width: 100%;" valuefield="value" textfield="text"
+                        data="MpButtonType" shownullitem="true" onvaluechanged="onTypeChanged" />
+                </td>
+            </tr>
+            <tr id="MediaTr" style="display:none">
+                <td>信息
+                </td>
+                <td colspan="3">
+                    <div name="MediaType" class="mini-radiobuttonlist" repeatitems="10" repeatlayout="table" borderstyle="border:1px solid #aaaaaa;"
+                    textfield="text" valuefield="value" data="MpButtonMediaType" shownullitem="true" onvaluechanged="onMediaTypeChanged">
+                </div>
+                </td>
+            </tr>
+            <tr class="UrlTr" style="display:none">
+                <td>跳转链接
+                </td>
+                <td colspan="3">
+                    <input name="LinkUrl" class="mini-textbox" style="width: 100%;" vtype="maxLength:500;" />
+                </td>
+            </tr>
+            @*<tr class="UrlTr" style="display:none">
+                <td></td>
+                <td colspan="3">
+                    <div name="GetOpenID" class="mini-checkbox" checked="false" readonly="false" text="是否追加openid"></div>
+                </td>
+            </tr>*@
+            <tr id="ContentTr" class="SubMedia" style="display:none">
+                <td>文本内容
+                </td>
+                <td colspan="3">
+                    <input name="Content" class="mini-textarea" style="width: 100%" vtype="maxLength:500" />
+                </td>
+            </tr>
+            <tr id="ArticleTr" class="SubMedia" style="display:none">
+                <td>
+                    单图文
+                </td>
+                <td colspan="3">
+                    <input textname="ArticleName" id="ArticleName" name="ArticleName" allowInput="false" style="width: 100%;
+                        text-align: left" class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="ArticleGroupTr" class="SubMedia" style="display:none">
+                <td>
+                    多图文
+                </td>
+                <td colspan="3">
+                    <input textname="ArticleGroupName" id="ArticleGroupName" name="ArticleGroupName" allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="ImageTr" class="SubMedia" style="display:none">
+                <td>
+                    图片
+                </td>
+                <td colspan="3">
+                    <input textname="ImageName" id="ImageName" name="ImageName"  allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="VideoTr" class="SubMedia" style="display:none">
+                <td>
+                    视频
+                </td>
+                <td colspan="3">
+                    <input textname="VideoName" id="VideoName" name="VideoName" allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="VoiceTr" class="SubMedia" style="display:none">
+                <td>
+                    音频
+                </td>
+                <td colspan="3">
+                    <input textname="VoiceName" id="VoiceName" name="VoiceName" allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+<script type="text/javascript">
+    @Html.GetEnum("WeChat.MpButtonType")
+    @Html.GetEnum("WeChat.MpButtonMediaType")
+
+    addSelector("ArticleName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpSelfArticle&MpID=" + getQueryString("MpID")
+    , { returnParams: "ArticleID:ID,ArticleName:Title,ArticleName:Title"});
+    addSelector("ArticleGroupName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpSelfArticleGroup&MpID=" + getQueryString("MpID")
+    , { returnParams: "ArticleGroupID:ID,ArticleGroupName:Name,ArticleGroupName:Name"});
+    addSelector("ImageName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxImageMedia&MpID=" + getQueryString("MpID")
+    , { returnParams: "ImageID:ID,ImageName:Name,ImageName:Name,ImageMediaID:MediaID"});
+    addSelector("VideoName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpMediaVideo&MpID=" + getQueryString("MpID")
+    , { returnParams: "VideoID:ID,VideoName:Title,VideoName:Title,VideoMediaID:MediaID"});
+    addSelector("VoiceName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpMediaVoice&MpID=" + getQueryString("MpID")
+    , { returnParams: "VoiceID:ID,VoiceName:Name,VoiceName:Name,VoiceMediaID:MediaID"});
+    function pageLoad() {
+    }
+
+    function onFormSetData() {
+        var functype = getQueryString("FuncType");
+        if (functype == "copy") {
+            var newId = "@Formula.FormulaHelper.CreateGuid()";
+            mini.getbyName("ID").setValue(newId);
+            mini.getbyName("NAME").setValue(mini.getbyName("NAME").getValue() + "-复制");
+        }
+        onTypeChanged();
+    }
+
+    //菜单类型改变时
+    function onTypeChanged(e) {
+        var type=mini.getbyName("Type").getValue();
+        if(type==""){
+            $("#MediaTr,.UrlTr").hide();
+        }
+        else if(type=="view"){
+            $(".UrlTr").show();
+            $("#MediaTr").hide();
+            $(".SubMedia").hide();
+        }
+        else if(type=="click"){
+            $(".UrlTr").hide();
+            $("#MediaTr").show();
+        }
+        onMediaTypeChanged();
+    }
+
+    //菜单素材类型改变时
+    function onMediaTypeChanged(e) {
+        var type=mini.getbyName("MediaType").getValue();
+        $(".SubMedia").hide();
+        if(type=="mpnews"){
+            $("#ArticleTr").show();
+        }
+        else if(type=="mpmultinews"){
+            $("#ArticleGroupTr").show();
+        }
+        else if(type=="text"){
+            $("#ContentTr").show();
+        }
+        else if(type=="voice"){
+            $("#VoiceTr").show();
+        }
+        else if(type=="image"){
+            $("#ImageTr").show();
+        }
+        else if(type=="video"){
+            $("#VideoTr").show();
+        }
+    }
+</script>

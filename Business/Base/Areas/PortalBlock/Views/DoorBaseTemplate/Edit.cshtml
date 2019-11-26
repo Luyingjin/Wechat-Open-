@@ -1,0 +1,72 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnSave" plain="true" iconcls="icon-save">保存</a> 
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<input name="BaseType" class="mini-hidden" />
+<div class="basediv" style="max-width:850px">
+    <table width="100%">
+        <tr style="height: 0px">
+            <td width="15%">
+            </td>
+            <td width="35%">
+            </td>
+            <td width="15%">
+            </td>
+            <td width="35%">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                标题
+            </td>
+            <td>
+                <input name="Title" style="width: 100%" class="mini-textbox" vtype="maxLength:200"
+                    required="true" />
+            </td>
+            <td>
+                是否默认
+            </td>
+            <td>
+                <input class="mini-combobox" name="IsDefault" style="width: 100%;" valuefield="value"
+                    textfield="text" data="TorF" required="true" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                能否编辑
+            </td>
+            <td>
+                <input class="mini-combobox" name="IsEdit" style="width: 100%;" valuefield="value"
+                    textfield="text" data="TorF" required="true" />
+            </td>
+            <td>
+                
+            </td>
+            <td>
+            </td>
+        </tr>
+    </table>
+</div>
+</form>
+<script language="javascript" type="text/javascript">
+    @Html.GetEnum("System.TorF")
+</script>
+<script language="javascript" type="text/javascript">
+    $(document).ready(function () {
+        $("#btnSave").bind("click", function () {
+            var id = getQueryString("ID");
+            save({ closeWindow: true });
+        });
+    });
+</script>

@@ -1,0 +1,111 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <div class="mini-toolbar" id="btnDiv">
+        <b>编码规则</b>
+    </div>
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" iconcls="icon-add" onclick="doExect('add')" plain="true">增加</a> 
+                 <a class="mini-button" iconcls="icon-edit" onclick="edit({url:'Edit?ID={ID}',title:'修改文件信息',height:400, width:620});" plain="true">编辑</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="del()" plain="true">删除</a>
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入编码或规则描述" style="width: 200px;"
+                    onenter="quickSearch('Code,RuleName');" onbuttonclick="quickSearch('Code,RuleName');" />    
+                    <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>            
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetRuleList" style="width: 100%;
+        height: 100%;" allowMoveColumn="false">
+        <div property="columns">
+            <div type="indexcolumn">
+            </div>
+            <div type="checkcolumn">
+            </div>
+            <div field="Code" width="120" headeralign="center" allowsort="true" align="left">
+            
+                编码</div>
+            <div field="RuleName" width="120" headeralign="center" renderer="onLinkRender" allowsort="true" align="left">
+                规则描述</div>
+            <div field="Prefix" headeralign="center" width="80" allowsort="true" align="center">
+                规则前缀</div>
+            <div field="Postfix" width="80" headeralign="center"  allowsort="true" align="center">
+                规则后缀</div>
+             <div field="Separative" headeralign="center" width="80" allowsort="true" align="center">
+                分隔符</div>
+            <div field="Digit" headeralign="center" width="80" allowsort="true" align="center">
+                序号位数</div>
+            <div field="StartNumber" width="80" headeralign="center" allowsort="true" align="center">
+                开始数值</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 215px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    编码
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Code" style="width: 75%;" class="mini-textbox" />
+                </td>  
+                <td width="10%" align="center">
+                    规则描述
+                </td>
+                 <td width="23%" align="left">
+                    <input name="$LK$RuleName" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                    规则前缀
+                </td>
+                 <td width="23%" align="left">
+                    <input name="$LK$Prefix" style="width: 75%;" class="mini-textbox" />
+                </td>      
+            </tr>
+             <tr>
+                <td width="10%" align="center">
+                    规则后缀
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Postfix" style="width: 75%;" class="mini-textbox" />
+                </td>  
+                <td width="10%" align="center">
+                    分隔符
+                </td>
+                 <td width="23%" align="left">
+                    <input name="$LK$Separative" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                    序号位数
+                </td>
+                 <td width="23%" align="left">
+                    <input name="$LK$Digit" style="width: 75%;" class="mini-textbox" />
+                </td>      
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //注册Grid链接列
+    addGridLink('dataGrid', 'Code', 'Edit?ID={ID}', { funcType: 'view', width: 620,
+        height: 400
+    });
+    function doExect(type) {
+        if (type == "add") {
+            add({ url: 'Edit', title: '添加编码规则', height: 400, width: 620 });
+        };
+    }
+</script>

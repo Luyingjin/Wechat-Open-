@@ -1,0 +1,166 @@
+﻿<style>
+    .Undo {background-image:url(/MvcConfig/Scripts/images/MyTask/Undo.png)}
+    .TimeInterval {background-image:url(/MvcConfig/Scripts/images/MyTask/Time.png)}
+    .Done {background-image:url(/MvcConfig/Scripts/images/MyTask/Done.png)}
+    .Delegate {background-image:url(/MvcConfig/Scripts/images/MyTask/delegate.png)}
+    .Market {background-image:url(/MvcConfig/Scripts/images/MyTask/market.png)}
+    .Project {background-image:url(/MvcConfig/Scripts/images/MyTask/project.png)}
+    .System {background-image:url(/MvcConfig/Scripts/images/MyTask/system.png)}
+    .Module {background-image:url(/MvcConfig/Scripts/images/MyTask/module.png)}
+</style>
+<div  class="mini-layout" style="width:100%;height:100%;">
+    <div title="任务区" region="west" width="150" showSplitIcon="true">
+        <!--Tree-->
+        <ul id="leftTree" class="mini-tree" url="GetMyTaskTree" style="width:100%;height:100%;" onload="onTreeLoad"
+            onnodeclick="onNodeSelect" showTreeIcon="true" textField="text" >        
+        </ul>
+    </div> 
+    <div title="center" region="center" style="border:0px;">
+        <iframe id="mainiframe" style="height:100%;width:100%;border:0px" frameborder="0px" src=""></iframe>
+        <div id="MyTabs" class="mini-tabs" style="width:100%;height:100%;display:none" onbeforecloseclick="onTabBeforeCloseClick">
+        </div>
+    </div>     
+</div>
+<script type="text/javascript">
+    var defaultStatus = getQueryString("Status") == "" ? "Undo" : getQueryString("Status");
+</script>
+<script language="javascript">
+    mini.parse();
+    var tree = mini.get("leftTree");
+    var tabs = mini.get("MyTabs");
+
+    $(function () {
+        var nodes = tree.findNodes(function (node) {
+            if (node.value == defaultStatus) return true;
+        });
+        tree.selectNode(nodes[0]);
+        if (defaultStatus == "Done")
+            $("#mainiframe").attr("src", "DoneList");
+        else
+            $("#mainiframe").attr("src", "UndoList");
+    });
+
+    function onNodeSelect(e) {
+        var selNode = tree.getSelectedNode();
+        var url = "";
+        var rootNode = getRootNode(selNode);
+        switch (rootNode.value) {
+            case "Undo":
+                url = "UndoList";
+                updateUndoNodes();
+                break;
+            case "Done":
+                url = "DoneList";
+                break;
+            case "Delegate":
+                url = "DelegateList";
+                break;
+            case "Design":
+                url = "/MvcConfig/Project/DesignTask/DesignTaskList";
+                break;
+        }
+        url = getFullUrl(url + "?", selNode);
+        if (url.indexOf("DoneList") > -1) {
+            $("#mainiframe").hide();
+            destroyIframeMemory($("#mainiframe")[0]);
+            var tabObj = {
+                title: "全部",
+                url: url
+            };
+            loadTimeIntervals(tabObj);
+            tabs.show();
+        }
+        else {
+            $("#mainiframe").attr("src", url);
+            $("#mainiframe").show();
+            tabs.hide();
+            tabs.removeAll();
+        }
+    }
+
+    function loadTimeIntervals(tab) {
+        execute("GetTimeIntervals", {
+            onComplete: function (data) {
+                var tabData = [];
+                tabData.push(tab);
+                $.each(data, function (i, item) {
+                    var url = tab.url
+                    if (item.name == "MoreEarlier")
+                        url = tab.url.replace("DoneList", "DoneHistoryList")
+                    item.url = url + "TimeInterval=" + item.name;
+                    item.ondestroy = function () {
+                        
+                    };
+                    tabData.push(item);
+                });
+                tabs.setTabs(tabData);
+            }
+        });
+    }
+
+    function getFullUrl(url, node) {
+        if (node.type == "TimeInterval")
+            url += "TimeInterval=" + node.value + "&";
+        else if (node.type == "Category")
+            url += "Category=" + node.category + "&";
+        if (node.type == "Status")
+            return url;
+        else
+            return getFullUrl(url, tree.getParentNode(node));
+    }
+
+    function getRootNode(node) {
+        if (typeof (tree.getParentNode(node).value) == "undefined")
+            return node;
+        else
+            return getRootNode(tree.getParentNode(node));
+    }
+
+    function onTreeLoad(e) {
+        var nodes = e.sender.findNodes(function (node) {
+            if (node.value == defaultStatus) return true;
+        });
+        if (nodes != null) {
+            $.each(nodes, function (i, node) {
+                e.sender.expandNode(node);
+            });
+        }
+        updateUndoNodes();
+    }
+
+    function updateUndoNodes() {
+        execute("GetUndoCategoryCount", {
+            onComplete: function (data) {
+                var nodes = tree.findNodes(function (node) {
+                    if (node.value == "Undo") return true;
+                });
+                $.each(nodes, function (i, node) {
+                    var undoNodes = tree.getAllChildNodes(node);
+                    undoNodes.push(node);
+                    $.each(undoNodes, function (i, childNode) {
+                        var categoryID = typeof (childNode.category) == "undefined" ? "" : childNode.category;
+                        var count = 0;
+                        $.each(data, function (i, item) {
+                            if (item.CategoryID == categoryID) {
+                                count = item.Count;
+                                return;
+                            }
+                        });
+
+                        if (count > 0)
+                            tree.setNodeText(childNode, childNode.name + "(" + count + ")");
+                        else
+                            tree.removeNode(childNode);
+                    });
+                });
+            }
+        });
+    }
+
+    function onTabBeforeCloseClick(e) {
+        var tabs = e.sender;
+        var ifm = tabs.getTabIFrameEl(e.tab);
+        destroyIframeMemory(ifm);
+    }
+
+</script>

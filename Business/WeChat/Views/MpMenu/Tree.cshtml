@@ -1,0 +1,132 @@
+﻿@{
+    ViewBag.Title = "菜单树";
+}
+<div class="mini-layout" style="width: 100%; height: 100%;">
+    <div region="west" width="240" showSplit="true" showcollapsebutton="true" style="border-left-width:1px;">
+        <div class="mini-fit">
+            <ul id="myTree" class="mini-tree" url="GetTree" style="width: 100%; height: 100%" showtreeicon="false" onnodeselect="onNodeSelect" expandonload="3" textfield="Name" idfield="ID" parentfield="ParentID" iconfield="NODETYPE" resultastree="false" selectonload="true" contextmenu="#treeMenu">
+            </ul>
+        </div>
+    </div>
+    <div region="center" style="border:0;" borderstyle="border:0;">
+        <div class="mini-fit">
+            <iframe id="myframe" name="myframe" src="" frameborder="0" style="width: 100%; height: 100%;" border="0"  scrolling="no"></iframe>
+            </div>
+    </div>
+</div>
+<ul id="treeMenu" class="mini-contextmenu" onbeforeopen="onBeforeOpen">
+    <li name="add" id="btnAdd" iconcls="icon-add" onclick="onAddNode">新增</li>
+    <li name="edit" id="btnEdit" iconcls="icon-edit" onclick="onEditNode">编辑</li>
+    <li name="remove" id="btnDel" iconcls="icon-remove" onclick="onRemoveNode">删除</li>
+    <li name="sync" id="btnSync" iconcls="icon-upload" onclick="onSyncNode">同步至微信</li>
+</ul>
+<script type="text/javascript">
+    var tree;
+    function pageLoad() {
+        tree = mini.get("myTree");
+    }
+
+    function onNodeSelect(e) {
+        var node = e.node;
+        if (node.Length != 1) {
+            var url = "Edit?ID=" + node.ID + "&MpID=" + node.MpID + "&FuncType=view";
+            $('#myframe').attr("src", url);
+        }
+    }
+
+    function onAddNode() {
+        var node = tree.getSelectedNode();
+        var url = "Edit?ParentID=" + node.ID + "&FuncType=insert" + "&MpID=" + node.MpID;
+        openWindow(url, {
+            title: "新增", width: 600, height: 220, onDestroy: function () {
+                tree.reload();
+            }
+        });
+    }
+
+    function onEditNode() {
+        var node = tree.getSelectedNode();
+        var url = "Edit?ID=" + node.ID;
+        openWindow(url, {
+            title: "编辑", width: 600, height: 220, onDestroy: function () {
+                tree.reload();
+            }
+        });
+    }
+
+    function onRemoveNode() {
+        var node = tree.getSelectedNode();
+        if (node) {
+            if (node.Length == 2) {
+                $.ajax({
+                    type: "GET",
+                    url: "GetChildCount?ID=" + node.ID,
+                    dataType: "json",
+                    success: function (data) {
+                        var num = parseInt(data);
+                        if (num > 0) {
+                            msgUI("该菜单有子菜单，不允许删除！");
+                        } else {
+                            addExecuteParam("ID", node.ID);
+                            execute("DeleteNode", { mustConfirm: true, onComplete: function () { msgUI("删除成功！"); tree.reload(); } });
+                        }
+                    }
+                });
+            }
+            else if (node.Length == 3) {
+                addExecuteParam("ID", node.ID);
+                execute("DeleteNode", { mustConfirm: true, onComplete: function () { msgUI("删除成功！"); tree.reload(); } });
+            }
+        }
+    }
+
+    function onSyncNode() {
+        if (confirm("确定要将菜单同步到微信吗？")) {
+            addExecuteParam("MpID", getQueryString("MpID"));
+            execute("SyncNode", { mustConfirm: false, onComplete: function () { msgUI("同步成功！"); tree.reload(); } });
+        }
+    }
+
+    function onBeforeOpen(e) {
+        var menu = e.sender;
+        var node = tree.getSelectedNode();
+        if (!node) {
+            e.cancel = true;
+            return;
+        }
+
+        var addItem = mini.getbyName("add", menu);
+        var editItem = mini.getbyName("edit", menu);
+        var removeItem = mini.getbyName("remove", menu);
+
+        if (node.Length == 1) {
+            if (node.ChildCount < 3)
+                addItem.show();
+            else
+                addItem.hide();
+            editItem.hide();
+            removeItem.hide();
+        }
+        else if (node.Length == 2) {
+            if (node.ChildCount < 5)
+                addItem.show();
+            else
+                addItem.hide();
+            editItem.show();
+            if (node.ChildCount > 0)
+                removeItem.hide();
+            else
+                removeItem.show();
+        }
+        else if (node.Length == 3) {
+            addItem.hide();
+            editItem.show();
+            removeItem.show();
+        }
+        else {
+            addItem.hide();
+            editItem.hide();
+            removeItem.hide();
+        }
+    }
+</script>

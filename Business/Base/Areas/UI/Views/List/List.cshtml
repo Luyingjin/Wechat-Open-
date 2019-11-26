@@ -1,0 +1,103 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" allowresize="true">
+    <div size="150" showcollapsebutton="true">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetTree?RootFullID=0" textfield="Name" idfield="ID" parentfield="ParentID" resultastree="false"
+                onnodeclick="onNodeSelect" expandonload="1">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" borderstyle="border-left:0px">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-add" onclick="add({url:'Edit?CategoryID={ID}',paramFrom:'dataTree'});">增加</a>
+                        <a class="mini-button" iconcls="icon-copy" onclick="execute('Clone?ListID={ID}',{mustConfirm:true,mustSelectOneRow:true,actionTitle:'克隆'});">克隆</a>
+                        <a class="mini-button" iconcls="icon-remove" onclick="del();">删除</a>
+                        <a class="mini-button" iconcls="icon-refer" onclick="createMenu();">创建入口并授权</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name');" onbuttonclick="quickSearch('Code,Name');" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetList" multiselect="true" borderstyle="border-left:0px;border-right:0px;border-bottom:0px">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="Code" width="120" allowsort="true" align="center">列表编号</div>
+                    <div field="Name" width="150" allowsort="true">列表名称</div>
+                    <div headeralign="center" header="相关业务数据">
+                        <div property="columns">
+                            <div field="ConnName" width="80" allowsort="true" align="center">库名</div>
+                            <div field="SQL" width="200" allowsort="true">SQL</div>
+                        </div>
+                    </div>
+                    <div field="ModifyTime" align="center" datatype="date" dateformat="yyyy-MM-dd HH:mm" width="120" allowsort="true">最后修订时间</div>
+                    <div headeralign="center" header="修订">
+                        <div property="columns">
+                            <div field="Base" width="60" allowsort="true" align="center">基本信息</div>
+                            <div field="LayoutGrid" width="60" allowsort="true" align="center">表格属性</div>
+                            <div field="LayoutField" width="60" allowsort="true" align="center">字段信息</div>
+                            <div field="LayoutButton" width="60" allowsort="true" align="center">按钮信息</div>
+                        </div>
+                    </div>
+                    <div field="PreView" width="60" align="center">预览</div>
+                    <div field="Export" width="80" align="center">导出HTML</div>
+                    <div field="ExportSql" width="80" align="center">导出Sql</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    addGridLink("dataGrid", "PreView", "/MvcConfig/UI/List/PageView?TmplCode={Code}", { linkText: '预览', width: 1000 });
+    addGridLink("dataGrid", "Base", "Edit?ID={ID}", { linkText: '基本信息', width: 1000 });
+    addGridLink("dataGrid", "LayoutGrid", "LayoutGridEdit?ID={ID}", { linkText: '表格属性', width: 350, refresh: false });
+    addGridLink("dataGrid", "LayoutField", "LayoutFieldEdit?ID={ID}&TmplCode={Code}", { linkText: '字段信息', width: 1000, refresh: false });
+    addGridLink("dataGrid", "LayoutButton", "LayoutButtonEdit?ID={ID}&TmplCode={Code}", { linkText: '按钮信息', width: 1000, refresh: false });
+    addGridButton("dataGrid", "Export", { linkText: '导出HTML', onButtonClick: function (row) {
+        var url = "/MvcConfig/UI/List/ExportHtml?TmplCode=" + row["Code"];
+        window.open(url);
+    }
+    });
+    addGridButton("dataGrid", "ExportSql", { linkText: '导出Sql', onButtonClick: function (row) {
+        var url = "/Base/UI/ExportSql/SqlFile?DefID=" + row["ID"] + "&FileCode=List_" + row["Code"] + "&TableName=S_UI_List";
+        window.open(url);
+    }
+    });
+    jQuery(".gw-grid-toolbar .mini-button").hide();
+</script>
+<script type="text/javascript">
+    //树节点点击事件
+    function onNodeSelect(e) {
+        if (e.isLeaf) {
+            jQuery(".gw-grid-toolbar .mini-button").show();
+            var dataGrid = mini.get("dataGrid");
+            dataGrid.setUrl("GetList?CategoryID=" + e.node.FullID.split('.')[1]);
+            dataGrid.load();
+        }
+        else {
+            var dataGrid = mini.get("dataGrid");
+            dataGrid.setUrl("GetList");
+            dataGrid.load();
+            jQuery(".gw-grid-toolbar .mini-button").hide();
+        }
+    }
+</script>
+<script type="text/javascript">
+    function createMenu() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        if (rows.length != 1) {
+            msgUI("请选择一行！");
+            return;
+        }
+        var url = "CreateMenu?ListID=" + rows[0]["ID"];
+        execute(url, { onComplete: function (text) {
+            msgUI("创建菜单入口成功！"); 
+        }
+        });
+    }
+</script>

@@ -1,0 +1,89 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" allowresize="true">
+    <div size="150" showcollapsebutton="true">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetTree?RootFullID=0" textfield="Name" idfield="ID" parentfield="ParentID" resultastree="false"
+                onnodeselect="onNodeSelect" expandonload="1">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" borderstyle="border-left:0px">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-remove" onclick="del();">删除</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入定义名称或实例名称" onenter="quickSearch('NAME,INSTANCENAME');" onbuttonclick="quickSearch('NAME,INSTANCENAME');" />
+                        <a class="mini-button" onclick="showWindow('queryWindow');" iconcls="icon-find">详细查询</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" multiselect="true" url="GetList?Status=Complete&NodeFullID=0" borderstyle="border-left:0px;border-right:0px;border-bottom:0px">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="view"></div>
+                    <div field="CREATETIME" dateformat="yyyy-MM-dd" width="100" align="center" allowsort="true">启动日期</div>
+                    <div field="NAME" width="200" allowsort="true">流程定义名称</div>
+                    <div field="INSTANCENAME" width="*" allowsort="true">流程实例名称</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="13%">
+                    流程定义名称
+                </td>
+                <td width="35%">
+                    <input name="$LK$NAME" class="mini-textbox" style="width: 100%;" />
+                </td>
+                <td width="13%">
+                    流程实例名称
+                </td>
+                <td width="35%">
+                    <input name="$LK$INSTANCENAME" class="mini-textbox" style="width: 100%;" />
+                </td>
+                <td width="4%">
+                </td>
+            </tr>
+            <tr>
+                <td width="13%">
+                    启动日期&nbsp;从
+                </td>
+                <td width="35%">
+                    <input name="$FR$CREATETIME" class="mini-datepicker" style="width: 100%;" />
+                </td>
+                <td width="13%">
+                    至
+                </td>
+                <td width="35%">
+                    <input name="$TO$CREATETIME" class="mini-datepicker" style="width: 100%;" />
+                </td>
+                <td width="4%">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div><a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">查询</a>
+            <a class="mini-button" onclick="clearQueryForm()" iconcls="icon-undo">清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //树节点点击事件
+    function onNodeSelect(e) {
+        var dataGrid = mini.get("dataGrid");
+        dataGrid.setUrl("GetList?Status=Complete&NodeFullID=" + e.node.FullID);
+        dataGrid.load();
+    }
+
+    addGridLink("dataGrid", "view", "/MvcConfig/Workflow/Monitor/Edit?ID={ID}&FuncType=FlowTrace&IsFinishedList=True", { linkText: '查看', title: '流程跟踪', width: 1000 });
+
+</script>

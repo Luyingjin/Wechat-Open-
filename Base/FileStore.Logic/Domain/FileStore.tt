@@ -1,0 +1,43 @@
+﻿<#@ include file="EF.Reverse.POCO.Core.ttinclude" #>
+<#
+	//TODO:设置数据库连接名和实体库名称
+	ConnectionStringName = "FileStore";  //所使用数据库连接名(必须为SqlServer数据库连接，在app.setting中)
+	DbContextName = "FileStoreEntities"; //实体库名称
+	NullStringIsEmpty = false;			//NULL符串属性是否默认为string.Empty
+	DboName = "";						 //Sqlserver请使用空字符串，Oracle请使用用户名+"."
+
+
+
+    // v1.5.1
+    // Settings      
+    // Namespace = ""; // Override the namespace if you want to   
+    MakeClassesPartial = true;
+
+    // If there are multiple schema, then the table name is prefixed with the schema, except for dbo.
+    // Ie. dbo.hello will be Hello.
+    //     abc.hello will be AbcHello.
+    SchemaName = null;
+    
+
+    // Use the following table/view name regex filters to include or exclude tables/views
+    // Exclude filters are checked first and tables matching filters are removed.
+    //  * If left null, none are excluded.
+    //  * If not null, any tables matching the regex are excluded.
+    // Include filters are checked second.
+    //  * If left null, all are included.
+    //  * If not null, only the tables matching the regex are included.
+    //  Example:    TableFilterExclude = new Regex(".*auto.*");
+    //              TableFilterInclude = new Regex("(.*_FR_.*)|(data_.*)");
+    //              TableFilterInclude = new Regex("^table_name1$|^table_name2$|etc");
+    TableFilterExclude = null;
+    TableFilterInclude = null;
+
+    // Read schema
+    var tables = LoadTables();
+    
+    // Generate output
+    if (tables.Count>0)
+    {
+#>
+<#@ include file="EF.Reverse.POCO.ttinclude" #>
+<# } #>

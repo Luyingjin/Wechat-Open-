@@ -1,0 +1,38 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" id="btnSave" iconcls="icon-add" onclick="add({title:'群发消息',height:'420px'})" plain="true">
+                    群发</a><a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="MessageType" width="20%" headeralign="center" align="center" >
+                消息类型</div>
+            <div field="CreateDate" width="20%" headeralign="center" align="center" dateFormat="yyyy-MM-dd HH:mm:ss" >
+                发送时间</div>
+            <div field="State" width="20%" headeralign="center" align="center" >
+                状态</div>
+            <div field="SendCount" width="20%" headeralign="center" align="right" >
+                发送人数</div>
+            <div field="SuccessCount" width="20%" headeralign="center" align="right" >
+                成功人数</div>
+            <div field="FailCount" width="20%" headeralign="center" align="right" >
+                失败人数</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    @Html.GetEnum("WeChat.MpButtonMediaType")
+    addGridEnum("dataGrid", "MessageType", "MpButtonMediaType");
+</script>

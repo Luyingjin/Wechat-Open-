@@ -1,0 +1,246 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>个人桌面</title>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Desktop/jsLib/jquery-1.7.1.min.js")"></script>
+    <script src="@Url.Content("/CommonWebResource/CoreLib/MiniUI/miniui.js")" type="text/javascript"></script>  
+    <script src="@Url.Content("/CommonWebResource/CoreLib/MiniUI/baseMiniuiExt.js")" type="text/javascript"></script>   
+    <script src="@Url.Content("/CommonWebResource/Theme/Default/MiniCssInc.js")" type="text/javascript"></script>
+    <script type="text/javascript" src="@Url.Content("~/Scripts/Desktop/jsLib/myLib.js")"></script>
+    <script type="text/javascript">
+        $(function () {
+            myLib.progressBar();
+            Refresh(true);
+      });
+        $.include(['@Url.Content("~/Scripts/Desktop/themes/default/css/desktop.css")', '@Url.Content("~/Scripts/Desktop/themes/default/css/plugin.css")', '@Url.Content("~/Scripts/Desktop/jsLib/jquery-ui-1.8.18.custom.css")', '@Url.Content("~/Scripts/Desktop/jsLib/jquery-smartMenu/css/smartMenu.css")', '@Url.Content("~/Scripts/Desktop/jsLib/jquery-ui-1.8.18.custom.min.js")', '@Url.Content("~/Scripts/Desktop/jsLib/jquery.winResize.js")', '@Url.Content("~/Scripts/Desktop/jsLib/jquery-smartMenu/js/mini/jquery-smartMenu-min.js")', '@Url.Content("~/Scripts/Desktop/jsLib/desktop.js")']);
+        $(window).load(function () {
+            myLib.stopProgress();
+
+            //这里本应从数据库读取json数据，这里直接将数据写在页面上
+            var lrBarIconData = {
+                'app0': {
+                    'title': '新任务',
+                    'url': '/MvcConfig/WorkFlow/Task/MyTask',
+                    'winWidth': 800,
+                    'winHeight': 600
+                },
+                'app1': {
+                    'title': '新消息',
+                    'url': '/Base/ShortMsg/Msg/Index',
+                    'winWidth': 800,
+                    'winHeight': 600
+                },
+                'app2': {
+                    'title': '我的日程',
+                    'url': '/Base/PortalBlock/Calendar/Index',
+                    'winWidth': 800,
+                    'winHeight': 600
+                }
+            };
+            //这里本应从数据库读取json数据，这里直接将数据写在页面上			   
+            var deskIconData = @Html.Raw(ViewBag.DeskIconData);
+
+            //存储桌面布局元素的jquery对象
+            myLib.desktop.desktopPanel();
+
+            //初始化桌面背景
+            myLib.desktop.wallpaper.init("@Url.Content("~/Scripts/Desktop/themes/default/images/blue.jpg")");
+
+            //初始化任务栏
+            myLib.desktop.taskBar.init();
+
+            //初始化桌面图标
+            myLib.desktop.deskIcon.init(deskIconData);
+
+            //初始化桌面导航栏
+            myLib.desktop.navBar.init();
+
+            //初始化侧边栏
+            myLib.desktop.lrBar.init(lrBarIconData);
+
+            //初始化组件
+            var pluginData = [{key:"weather",name:"天气预报",url:"/Base/Desktop/Plugin/weather",width:200,height:290,IsUse:"T"}];
+            myLib.desktop.plugin.init(pluginData);
+        });
+
+        //添加应用函数
+        function addIcon(data) {
+            myLib.desktop.deskIcon.addIcon(data);
+        }
+
+        function addWeather(){
+             var data = myLib.desktop.plugin.getData();
+             $.each(data,function(i,item){
+                if (item.key == "weather"){
+                    data[i].IsUse = "T";
+                    myLib.desktop.plugin.add(data[i]);
+                }
+             });
+        }
+
+        function closeWindow(pageIndex) {
+            var w = $("#myWin_addIcon" + pageIndex.toString());
+            myLib.desktop.win.closeWin(w);
+        }
+
+        function GotoEnterprisePortal() {
+            window.parent.switchPortal();
+        }
+
+        function Refresh(isFirst) {
+            jQuery.getJSON("/Portal/AjaxService.aspx?method=refresh", function (data) {
+                if (!data) return;
+                $("#newTask").text(data.NewTask);
+                $("#newMessage").text(data.NewMessage);
+
+                if (data.NewTask == "0")
+                    $("#newTask").hide();
+                else
+                    $("#newTask").show();
+
+                if (data.NewMessage == "0")
+                    $("#newMessage").hide();
+                else
+                    $("#newMessage").show();
+            });
+            if (isFirst) {
+                setTimeout("Refresh(true)", 300000); //5分钟
+            }
+
+        }
+
+    </script>
+</head>
+<body>
+    <div class="goto_enterprise" onclick="GotoEnterprisePortal()"></div>
+    <div id="wallpapers">
+    </div>
+    <div id="navBar">
+        <a href="#" class="currTab" title="桌面1"></a>
+        <a href="#" title="桌面2"></a>
+        <a href="#" title="桌面3"></a>
+        <a href="#" title="桌面4"></a>
+    </div>
+    <div id="lr_bar">
+        <ul id="default_app" style="height: 300px;">
+            <li id="app0"><span>
+                <div class="txInfo" id="newTask">
+                    </div>
+                <img src="@Url.Content("~/Scripts/Desktop/icon/min/task.png")" title="我的任务" /></span><div
+                    class="text">
+                    我的任务<s></s></div>
+            </li>
+            <li id="app1"><span>
+                <div class="txInfo" id="newMessage">
+                    </div>
+                <img src="@Url.Content("~/Scripts/Desktop/icon/min/news.png")" title="我的消息" /></span><div
+                    class="text">
+                    我的消息<s></s></div>
+            </li>
+            <li id="app2"><span>
+                <img src="@Url.Content("~/Scripts/Desktop/icon/min/calendar.png")" title="我的日程" /></span><div
+                    class="text">
+                    我的日程<s></s></div>
+            </li>
+        </ul>
+        <div id="default_tools">
+            <span id="showZm_btn" title="全屏显示"></span>@*<span id="shizhong_btn" title="时钟"></span>*@
+            <span id="weather_btn" title="天气预报" onclick="addWeather()"></span>@*<span id="them_btn" title="主题"></span>*@
+        </div>
+        <div id="start_block">
+            <a title="开始" id="start_btn"></a>
+            <div id="start_item">
+                <ul class="item admin">
+                    <li><span class="adminImg"></span>金慧软件</li>
+                </ul>
+                <ul class="item">
+                    <li onclick="aboutUS()"><span class="about_btn"></span>关于我们</li>
+                    <li onclick="logout()"><span class="logout_btn"></span>退出系统</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="desktopPanel">
+        <div id="desktopInnerPanel">
+            <div class="deskIcon currDesktop" pageindex="0">
+                @foreach (var shortCut in ViewBag.ShortCuts_Page0)
+                {
+                    <li class="desktop_icon" id="@shortCut.ID"><span class="icon">
+                        <img src="@Url.Content("/Desktop/" + shortCut.IconImage)" /></span>
+                        <div class="text">@shortCut.Name<s></s></div>
+                    </li>
+                }
+                <li class="desktop_icon add_icon" id="addIcon0"><span class="icon">
+                    <img src="@Url.Content("~/Scripts/Desktop/themes/default/images/add_icon.png")" /></span>
+                    <div class="text">
+                        添加 <s></s>
+                    </div>
+                </li>
+            </div>
+            <div class="deskIcon" pageindex="1">
+                @foreach (var shortCut in ViewBag.ShortCuts_Page1)
+                {
+                    <li class="desktop_icon" id="@shortCut.ID"><span class="icon">
+                        <img src="@Url.Content("/Desktop/" + shortCut.IconImage)" /></span>
+                        <div class="text">@shortCut.Name<s></s></div>
+                    </li>
+                }
+                <li class="desktop_icon add_icon" id="addIcon1"><span class="icon">
+                    <img src="@Url.Content("~/Scripts/Desktop/themes/default/images/add_icon.png")" /></span>
+                    <div class="text">
+                        添加 <s></s>
+                    </div>
+                </li>
+            </div>
+            <div class="deskIcon" pageindex="2">
+                @foreach (var shortCut in ViewBag.ShortCuts_Page2)
+                {
+                    <li class="desktop_icon" id="@shortCut.ID"><span class="icon">
+                        <img src="@Url.Content("/Desktop/" + shortCut.IconImage)" /></span>
+                        <div class="text">@shortCut.Name<s></s></div>
+                    </li>
+                }
+                <li class="desktop_icon add_icon" id="addIcon2"><span class="icon">
+                    <img src="@Url.Content("~/Scripts/Desktop/themes/default/images/add_icon.png")" /></span>
+                    <div class="text">
+                        添加 <s></s>
+                    </div>
+                </li>
+            </div>
+            <div class="deskIcon" pageindex="3">
+                @foreach (var shortCut in ViewBag.ShortCuts_Page3)
+                {
+                    <li class="desktop_icon" id="@shortCut.ID"><span class="icon">
+                        <img src="@Url.Content("/Desktop/" + shortCut.IconImage)" /></span>
+                        <div class="text">@shortCut.Name<s></s></div>
+                    </li>
+                }
+                <li class="desktop_icon add_icon" id="addIcon3"><span class="icon">
+                    <img src="@Url.Content("~/Scripts/Desktop/themes/default/images/add_icon.png")" /></span>
+                    <div class="text">
+                        添加 <s></s>
+                    </div>
+                </li>
+            </div>
+        </div>
+    </div>
+    <div id="taskBarWrap">
+        <div id="taskBar">
+            <div id="leftBtn">
+                <a href="#" class="upBtn"></a>
+            </div>
+            <div id="rightBtn">
+                <a href="#" class="downBtn"></a>
+            </div>
+            <div id="task_lb_wrap">
+                <div id="task_lb">
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

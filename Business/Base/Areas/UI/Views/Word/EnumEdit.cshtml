@@ -1,0 +1,98 @@
+﻿<div class="mini-tabs" id="tab" activeindex="0" style="width: 100%; height: 100%; padding: 0px">
+    <div title="枚举编辑" name="EnumEdit">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-add" onclick="addRow({},{isLast:true});">添加</a>
+                        <a class="mini-button" iconcls="icon-remove" onclick="delRow();">移除</a>
+                        <a class="mini-button" iconcls="icon-save" onclick="returnData();">确定</a>
+                        <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                        <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+                    </td>
+                    <td id="btnRight">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="value" width="100" vtype="required;">枚举值
+                        <input property="editor" class="mini-textbox" style="width: 100%;" />
+                    </div>
+                    <div field="text" width="*" vtype="required;">枚举文本
+                        <input property="editor" class="mini-textbox" style="width: 100%;" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div title="枚举选择" name="EnumSelector" style="overflow: hidden;">
+        <div class="mini-toolbar" id="btnDiv" style="width: 100%">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" plain="true" iconcls="icon-refer" onclick="returnEnumKey();">选择</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="enumKey" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name',{queryBoxId:'enumKey',gridId:'enumGrid'});" onbuttonclick="quickSearch('Code,Name',{queryBoxId:'enumKey',gridId:'enumGrid'});" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="enumGrid" class="mini-datagrid" style="width: 100%;" url="GetEnumList" showpager="false">
+            <div property="columns">
+                <div field="Code" width="150" allowsort="true">编号</div>
+                <div field="Name" width="*" allowsort="true">名称</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function setData(data) {
+        if (data) {
+            var grid = mini.get("dataGrid");
+            try {
+                grid.setData(mini.decode(data));
+            } catch (e) { }
+        }
+    }
+    function returnData() {
+        var grid = mini.get("dataGrid");
+        var data = grid.getData();
+        var result = [];
+        for (var i = 0; i < data.length; i++) {
+            result.push({ value: data[i].value, text: data[i].text });
+        }
+        closeWindow(result);
+    }
+
+    function returnEnumKey() {
+        var grid = mini.get("enumGrid");
+        var row = grid.getSelected();        
+        if (row)
+            closeWindow(row["Code"]);
+        else
+            closeWindow("");
+    }
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }        
+</script>
+<script type="text/javascript">
+    function pageLoad() {
+        $(".mini-tabs-body").css("overflow-x", "hidden");
+    }
+</script>

@@ -1,0 +1,40 @@
+﻿<style>
+    .send {background-image:url(/CommonWebResource/RelateResource/image/icons/icon_mail.gif)}
+    .receive {background-image:url(/CommonWebResource/RelateResource/image/icons/icon_airmail.gif)}
+    .delete {background-image:url(/Base/Scripts/ShortMsg/deleteon.png)}
+</style>
+<div  class="mini-layout" style="width:100%;height:100%;">
+    <div title="消息区" region="west" width="120" showSplitIcon="true">
+        <!--Tree-->
+        <ul id="leftTree" class="mini-tree" style="width:100%;height:100%;" 
+           onnodeclick="onNodeSelect" showTreeIcon="true" textField="text" idField="id" 
+           parentField="pid" resultAsTree="false">        
+        </ul>
+    </div> 
+    <div title="center" region="center" style="border:0px;">
+        <iframe id="mainiframe" style="height:100%;width:100%;border:0px" frameborder="0px" src="/Base/ShortMsg/ReceiveMsg/List"></iframe>
+    </div>     
+</div>
+<script type="text/javascript">
+    var MsgTreeData = [{ id: "sendNew", pid: "", text: "发送新消息", url: "/Base/ShortMsg/SendMsg/Edit?FuncType=Send", iconCls: "icon-add" }, { id: "receive", pid: "", text: "已接收消息", url: "/Base/ShortMsg/ReceiveMsg/List", iconCls: "receive" }, { id: "send", pid: "", text: "已发送消息", url: "/Base/ShortMsg/SendMsg/List", iconCls: "send" }, { id: "delete", pid: "", text: "已删除消息", url: "/Base/ShortMsg/DeleteMsg/List", iconCls: "delete"}];
+</script>
+<script language="javascript">
+    mini.parse();
+    var tree = mini.get("leftTree");
+
+    function onNodeSelect(e) {
+        $("#mainiframe").attr("src", e.node.url);
+    }
+
+    $(function () {
+        tree.loadData(MsgTreeData);
+    });
+
+    $(function () {
+        var nodes = tree.findNodes(function (node) {
+            if (node.id == "receive") return true;
+        });
+        tree.selectNode(nodes[0]);
+    });
+
+</script>

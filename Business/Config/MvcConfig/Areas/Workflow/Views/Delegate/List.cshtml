@@ -1,0 +1,62 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" allowresize="true">
+    <div size="150" showcollapsebutton="true">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%"
+                url="GetTree?RootFullID=0" textfield="Name" idfield="ID" parentfield="ParentID"
+                resultastree="false" onnodeselect="onNodeSelect" expandonload="1">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" borderstyle="border-left:0px">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-user" onclick="delegateFlow();">委托</a>
+                        <a class="mini-button" iconcls="icon-undo" onclick="execute('CancelDelegateFlow',{mustSelectRow:true,actionTitle:'取消委托'})">
+                            取消</a>
+                        <a class="mini-button" iconcls="icon-user" onclick="delegateAllFlow();">全委托</a>
+                        <a class="mini-button" iconcls="icon-undo" onclick="execute('CancelDelegateAllFlow',{mustConfirm:true,actionTitle:'取消委托'})">
+                            全取消</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name');"
+                            onbuttonclick="quickSearch('Code,Name');" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" multiselect="true" url="GetList?NodeFullID=0"
+                borderstyle="border-left:0px;border-right:0px;border-bottom:0px">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="Code" width="100">编号</div>
+                    <div field="Name" width="*">名称</div>
+                    <div field="DelegateUserName" width="60" align="center">委托人</div>
+                    <div field="BeDelegateUserName" width="60" align="center">被委托人</div>
+                    <div field="BeginTime" width="80" dateformat="yyyy-MM-dd" align="center">开始时间</div>
+                    <div field="EndTime" width="80" dateformat="yyyy-MM-dd" align="center">结束时间</div>          
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //树节点点击事件
+    function onNodeSelect(e) {
+        var dataGrid = mini.get("dataGrid");
+        dataGrid.setUrl("GetList?NodeFullID=" + e.node.FullID);
+        dataGrid.load();
+    }
+
+    function delegateFlow() {
+        var ids = getValues(mini.get("dataGrid").getSelecteds(), "ID");
+        openWindow("Edit?defFlowIDs=" + ids, { title: '流程委托', mustSelectRow: true,height:350 });
+    }
+
+    function delegateAllFlow() {
+        openWindow("Edit?defFlowIDs=all", { title: '流程委托', height: 350 });
+    }
+
+</script>

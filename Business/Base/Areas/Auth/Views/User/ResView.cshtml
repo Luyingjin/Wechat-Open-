@@ -1,0 +1,45 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+            </td>
+            <td class="gw-toolbar-right">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入工号或姓名" onenter="quickSearch('WorkNo,Name');"
+                    onbuttonclick="quickSearch('WorkNo,Name');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetResList"
+        multiselect="true" pagesize="5" ondrawcell="onDrawCell" frozenstartcolumn="0"
+        frozenendcolumn="2" oncellclick="onCellClick" sizelist="[5]">
+        <div property="columns">
+            <div field="DeptName" width="200" allowsort="true">部门</div>
+            <div field="WorkNo" width="60" allowsort="true">工号</div>
+            <div field="Name" width="60" allowsort="true">姓名</div>
+            @Html.Raw(ViewBag.Fields)
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function onDrawCell(e) {
+        if (e.field != "DeptName" && e.field != "WorkNo" && e.field != "Name") {
+            if (e.value == "1")
+                e.cellHtml = "√";
+            else if (e.value == 0)
+                e.cellHtml = "";
+        }
+    }
+
+    function onCellClick(e) {
+        if (e.record[e.field] == "1" && e.field != "DeptName" && e.field != "WorkNo" && e.field != "Name") {
+
+            var url = "GetResFrom?UserCode=" + e.record["Code"] + "&ResID=" + e.field
+            execute(url, { showLoading: false, onComplete: function (data) {
+                msgUI(data.userName);
+            }
+            });
+        }
+    }
+</script>

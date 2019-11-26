@@ -1,0 +1,97 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="saveNode();">保存</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<input name="ParentID" class="mini-hidden" />
+<input name="FullID" class="mini-hidden" />
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        全称
+                    </td>
+                    <td colspan="3">
+                        <input name="Name" class="mini-textbox" style="width: 100%;" required="true" vtype="maxLength:200;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        简称
+                    </td>
+                    <td>
+                        <input name="ShortName" class="mini-textbox" style="width: 100%;" vtype="maxLength:50;" />
+                    </td>
+                    <td>
+                        编号
+                    </td>
+                    <td>
+                        <input name="Code" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        类型
+                    </td>
+                    <td>
+                        <input name="Type" class="mini-combobox" style="width: 100%" data="OrgType" required="true" />
+                    </td>
+                    <td>
+                        性质
+                    </td>
+                    <td>
+                        <input name="Character" class="mini-combobox" style="width: 100%" data="OrgCharacter" multiselect="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        所在地
+                    </td>
+                    <td>
+                        <input name="Location" class="mini-textbox" style="width: 100%" />
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        描述
+                    </td>
+                    <td colspan="3">
+                        <input name="Description" class="mini-textarea" style="width: 100%; height: 370px;" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+@Html.GetEnum(typeof(Config.OrgType));
+@Html.GetEnum("System.OrgCharacter");
+</script>

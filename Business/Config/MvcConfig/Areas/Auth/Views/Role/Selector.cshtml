@@ -1,0 +1,125 @@
+﻿<div class="mini-tabs" id="tabRole" activeindex="0" style="width: 100%; height: 100%;
+    padding: 0px">
+    <div title="组织角色" name="OrgRole">
+        <div class="mini-toolbar" id="btnDiv" style="width: 700px">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" plain="true" iconcls="icon-refer" onclick="returnValue();">选择</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="orgRoleKey" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称"
+                            onenter="quickSearch('Code,Name',{queryBoxId:'orgRoleKey',gridId:'orgRoleGrid'});"
+                            onbuttonclick="quickSearch('Code,Name',{queryBoxId:'orgRoleKey',gridId:'orgRoleGrid'});" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="orgRoleGrid" class="mini-datagrid" sortmode="client" onload="checkOrgRole"
+            style="width: 700px; height: 375px;" url="GetOrgRoleList" showpager="false">
+            <div property="columns">
+                <div type="checkcolumn"></div>
+                <div field="Code" width="100" allowsort="true" align="center">编号</div>
+                <div field="Name" width="200" allowsort="true" align="center">名称</div>
+                <div field="Description" width="*">描述</div>
+            </div>
+        </div>
+    </div>
+    <div title="系统角色" name="SysRole">
+        <div class="mini-toolbar" id="btnDiv" style="width: 700px">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" plain="true" iconcls="icon-refer" onclick="returnValue();">选择</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="sysRoleKey" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称"
+                            onenter="quickSearch('Code,Name',{queryBoxId:'sysRoleKey',gridId:'sysRoleGrid'});"
+                            onbuttonclick="quickSearch('Code,Name',{queryBoxId:'sysRoleKey',gridId:'sysRoleGrid'});" />
+                    </td> 
+                </tr>
+            </table>
+        </div>
+        <div id="sysRoleGrid" class="mini-datagrid" sortmode="client" onload="checkSysRole"
+            style="width: 700px; height: 375px;" url="GetSysRoleList" showpager="false">
+            <div property="columns">
+                <div type="checkcolumn"></div>
+                <div field="Code" width="100" allowsort="true" align="center">编号</div>
+                <div field="Name" width="200" allowsort="true" align="center">名称</div>
+                <div field="Description" width="*">描述</div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var selectMode = getQueryString("SelectMode");
+    if (selectMode == "Multi") {
+        $("#orgRoleGrid").attr("multiselect", true);
+        $("#sysRoleGrid").attr("multiselect", true);
+    }
+    
+</script>
+<script type="text/javascript">
+    function returnValue() {
+        var orgRole = mini.get("orgRoleGrid").getSelecteds();
+        var sysRole = mini.get("sysRoleGrid").getSelecteds();
+
+        for (var i = 0; i < sysRole.length; i++) {
+            orgRole.push(sysRole[i]);
+        }
+        closeWindow(orgRole);
+    }
+
+    function pageLoad() {
+        var roleType = getQueryString("RoleType");
+        if (roleType == "OrgRole")
+            mini.get("tabRole").removeTab("SysRole");
+        if (roleType == "SysRole")
+            mini.get("tabRole").removeTab("OrgRole");
+    }
+
+    var data = null;
+    function setData(data) {
+        this.data = data;
+        checkOrgRole();
+        checkSysRole();
+    }
+
+    function checkOrgRole() {
+        if (data == null)
+            return;
+        var grid = mini.get("orgRoleGrid");
+
+        var length = grid.data.length;
+        for (var i = 0; i < length; i++) {
+            var row = grid.getRow(i);
+
+            for (var j = 0; j < data.length; j++) {
+                if (data[j]["ID"] == row["ID"]) {
+                    grid.select(row);
+                    break;
+                }
+            }
+        }
+    }
+
+    function checkSysRole() {
+        if (data == null)
+            return;
+        var grid = mini.get("sysRoleGrid");
+
+        var length = grid.data.length;
+        for (var i = 0; i < length; i++) {
+            var row = grid.getRow(i);
+
+            for (var j = 0; j < data.length; j++) {
+                if (data[j]["ID"] == row["ID"]) {
+                    grid.select(row);
+                    break;
+                }
+            }
+        }
+    }
+
+
+</script>

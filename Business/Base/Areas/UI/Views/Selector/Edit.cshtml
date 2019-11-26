@@ -1,0 +1,99 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="save();">保存</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td id="btnRight">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+<input name="ID" class="mini-hidden" />
+<div class="formDiv">
+    <fieldset>
+        <legend>基本信息</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                    <td width="15%">
+                    </td>
+                    <td width="35%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        选择页编号
+                    </td>
+                    <td>
+                        <input name="Code" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                    <td>
+                        所属模块
+                    </td>
+                    <td>
+                        <input name="CategoryID" class="mini-combobox" style="width: 100%" required="true" data="EnumCategory" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        选择页名称
+                    </td>
+                    <td colspan="3">
+                        <input name="Name" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        单选URL
+                    </td>
+                    <td colspan="3">
+                        <input name="URLSingle" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                </tr>
+                 <tr>
+                    <td>
+                        多选URL
+                    </td>
+                    <td colspan="3">
+                        <input name="URLMulti" class="mini-textbox" style="width: 100%;" required="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        宽度
+                    </td>
+                    <td>
+                        <input name="Width" class="mini-textbox" style="width: 100%" />
+                    </td>
+                    <td>
+                        高度
+                    </td>
+                    <td>
+                        <input name="Height" class="mini-textbox" style="width: 100%;" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        标题
+                    </td>
+                    <td colspan="3">
+                        <input name="Title" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+    @Html.GetEnum("ConnEnum")
+    var EnumCategory = @Html.Raw(ViewBag.EnumCategory);
+</script>

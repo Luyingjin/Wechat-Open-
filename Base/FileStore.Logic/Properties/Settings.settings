@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FileStore.Logic.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="FileStore_Logic_FileService_InnerService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8001/FileStore/Services/InnerService.asmx</Value>
+    </Setting>
+    <Setting Name="FileStore_Logic_MasterService_MasterService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:8004/FileStore/Services/MasterService.asmx</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

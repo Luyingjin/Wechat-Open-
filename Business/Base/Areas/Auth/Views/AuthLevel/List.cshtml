@@ -1,0 +1,34 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" id="btnAdd" iconcls="icon-add" onclick="addRow({},{isLast:true});">添加</a>
+                <a class="mini-button" id="btnDelete" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" id="btnModify" iconcls="icon-save" onclick="saveList();">保存</a>
+            </td>
+            <td class="gw-toolbar-right">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetList" allowcellvalid="true" allowcelledit="true" allowcellselect="true" showpager="false">
+        <div property="columns">
+            <div type="indexcolumn"></div>
+            <div field="UserID" displayfield="UserName" width="150" align="center">拥有分级授权的用户
+                <input name="user" property="editor" class="mini-buttonedit" allowinput="true" />
+            </div>
+            <div field="MenuRootFullID" displayfield="MenuRootName" width="*" autoshowpopup="true">分级菜单
+                <input name="menu" property="editor" class="mini-buttonedit" allowinput="false" />
+            </div>
+            <div field="RuleRootFullID" displayfield="RuleRootName" width="*" autoshowpopup="true">分级授权对象
+                <input name="rule" property="editor" class="mini-buttonedit" allowinput="false" />
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    addSingleUserSelector("user");
+    addSelector("menu", urlConstant.multiRes + "&autoCheckParent=false&checkRecursive=false", { returnParams: "value:FullID,text:Name", getDataAction: "GetCheckedMenu?ID={ID}" });
+    addSelector("rule", urlConstant.multiRule + "&autoCheckParent=false&checkRecursive=false", { returnParams: "value:FullID,text:Name", getDataAction: "GetCheckedRule?ID={ID}" });
+</script>

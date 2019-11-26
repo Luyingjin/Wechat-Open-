@@ -1,0 +1,119 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" iconcls="icon-add" onclick="add({ height: '85%',width:920,title:'添加门户块',onDestroy:closeWindows});" plain="true">
+                    增加</a> <a class="mini-button" iconcls="icon-edit" onclick="edit({ title:'修改门户块', height: '85%',width:920,onDestroy:closeWindows});"
+                        plain="true">编辑</a> <a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a>
+                 <a class="mini-button" iconcls="icon-copy" onclick="copy()"
+                            plain="true">复制</a>
+            </td>
+            <td class="gw-toolbar-right">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入块Key、块标题" style="width: 200px;"
+                    onenter="quickSearch('BlockKey,BlockTitle');" onbuttonclick="quickSearch('BlockKey,BlockTitle');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" style="width: 100%;
+        height: 100%;"  allowMoveColumn="false">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="BlockTitle" headeralign="center" align="left" width="120" allowsort="true">
+                块标题</div>
+           <div field="BlockKey" headeralign="center" align="left" width="120" allowsort="true">
+                块Key</div>
+            <div field="TemplateId" headeralign="center" align="left" width="120" allowsort="true">
+                门户模板</div>
+            <div field="IsEdit" width="40" headeralign="center" allowsort="true" align="center">
+                能否编辑</div>
+            <div field="IsHidden" width="40" headeralign="center" allowsort="true" align="center">
+                是否隐藏</div>
+      </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="15%" align="center">
+                    块标题
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$BlockTitle" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="15%" align="center">
+                    块Key
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$BlockKey" style="width: 75%;" class="mini-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    能否编辑
+                </td>
+                <td align="left">
+                    <input class="mini-combobox" name="$LK$IsEdit" style="width: 75%;" valuefield="value"
+                        textfield="text" data="TorF" shownullitem="true" />
+                </td>
+                <td align="center">
+                </td>
+                <td align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+@Html.GetEnum("System.TorF")
+@Html.GetEnum("DoorBaseTemplate")
+
+//为Grid枚举列指定枚举定义
+addGridEnum("dataGrid", "IsEdit", "TorF");
+addGridEnum("dataGrid", "IsHidden", "TorF");
+addGridEnum("dataGrid", "TemplateId", "DoorBaseTemplate");
+//注册Grid链接列
+addGridLink('dataGrid', 'BlockTitle', 'Edit?ID={ID}', { funcType: 'view', width: 920,
+    height: 710
+});
+</script>
+<script type="text/javascript">
+    mini.parse();
+    var grid = mini.get("dataGrid");
+
+    function closeWindows() {
+        mini.get("dataGrid").load();
+    }
+
+    function copy() {
+        var row = grid.getSelected();
+        if (typeof (row) == "undefined") {
+            msgUI("当前没有选择要复制的记录，请重新确认！",1);
+            return;
+        }
+        execute(changeToFullUrl("GetGuid"), {
+            onComplete: function (text) {
+                openWindow("Edit?OldID=" + row.ID + "&FuncType=Copy", {
+                    width: 920,
+                    height: "85%",
+                    title: "复制门户块"
+                });
+            }
+        });
+    }
+
+</script>

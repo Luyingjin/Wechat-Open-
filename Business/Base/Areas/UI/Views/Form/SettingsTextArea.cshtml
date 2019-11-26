@@ -1,0 +1,99 @@
+﻿<div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 100;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="returnForm();">确定</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" autogetdata="false" style="top: 30px; position: relative;">
+<div class="formDiv">
+    <fieldset>
+        <legend>基本属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        必须填写：
+                    </td>
+                    <td>
+                        <input name="required" class="mini-combobox" value="false" data="yesNo" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        允许输入：
+                    </td>
+                    <td>
+                        <input name="allowInput" class="mini-combobox" value="true" data="yesNo" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        控件宽度：
+                    </td>
+                    <td>
+                        <input name="style_width" class="mini-textbox" value="100%" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        控件高度：
+                    </td>
+                    <td>
+                        <input name="style_height" class="mini-textbox" value="50px" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        最大字符长度：
+                    </td>
+                    <td>
+                        <input name="maxLength" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>事件属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        值改变时发生：
+                    </td>
+                    <td>
+                        <input name="onvaluechanged" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+    var yesNo = [{ "value": "true", "text": "是" }, { "value": "false", "text": "否"}];
+    function setData(data) {
+        if (data) {
+            var form = new mini.Form("dataForm");
+            form.setData(mini.decode(data));
+            form.setChanged(false);
+        }
+    }
+</script>

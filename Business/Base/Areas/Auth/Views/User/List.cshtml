@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "用户管理";
+}
+<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="add();" id="btnAdd">增加</a>
+                <a class="mini-button" iconcls="icon-edit" onclick="edit();">编辑</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="del();">删除</a>
+                <span class="separator"></span><a class="mini-button" iconcls="icon-unlock" onclick="unLock();">账户解锁</a>
+                <a class="mini-button" iconcls="icon-undo" onclick="resetPwd();">重置密码</a>
+                <span class="separator"></span><a class="mini-button" iconcls="icon-project" onclick="resetAllPwd();">全部重置密码</a>
+                <span class="separator"></span><a class="mini-button" iconcls="icon-noimage" onclick="edit({url:'UploadPic?UserID={ID}',title:'签名与头像',width:'800',height:'500'})">签名图片</a>
+                <span class="separator"></span><a class="mini-button" iconcls="icon-major" onclick="RetireUser();">离退</a>
+            </td>
+            <td class="gw-toolbar-right">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入账号或姓名或工号或RTX" onenter="quickSearch('Code,Name,WorkNo,RTX');" onbuttonclick="quickSearch('Code,Name,WorkNo');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetList" multiselect="true">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="WorkNo" width="60px" allowsort="true" align="center">工号</div>
+            <div field="Name" width="60px" allowsort="true" align="center">姓名</div>
+            <div field="Sex" width="40px" allowsort="true" align="center">性别 </div>
+            <div field="Code" width="60px" allowsort="true" align="center">账号</div>
+            <div field="Phone" width="100px" allowsort="true" align="center">电话</div>
+            <div field="MobilePhone" width="100px" allowsort="true" align="center">手机</div>
+            <div field="RTX" width="100px" allowsort="true" align="center">RTX</div>
+            <div field="DeptName" width="100px" allowsort="true" align="center">当前部门 </div>
+            <div field="DeptNames" width="200px">所属部门</div>
+            <div field="ErrorCount" width="60px" allowsort="true" align="center" renderer="onErrorCountRender">锁定状态</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    @Html.GetEnum("System.Sex");         
+</script>
+<script type="text/javascript">
+    function unLock() {
+        var grid = mini.get("dataGrid");
+        if (grid.getSelecteds().length == 0) {
+            msgUI("请选择要解锁的用户！");
+            return;
+        }
+        execute("Unlock?UserIDs={ID}", { actionTitle: '解锁', refresh: false });
+    }
+    function resetPwd() {
+        var grid = mini.get("dataGrid");
+        if (grid.getSelecteds().length == 0) {
+            msgUI("请选择要重置密码的用户！");
+            return;
+        }
+
+        msgUI("确定要重置选中用户的密码吗？", 2, function (action) {
+            if (action == "ok") {
+                msgUI("请输入密码：", 5, function (btn, data) {
+                    if (btn == "ok")
+                        execute("Reset?UserIDs={ID}&pwd=" + data, { actionTitle: '重置', refresh: false });
+                });
+
+            }
+        })
+    }
+
+    function resetAllPwd() {
+        msgUI("确定要重置所有用户密码吗？", 2, function (action) {
+            if (action == "ok") {
+                msgUI("请输入密码：", 5, function (btn, data) {
+                    if (btn == "ok")
+                        execute("ResetAllUserPwd?pwd=" + data, { actionTitle: '重置', refresh: false });
+                });
+
+            }
+        })
+    }
+
+    function RetireUser() {
+        var grid = mini.get("dataGrid");
+        if (grid.getSelecteds().length == 0) {
+            msgUI("请选择要离退的用户！");
+            return;
+        }
+
+        msgUI("确定要离退选中用户吗？", 2, function (action) {
+            if (action == "ok") {
+                execute("RetireUser?UserIDs={ID}", { actionTitle: '离退' });
+
+            }
+        })
+    }
+
+    function onErrorCountRender(e) {
+        if (e.value >= 3)
+            return "已锁定";
+        else
+            return "未锁定";
+    }
+
+</script>
+<script type="text/javascript">
+    addGridEnum("dataGrid", "Sex", "Sex");
+    addGridLink("dataGrid", "Name", "Edit?ID={ID}&FuncType=View", { title: "查看用户", refresh: false });
+
+    listConfig.title = "用户";
+</script>

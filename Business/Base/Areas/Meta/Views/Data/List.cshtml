@@ -1,0 +1,109 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" allowresize="false">
+    <div size="150" minsize="100px" showcollapsebutton="false">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetTree" textfield="Name" idfield="ID" parentfield="ParentID" resultastree="false" onnodeselect="onNodeSelect"
+                expandonload="1">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-splitter" style="width: 100%; height: 100%;" borderstyle="border:0px">
+            <div minsize="100px" showcollapsebutton="false" style="border-left: 0px">
+                <div class="mini-toolbar gw-grid-toolbar" style="border-left: 0px; border-right: 0px">
+                    <table>
+                        <tr>
+                            <td>
+                                <a id="btnImportTable" class="mini-button" iconcls="icon-download" onclick="execute('ImportTable?ConnName={Code}',{actionTitle:'导入',paramFrom:'dataTree'});">导入</a>
+                                <a id="btnSaveTable" class="mini-button" iconcls="icon-save" onclick="execute('SaveTable',{actionTitle:'保存'});">保存</a>
+                            </td>
+                            <td class="gw-toolbar-right">
+                                  <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name');" onbuttonclick="quickSearch('Code,Name');" style="width: 150px" />
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mini-fit">
+                    <div id="dataGrid" class="mini-datagrid" onselectionchanged="onselectionchanged" style="width: 100%; height: 100%;" allowcelledit="true" allowcellselect="true" editnextonenterkey="true"
+                        borderstyle="border-left:0px;border-right:0px;border-bottom:0px">
+                        <div property="columns">
+                            <div field="Code" width="150" allowsort="true">表编号</div>
+                            <div field="Name" width="150" allowsort="true">表名称
+                                <input property="editor" class="mini-textbox" style="width: 100%;" />
+                            </div>
+                            <div field="Description" width="*">表描述
+                                <input property="editor" class="mini-textbox" style="width: 100%;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div size="45%" minsize="100px" showcollapsebutton="false" style="border-right: 0px">
+                <div class="mini-toolbar gw-grid-toolbar" style="border-left: 0px; border-right: 0px">
+                    <table>
+                        <tr>
+                            <td>
+                                <a id="btnImportField" class="mini-button" iconcls="icon-download" onclick="execute('ImportField?TableID={ID}',{actionTitle:'导入',paramFrom:'dataGrid',gridId:'rightGrid'});">导入</a>
+                                <a id="btnSaveField" class="mini-button" iconcls="icon-save" onclick="execute('SaveField',{actionTitle:'保存',gridId:'rightGrid'});">保存</a>
+                            </td>
+                            <td class="gw-toolbar-right">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mini-fit">
+                    <div id="rightGrid" borderstyle="border-left:0px;border-right:0px;border-bottom:0px" class="mini-datagrid" style="width: 100%; height: 100%;" allowcelledit="true" allowcellselect="true"
+                        editnextonenterkey="true">
+                        <div property="columns">
+                            <div field="Code" width="120" allowsort="true">字段编号</div>
+                            <div field="Name" width="120" allowsort="true">字段名称
+                                <input property="editor" class="mini-textbox" style="width: 100%;" />
+                            </div>
+                            <div field="EnumKey" width="100" allowsort="true">EnumKey
+                                <input property="editor" class="mini-textbox" style="width: 100%;" />
+                            </div>
+                            <div field="Description" width="*">字段描述
+                                <input property="editor" class="mini-textbox" style="width: 100%;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+
+    //树节点点击事件
+    function onNodeSelect(e) {
+        var dataGrid = mini.get("dataGrid");
+        dataGrid.setUrl("GetTableList?ConnName=" + e.node.Code);
+        dataGrid.load();
+
+        if (e.node.Code == "") {
+            mini.get("btnImportTable").hide();
+            mini.get("btnSaveTable").hide();
+        }
+        else {
+            mini.get("btnImportTable").show();
+            mini.get("btnSaveTable").show();
+        }
+    }
+
+    //dataGrid行点击事件
+    function onselectionchanged(e) {
+        var rightGrid = mini.get("rightGrid");
+        if (e.selected) {
+            mini.get("btnImportField").show();
+            mini.get("btnSaveField").show();
+            rightGrid.setUrl("GetFieldList?TableID=" + e.selected.ID);
+        }
+        else {
+            mini.get("btnImportField").hide();
+            mini.get("btnSaveField").hide();
+            rightGrid.setUrl("GetFieldList?TableID=");
+        }
+
+        rightGrid.load();
+    }
+
+</script>

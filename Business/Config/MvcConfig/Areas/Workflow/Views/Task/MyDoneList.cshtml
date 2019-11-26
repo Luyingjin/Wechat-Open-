@@ -1,0 +1,147 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutTab.cshtml";
+    //快速查询提示
+    ViewBag.KeyEmptyText = "请输入关键字";
+    //快速查询列
+    ViewBag.KeyQueryField = "FlowName,TaskName,CreateTime,SendTaskUserNames,TaskUserName";
+    //枚举与查询列的对应关系
+    ViewBag.ColumnEnums = new Dictionary<string, string>();
+    ViewBag.ColumnEnums["FlowCategory"] = @MvcConfig.Areas.Workflow.Controllers.TaskController.GetDoneFlowCatalogyEnumData();
+    ViewBag.ColumnEnums["CreateTime"] = @MvcConfig.Areas.Workflow.Controllers.TaskController.GetTimeIntervalEnumData();
+}
+<div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetMyDoneList"
+    ondrawcell="OnDrawCell" pagesize="20" sortfield="CreateTime" sortorder="desc">
+    <div property="columns">
+        <div field="Urgency" width="50" headeralign="center" allowsort="true">
+            紧急度</div>
+        <div field="TaskName" width="250" headeralign="center" allowsort="true" renderer="onTaskLinkRenderer">
+            任务名称</div>
+        <div field="FlowName" width="150" textalign="center" allowsort="true" headeralign="center">
+            流程名称</div>
+        <div field="FlowCategory" width="65" align="center" allowsort="true" headeralign="center">
+            流程分类</div>
+        <div field="SendTaskUserNames" width="55" align="center" allowsort="true" headeralign="center">
+            发送人</div>
+        <div field="CreateTime" width="130" align="center" allowsort="true" headeralign="center"
+            dateformat="yyyy-MM-dd HH:mm:ss">
+            发送时间</div>
+        <div field="TaskUserName" width="55" align="center" allowsort="true" headeralign="center">
+            接收人</div>
+        <div field="ExecTime" width="130" align="center" allowsort="true" headeralign="center"
+            dateformat="yyyy-MM-dd HH:mm:ss">
+            执行时间</div>
+        <div field="FlowTrace" width="40" align="center" headeralign="center">
+            跟踪</div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 80%; height: 190px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="15%" align="center">
+                    任务名称
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$TaskName" style="width: 90%" class="mini-textbox" />
+                </td>
+                <td width="15%" align="center">
+                    流程名称
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$FlowName" style="width: 90%" class="mini-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td width="15%" align="center">
+                    任务类型
+                </td>
+                <td width="35%" align="left">
+                    <input name="$EQ$TaskExecType" class="mini-combobox" style="width: 90%;" textfield="text"
+                        valuefield="value" data="TaskTypeData" shownullitem="true" />
+                </td>
+                <td width="15%" align="center">
+                    发送人
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$SendTaskUserNames" style="width: 90%" class="mini-textbox" />
+                    @*    <input name="$IL$SendTaskUserIDs" textname="SendTaskUserNames" style="width: 90%"
+                        class="mini-buttonedit" allowinput="true" />*@
+                </td>
+            </tr>
+            <tr>
+                <td width="15%" align="center">
+                    发送时间
+                </td>
+                <td width="35%" align="left">
+                    <input name="$FR$CreateTime" style="width: 110px;" class="mini-datepicker" />
+                    -
+                    <input name="$TO$CreateTime" style="width: 110px;" class="mini-datepicker" />
+                </td>
+                <td width="15%" align="center">
+                    接收人
+                </td>
+                <td width="35%" align="left">
+                    <input name="$LK$TaskUserName" style="width: 90%" class="mini-textbox" />
+                    @*  <input name="$IN$TaskUserID" textname="TaskUserName" style="width: 90%" class="mini-buttonedit"
+                        allowinput="true" />*@
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="multiSearch()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var TaskTypeData = [{ "value": "Normal", "text": "审批任务" }, { "value": "Delegate", "text": "委托任务"}];
+
+    //为Grid枚举列指定枚举定义
+    addGridEnum("dataGrid", "TaskExecType", "TaskTypeData");
+    addGridLink("dataGrid", "FlowTrace", "/MvcConfig/Workflow/Trace/Diagram?ID={FormInstanceID}&FuncType=FlowTrace", { linkText: '查看', title: '流程跟踪', width: 1000, height: "85%" });
+
+    //选人控件
+//    addMultiUserSelector("$IL$SendTaskUserIDs");
+//    addMultiUserSelector("$IN$TaskUserID");
+
+</script>
+<script type="text/javascript">
+    $(function () {
+        var grid = mini.get("dataGrid");
+        grid.load();
+    });
+</script>
+<script type="text/javascript">
+    function onTaskLinkRenderer(e) {
+        var rec = e.record;
+        var url = $.trim(rec.FormUrl);
+        if (url.indexOf("?") > 0)
+            url += "&";
+        else
+            url += "?";
+        url += "FuncType=view&TaskStatus=Finished&TaskExecID=" + rec.ID + "&ID=" + $.trim(rec.FormInstanceID);
+
+        var s = '<a href="javascript:void(0);" onclick="ExecuteFormFlow(\'' + url + '\',\'' + $.trim(rec.TaskName) + '\',\'' + $.trim(rec.FormWidth) + '\',\'' + $.trim(rec.FormHeight) + '\')">' + $.trim(e.value) + '</a>';
+        return s;
+    }
+    function OnDrawCell(e) {
+        if (e.field == "Urgency") {
+            if (e.value == "1")
+                e.cellHtml = "<span class='icon-row-urgency' title='紧急' style='cursor:hand;float:center;'></span>";
+            else
+                e.cellHtml = "<span class='icon-row-urgency-not' title='一般' style='cursor:hand;float:center;'></span>";
+        }
+    }
+    function ExecuteFormFlow(urlstr, taskName, formWidth, formHeight) {
+        if (urlstr && urlstr != "") {
+            if ($.trim(formWidth) == "") formWidth = "880";
+            if ($.trim(formHeight) == "") formHeight = "85%";
+            openWindow(urlstr, { title: taskName, width: formWidth, height: formHeight });
+        }
+    }
+
+</script>

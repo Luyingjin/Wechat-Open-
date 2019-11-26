@@ -1,0 +1,69 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入名称或描述" style="width: 200px;"
+                    onenter="quickSearch('Name,Remark');" onbuttonclick="quickSearch('Name,Remark');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Name" width="100" headeralign="center" align="center" >
+                名称</div>
+            <div field="Type" width="120" headeralign="center" align="left" >
+                类型</div>
+            <div field="Remark" headeralign="center" width="*" align="center">
+                描述</div>
+            <div field="AppID" headeralign="center" align="left" width="100">
+                AppID</div>
+            <div field="AppSecret" width="100" headeralign="center" align="left" >
+                AppSecret</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    名称
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Name" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    描述
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Remark" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    //注册Grid链接列
+    //addGridLink('dataGrid', 'LinkmanName', 'Edit?ID={ID}', { funcType: 'view' });
+</script>

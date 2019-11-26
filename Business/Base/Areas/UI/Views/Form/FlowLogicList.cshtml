@@ -1,0 +1,85 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-add" onclick="addRow({},{createId:true,isLast:true})">添加</a>
+                <a class="mini-button" iconcls="icon-remove" onclick="delRow();">移除</a>
+                <a class="mini-button" iconcls="icon-save" onclick="saveList();">保存</a>
+                <a class="mini-button" iconcls="icon-up" onclick="moveUp();">上移</a>
+                <a class="mini-button" iconcls="icon-down" onclick="moveDown();">下移</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetFlowLoigcList" allowcellvalid="true" multiselect="true" allowcelledit="true" allowcellselect="true" showpager="false">
+        <div property="columns">
+            <div type="checkcolumn"></div>           
+            <div field="RoutingCode" width="120" autoshowpopup="true" align="center" vtype="required;">路由编号
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+            <div type="comboboxcolumn" field="ConnName" width="150" autoshowpopup="true" align="center" vtype="required;">数据连接名
+                <input property="editor" class="mini-combobox" shownullitem="true" style="width: 100%;" data="connenum" onitemclick="commitEdit" onvaluechanged="itemTypeChanged" />
+            </div>         
+            <div field="SQL" width="*" vtype="required;">SQL
+                <input property="editor" class="mini-textbox" style="width: 100%;" />
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    @Html.GetEnum("connenum")
+
+    function itemTypeChanged(e) {
+        var grid = mini.get("dataGrid");
+        var row = grid.getEditorOwnerRow(e.sender);
+        row["Settings"] = "";
+    }
+
+    function commitEdit() {
+        var grid = mini.get("dataGrid");
+        grid.commitEdit();
+    }
+    function getitemTypeText(value) {
+        for (var i = 0; i < ItemType.length; i++) {
+            if (ItemType[i]["value"] == value)
+                return ItemType[i]["text"];
+        }
+    }
+
+    addGridButton("dataGrid", "settings", { linkText: '详细', onButtonClick: function (row) {
+        var type = row["ItemType"];
+        if (!type) { msgUI('请先选择控件类型!'); return; }
+        var url = "Settings" + type;
+        var title = getitemTypeText(type);
+        openWindow(url, { width: 350, title: title, data: row["Settings"], onDestroy: function (data) {
+            if (data != "close")
+                row["Settings"] = mini.encode(data);
+        }
+        });
+    }
+    });
+
+</script>
+<script type="text/javascript">
+    function moveUp() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveUp(rows);
+    }
+
+    function moveDown() {
+        var dataGrid = mini.get("#dataGrid");
+        var rows = dataGrid.getSelecteds();
+        dataGrid.moveDown(rows);
+    }        
+</script>
+<script type="text/javascript">
+
+    function saveList() {
+        addExecuteParam("ListData", mini.get("dataGrid").getData());
+        execute("SaveFlowLoigcList", { actionTitle: "保存" });
+    }
+</script>

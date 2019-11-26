@@ -1,0 +1,75 @@
+﻿<div class="mini-toolbar gw-grid-toolbar">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" iconcls="icon-remove" onclick="del();">删除</a>
+            </td>
+            <td class="gw-toolbar-right">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入标题、发送人或接收人" onenter="quickSearch('Title,SenderName,ReceiverNames');" onbuttonclick="quickSearch('Title,SenderName,ReceiverNames');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetAllList" sortField="SendTime" sortOrder="desc" multiselect="true">
+        <div property="columns">
+            <div type="checkcolumn"></div>
+            <div field="Title" width="300" allowSort="true" headeralign="center">标题</div>
+            <div field="SenderName"  width="60" allowSort="true" headeralign="center">发送人</div>
+            <div field="SendTime" width="150" allowSort="true" dateformat="yyyy-MM-dd HH:mm:ss" align="center" headeralign="center">发送时间</div>         
+            <div field="ReceiverNames" width="*" headeralign="center">接收人</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td align="center">
+                    标题
+                </td>
+                <td align="left">
+                     <input name="$LK$Title" style="width: 90%" class="mini-textbox" /> 
+                </td>
+                <td align="center">
+                    发送人
+                </td>
+                <td align="left">
+                     <input name="$LK$SenderName" style="width: 90%" class="mini-textbox" /> 
+                </td>
+            </tr>
+            <tr>
+                <td width="15%" align="center">
+                    发送时间
+                </td>
+                <td width="35%" align="left">
+                    <input name="$FR$SendTime" style="width: 100px;" class="mini-datepicker" />
+                    -
+                    <input name="$TO$SendTime" style="width: 100px;" class="mini-datepicker" />
+                </td>
+                <td width="15%" align="center">
+                    接收人
+                </td>
+                <td width="35%" align="left">
+                     <input name="$LK$ReceiverNames" style="width: 90%" class="mini-textbox" /> 
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    addGridLink("dataGrid", "Title", "/Base/ShortMsg/ReceiveMsg/Views?ID={ID}", { funcType: 'View', title: '查看', width: "60%", height: "85%" });
+</script>

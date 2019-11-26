@@ -1,0 +1,226 @@
+﻿@{
+    ViewBag.Title = "提醒";
+}
+<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" iconcls="icon-copy" onclick="applyInvoice()" plain="true">删除</a>
+                <span class="separator"></span>
+            </td>
+            <td style="white-space: nowrap;">
+                <span class="separator"></span>过滤：
+                <input class="mini-combobox" id="cbFilterType" style="width: 80px;" valuefield="value"
+                    textfield="text" data="filterType" onvaluechanged="FilterChanged()" />
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入类型或标题" style="width: 160px;"
+                    onenter="quickSearch('AlarmType,AlarmTitle');" onbuttonclick="quickSearch('AlarmType,AlarmTitle');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" url="GetAlarmList" showsummaryrow="true"
+        multiselect="false" style="width: 100%; height: 100%" ondrawcell="OnDrawCell"
+        ondrawsummarycell="onDrawSummaryCell" sortfield="SendDate" sortorder="desc" virtualscroll="false"
+        pagesize="20">
+        <div property="columns">
+            <div field="AlarmLevel" headeralign="center" width="80" allowsort="true" align="center">
+                紧急度</div>
+            <div field="AlarmType" headeralign="center" width="110" allowsort="true" align="center">
+                类型</div>
+            <div field="AlarmTitle" width="*" headeralign="center" allowsort="true" align="left">
+                标题</div>
+            @*<div field="AlarmContent" headeralign="center" width="90" allowsort="true" align="left">
+                内容</div>*@
+            <div field="SendDate" width="150" headeralign="center" dateformat="yyyy-MM-dd hh:mm:ss"
+                allowsort="true" align="center">
+                发送时间
+            </div>
+             <div field="DeadlineDate" width="150" headeralign="center" dateformat="yyyy-MM-dd hh:mm:ss"
+                allowsort="true" align="center">
+                截止时间
+            </div>
+            <div field="Operate" headeralign="center" width="60" allowsort="true" align="center">
+                删除提醒</div>
+            <div field="View" headeralign="center" width="60" allowsort="true" align="center">
+                查看详细</div>
+            <div field="Do" headeralign="center" width="60" allowsort="true" align="center">
+                快速办理</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 700px; height: 270px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    类型
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$AlarmType" style="width: 85%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                    标题
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$AlarmTitle" class="mini-textbox" style="width: 85%" />
+                </td>
+                <td width="10%" align="center">
+                    内容
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$AlarmContent" style="width: 85%;" class="mini-textbox" />
+                </td>
+            </tr>
+            <tr>
+                <td width="10%" align="center">
+                    发送时间
+                </td>
+                <td width="23%" align="left">
+                    <input class="mini-datepicker" name="$FR$SendDate" id="SendDateStart" style="width: 85%;"
+                        ondrawdate="onDrawStartDate(e,'SendDateEnd')" />
+                </td>
+                <td width="10%" align="center">
+                    至
+                </td>
+                <td width="23%" align="left">
+                    <input class="mini-datepicker" name="$TO$SendDate" id="SendDateEnd" style="width: 85%;"
+                        ondrawdate="onDrawEndDate(e,'SendDateStart')" />
+                </td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var filterType = [{ value: "day", text: "最近三天" }, { value: "week", text: "最近一周" }, { value: "month", text: "最近一个月" }, { value: "all", text: "全部"}];
+    function pageLoad() {
+        // mini.get("cbFilterType").setValue("day");
+        mini.get("dataGrid").setUrl("GetAlarmList");
+        // filterTypeChanged();
+    }
+    function filterTypeChanged() {
+        var quarter = mini.get("cbQuarter").getValue();
+        var year = new Date();
+        var beginDate = 0;
+        var endDate = 0;
+        switch (quarter) {
+            case "day":
+                beginDate = year + "01";
+                endDate = year + "03";
+                break;
+            case "week":
+                beginDate = year + "04";
+                endDate = year + "06";
+                break;
+            case "month":
+                beginDate = year + "07";
+                endDate = year + "09";
+                break;
+            case "all":
+                beginDate = year + "10";
+                endDate = year + "12";
+                break;
+            case "year":
+                beginDate = year + "01";
+                endDate = year + "12";
+                break;
+            case "all":
+                beginDate = "";
+                endDate = "";
+                break;
+        }
+        mini.get("SendDateStart").setValue(beginDate);
+        mini.get("SendDateEnd").setValue(beginDate);
+        search();
+    }
+    function deleteAlarm() {
+        var dataGrid = mini.get("dataGrid");
+        var row = dataGrid.getSelected();
+        if (row) {
+            msgUI("您确定删除该提醒吗？", 2, function (act) {
+                if (act == "ok") {
+                    addExecuteParam("receiptID", row.ID);
+                    execute("DeleteReceipt", { actionTitle: "删除", onComplete: function () {
+                        dataGrid.removeRow(row, false);
+                    }
+                    });
+                }
+            });
+        }
+    }
+    //查看详细
+    function viewDetail() {
+        var row = mini.get("dataGrid").getSelected();
+        if (row) {
+            var actionUrl = "AlarmDetail?ID=" + row.ID;
+            openWindow(actionUrl, { title: "提醒详情", gridId: "dataGrid", width: 720, height: 580 });
+
+        }
+    }
+    //快速办理
+    function goTo() {
+        var row = mini.get("dataGrid").getSelected();
+        if (row) {
+            var actionUrl = row.AlarmUrl;
+            openWindow(actionUrl, { title: "快速办理", gridId: "dataGrid", width: "90%", height: "90%" });
+        }
+    }
+    function OnDrawCell(e) {
+        var grid = e.sender;
+        var record = e.record;
+        var uid = record._uid;
+        var rowIndex = e.rowIndex;
+        if (e.field == "Operate") {
+            e.cellHtml = "<span class='icon-row-delete' onclick='deleteAlarm()' title='删除提醒' style='cursor:hand;float:center;'></span>";
+        } else if (e.field == "View") {
+            e.cellHtml = "<span class='icon-row-view' onclick='viewDetail()' title='查看详细' style='cursor:hand;float:center;'></span>";
+        } else if (e.field == "Do") {
+            e.cellHtml = "<span class='icon-row-goto' onclick='goTo()' title='快速办理' style='cursor:hand;float:center;'></span>";
+        } else if (e.field == "AlarmLevel") {
+            if (e.value == "@Config.AlarmLevel.High.ToString()") {
+                e.cellHtml = "<span class='icon-row-important' title='紧急' style='float:center;'></span>";
+            } else if (e.value == "@Config.AlarmLevel.Normal.ToString()") {
+                e.cellHtml = "<span class='icon-row-normal' title='一般' style='float:center;'></span>";
+            } else if (e.value == "@Config.AlarmLevel.Lower.ToString()") {
+                e.cellHtml = "<span class='icon-row-lower' title='低级' style='float:center;'></span>";
+            }
+        }
+    }
+
+    function onDrawStartDate(e, endID) {
+        var date = e.date;
+        var end = mini.get(endID).value;
+        if (end == null || end == "" || end == undefined)
+            return;
+        if (date.getTime() > end.getTime()) {
+            e.allowSelect = false;
+        }
+    }
+
+    function onDrawEndDate(e, startID) {
+        var date = e.date;
+        var start = mini.get(startID).value;
+        if (start == null || start == "" || start == undefined)
+            return;
+        var date = e.date;
+        if (date.getTime() < start.getTime()) {
+            e.allowSelect = false;
+        }
+    }
+</script>

@@ -1,0 +1,334 @@
+﻿@section scripts{
+    <link href="@Url.Content("/Base/Scripts/ShortMsg/Msg.css")" rel="stylesheet" type="text/css" />
+}
+<div class="mini-splitter" style="width: 100%; height: 100%;">
+    <div size="60%" showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" borderstyle="border:0px">
+            <table>
+                <tr>
+                    <td width="*">
+                        <input id="key" style="width:100%" class="mini-buttonedit gw-searchbox" emptytext="请输入接收人姓名、标题或附件名" onenter="searchMsg();" onbuttonclick="searchMsg();" />
+                    </td>
+                    <td width="85px">
+                         <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">详细查询</a>
+                    </td>
+                    <td class="gw-toolbar-right" width="75px">
+                        <span class="separator"></span>
+                        <input class="mini-checkbox" id="cbAttachment" text="有附件" onvaluechanged="onAttachmentValueChanged"/>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div class="mini-splitter" style="width:100%;height:100%;" borderstyle="border:0px" vertical="true" allowResize="false" handlerSize="0">
+                <div size="30" showCollapseButton="false" style="border:0px">
+                    <div class="left_filters">
+	                    <div class="left_filter_wrapper">
+    	                    <div class="left_filter_left"><input class="mini-checkbox" id="cbSelectAll" onvaluechanged="onSelectAllValueChanged"/></div>
+                            <div class="left_filter_right">
+                             <a href="javascript:void(0)"> <span>重要性</span><i field="Importance" class="down"></i></a>
+                             <a href="javascript:void(0)"> <span>标题</span><i field="Title" class="down"></i></a>
+                             <a href="javascript:void(0)"> <span>接收人</span><i field="ReceiverNames" class="down"></i></a>
+                             <a href="javascript:void(0)" class="active"> <span>时间</span><i field="SendTime" class="down"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div showCollapseButton="false" style="border:0px">
+                    <div id="dataGrid" borderstyle="border:0px" class="mini-datagrid" onrowclick="onRowclick" style="width: 100%; height: 100%;" sortField="SendTime" sortOrder="desc" url="GetSendList"
+                        multiselect="true" onload="onGridLoad">
+                        <div property="columns">
+                            <div type="checkcolumn" width="30" ></div>
+                            <div name="Content" width="*" renderer="onContentRenderer"></div>
+                        </div>
+                    </div>
+                </div>        
+            </div>
+        </div>
+    </div>
+    <div showcollapsebutton="true">
+        <iframe id="mainiframe" style="height:100%;width:100%;border:0px" frameborder="0px" src=""></iframe>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 640px; height: 160px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="15%" align="center">
+                    接收人
+                </td>
+                <td width="35%" align="left">
+                     <input name="$LK$ReceiverNames" style="width: 100%" class="mini-textbox" /> 
+                </td>
+                <td width="15%" align="center">
+                    标题
+                </td>
+                <td width="35%" align="left">
+                     <input name="$LK$Title" style="width: 100%" class="mini-textbox" /> 
+                </td>
+            </tr>
+             <tr>
+                <td width="15%" align="center">
+                    附件名
+                </td>
+                <td width="35%" align="left">
+                     <input name="$LK$AttachFileIDs" style="width: 100%" class="mini-textbox" /> 
+                </td>
+                <td width="15%" align="center">
+                    发送时间
+                </td>
+                <td width="35%" align="left">
+                    <input name="$FR$SendTime" style="width: 100px;" class="mini-datepicker" />
+                    -
+                    <input name="$TO$SendTime" style="width: 100px;" class="mini-datepicker" />
+                </td>
+            </tr>
+       </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" plain="false" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" plain="false" iconcls="icon-clear">
+                    清空</a>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    mini.parse();
+    var grid = mini.get("dataGrid");
+    var miniKey = mini.get("key");
+
+    $(function () {
+        $(grid.getEl()).find(".mini-grid-columns").hide();
+        bindFilter();
+    });
+
+    function searchMsg() {
+        var data = {};
+        if ($.trim(miniKey.getValue()) != "") {
+            var searchFields = "ReceiverNames,Title,AttachFileIDs"
+            var keys = searchFields.split(',');
+            for (i = 0, len = keys.length; i < len; i++) {
+                data["$IL$" + keys[i]] = miniKey.getValue();
+            }
+            data["IsOrRelation"] = "True"; //快速查询条件间为或关系
+        }
+        var isAttachment = mini.get("cbAttachment").getValue() == "true" ? "T" : "F";
+
+        if (grid != undefined)
+            grid.load({ queryFormData: mini.encode(data), attachment: isAttachment });
+
+    }
+
+    function onGridLoad(e) {
+        if (e.data.length > 0) {
+            var row = e.sender.getRow(0);
+            e.sender.select(row);
+            loadMsg(row["ID"]);
+        }
+    }
+
+    function onAttachmentValueChanged(e) {
+        searchMsg()
+    }
+
+    function onSelectAllValueChanged(e) {
+        if (e.sender.getValue() == "true")
+            grid.selectAll(false);
+        else
+            grid.deselectAll(false);
+    }
+
+    function bindFilter() {
+        var $filter = $(".left_filter_right");
+        $filter.find("a").click(function (event) {
+            var $ele = $(this);
+            if ($ele.hasClass("active")) {
+                if ($ele.find("i").hasClass("down")) {
+                    $ele.find("i").removeClass("down").addClass("up");
+                }
+                else if ($ele.find("i").hasClass("up")) {
+                    $ele.find("i").removeClass("up").addClass("down");
+                }
+            }
+            else {
+                $filter.find("a").removeClass("active");
+                $ele.addClass("active");
+            }
+            var sortOrder = "";
+            if ($ele.find("i").hasClass("up"))
+                sortOrder = "asc";
+            else if ($ele.find("i").hasClass("down"))
+                sortOrder = "desc";
+            var sortField = $ele.find("i").attr("field");
+            if ($.trim(sortField) != "" && $.trim(sortOrder) != "") {
+                grid.sortBy(sortField, sortOrder);
+            }
+        });
+        $filter.find("a").hover(
+        function () {
+            if (!$(this).hasClass("active"))
+                $(this).addClass("left_filter_right_on");
+        },
+        function () {
+            if ($(this).hasClass("left_filter_right_on"))
+                $(this).removeClass("left_filter_right_on");
+        });
+    }
+
+    function onRowclick(e) {
+        var id = e.record.ID;
+        loadMsg(id);
+    }
+
+    function loadMsg(id) {
+        execute("GetModel?ID=" + id, {
+            onComplete: function (data) {
+                if ($("#mainiframe").attr("src") == "")
+                    $("#mainiframe").attr("src", "/Base/ShortMsg/ReceiveMsg/Views?ID=" + id);
+                else
+                    $("#mainiframe")[0].contentWindow.setData(data);
+            }
+        });
+    }
+
+    function onContentRenderer(e) {
+        var rec = e.record;
+        var rowIndex = e.rowIndex;
+        var $table = $("<table width=\"100%\" border=\"0\" cellspacing=\"5\" cellpadding=\"0\"></table");
+
+        var id = rec.ID;
+        var receiverID = rec.ReceiverID;
+        //第一行
+        var receiverNames = $.trim(rec.ReceiverNames);
+        var senderTime = $.trim(rec.SendTime) == "" ? "" : new Date(rec.SendTime).format("yyyy年MM月dd日hh:mm:ss");
+        var title = $.trim(rec.Title);
+        var $img = $("<img>").attr("width", "16px").attr("height", "16px").attr("border", "0px").attr("align", "absmiddle");
+        var $tr1td = $("<td></td>").append($("<h1></h1>").text(receiverNames)).append($("<h2></h2>").text("[" + senderTime + "]"));
+        if ($.trim(rec.AttachFileIDs) != "") {
+            $tr1td.append($("<h6></h6>").append($img.clone().attr("title", "附件").attr("src", "/CommonWebResource/RelateResource/image/ico16/attachment.png")));
+        }
+        var $imgReply = $("<a></a>").attr("href", "javascript:void(0)").attr("title", "回复消息").append($img.clone().attr("src", "/Base/Scripts/ShortMsg/reply.png").attr("onclick", "reply('" + id + "'," + rowIndex + ")").attr("onmouseover", "imgMouseOver(event)").attr("onmouseout", "imgMouseOut(event)"));
+        var $imgForword = $("<a></a>").attr("href", "javascript:void(0)").attr("title", "转发消息").append($img.clone().attr("src", "/Base/Scripts/ShortMsg/forward.png").attr("onclick", "forward('" + id + "'," + rowIndex + ")").attr("onmouseover", "imgMouseOver(event)").attr("onmouseout", "imgMouseOut(event)"));
+        var $imgDel = $("<a></a>").attr("href", "javascript:void(0)").attr("title", "删除消息").append($img.clone().attr("src", "/Base/Scripts/ShortMsg/delete.png").attr("onclick", "deleteMsgBody(" + rowIndex + ")").attr("onmouseover", "imgMouseOver(event)").attr("onmouseout", "imgMouseOut(event)"));
+        $tr1td.append($("<span></span>").append($imgReply).append($imgForword).append($imgDel));
+        var $tr1 = $("<tr></tr>").append($tr1td);
+        $table.append($tr1);
+
+        //第二行
+        var $title = $("<h3></h3>").append($("<a></a>").attr("href", "javascript:;").text(title).attr("onclick", "openMsg('" + id + "'," + rowIndex + ");"));
+        var $tr2td = $("<td></td>").append($title);
+        if ($.trim(rec.Importance) == "1")
+            $tr2td.append($("<span></span>").attr("title", "重要").css("width", "14px").css("height", "16px").addClass("icon-important"));
+        $table.append($("<tr></tr>").append($tr2td));
+
+        //第三行
+//        var content = $.trim(rec.ContentText) == "" ? "" : $.trim(rec.ContentText) + "...";
+//        if ($.trim(content) != "") {
+//            var $content = $("<h5></h5>").text(content);
+//            $table.append($("<tr></tr>").append($("<td></td>").append($content)));
+//        }
+
+        var $html = $("<div></div>").attr("id", "Content" + id).append($table);
+        $html.addClass("left_main_listread");
+
+        return $html[0].outerHTML;
+    }
+
+    function imgMouseOver(e) {
+        if (!e) e = window.event;
+        var img = e.target || e.srcElement;
+        var src = $(img).attr("src").replace(".png", "on.png");
+        $(img).attr("src", src);
+    }
+
+    function imgMouseOut(e) {
+        if (!e) e = window.event;
+        var img = e.target || e.srcElement;
+        var src = $(img).attr("src").replace("on.png", ".png");
+        $(img).attr("src", src);
+    }
+
+    function selectRowMsg(action, rowIndex) {
+        if (action != "delete" && action != "open") {
+            grid.deselectAll(false);
+            mini.get("cbSelectAll").setValue(false);
+        }
+        grid.select(grid.getRow(rowIndex), true);
+    }
+
+    function reply(id, rowIndex) {
+        selectRowMsg("reply", rowIndex);
+        add({ url: '/Base/ShortMsg/ReceiveMsg/Edit?ParentID=' + id + '&ReplyID=' + id + '', title: '回复消息', mustSelectOneRow: true, width: '80%', height: '85%' });
+    }
+
+    function forward(id, rowIndex) {
+        selectRowMsg("forward", rowIndex);
+        add({ url: '/Base/ShortMsg/ReceiveMsg/Edit?ParentID=' + id + '&ForwardID=' + id + '', title: '转发消息', mustSelectOneRow: true, width: '80%', height: '85%' });
+    }
+
+    function deleteMsgBody(rowIndex) {
+        selectRowMsg("delete", rowIndex);
+        var msgs = grid.getSelecteds();
+        if (msgs.length > 0) {
+            msgUI("确认删除？", 2, function (action) {
+                if (action == "ok") {
+                    var ids = new Array();
+                    $.each(msgs, function (i, item) {
+                        if ($.trim(item.ID) != "")
+                            ids.push(item.ID);
+                    });
+                    addExecuteParam("IDs", ids.join(','));
+                    execute("/Base/ShortMsg/SendMsg/DeleteMsgBody", {
+                        onComplete: function (rtn) {
+                            searchMsg();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function openMsg(id, rowIndex) {
+        selectRowMsg("open", rowIndex);
+        openWindow("/Base/ShortMsg/ReceiveMsg/Views?ID=" + id + "&FuncType=Send", {
+            width: "60%",
+            height: "85%",
+            title: "查看消息"
+        });
+    }
+
+    Date.prototype.format = function (format) {
+        /* 
+        * eg:format="yyyy-MM-dd hh:mm:ss"; 
+        */
+        var o = {
+            "M+": this.getMonth() + 1, // month  
+            "d+": this.getDate(), // day  
+            "h+": this.getHours(), // hour  
+            "m+": this.getMinutes(), // minute  
+            "s+": this.getSeconds(), // second  
+            "q+": Math.floor((this.getMonth() + 3) / 3), // quarter  
+            "S": this.getMilliseconds()
+            // millisecond  
+        }
+
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+                        - RegExp.$1.length));
+        }
+
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                            ? o[k]
+                            : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
+    }      
+
+
+</script>

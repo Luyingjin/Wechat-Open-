@@ -1,0 +1,516 @@
+
+body
+{
+    background-image: url(bg.jpg);
+    background-color: #f5f6f8;
+    background-repeat: repeat-x;
+    background-position: top;
+}
+body, td, th
+{
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+}
+#Div_top
+{
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    width: 500px;
+    height: 30px;
+    z-index: 1;
+}
+a:link
+{
+    color: #000;
+    font-size: 12px;
+    font-family: "Microsoft YaHei";
+    text-decoration: none;
+}
+a:hover
+{
+    text-decoration: underline;
+    color: #bc261f;
+}
+.Div_top_left
+{
+    float: right;
+    width: 10px;
+}
+.Div_top_leftline
+{
+    float: right;
+    width: 2px;
+    padding: 3px 10px 0px 10px;
+}
+.Div_top_bg
+{
+    float: right;
+    height: 30px;
+    font-size: 14px;
+    color: #000;
+    font-family: "Microsoft YaHei";
+    padding-top: 2px;
+}
+.Div_top_bg a
+{
+    color: #000;
+    text-decoration: none;
+}
+.Div_top_bg2
+{
+    float: right;
+    height: 27px;
+    padding-top: 3px;
+}
+
+.ahhy_top_title
+{
+    color: #187aa1;
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    padding-left: 20px;
+    height: 34px;
+    width: 200px;
+}
+.ahhy_top_icon
+{
+    height: 34px;
+    width: 150px;
+}
+.ahhy_top_toptbg
+{
+    background: url(hbdl_nov_toptbg.gif) repeat-x bottom;
+    height: 34px;
+    width: 150px;
+}
+.ahhy_top_logobg
+{
+    background: url(hbdl_nov_logobg.gif) left top repeat-x;
+    height: 50px;
+}
+.ahhy_top_menu_bg
+{
+    background-image: url(hbdl_nov_menubg.gif);
+    height: 30px;
+}
+.ahhy_top_help_bg
+{
+    background-image: url(km_nov_05.gif);
+    height: 22px;
+}
+
+tr.menu_top
+{
+    padding: 0px 0px 1px 0px;
+    margin: 0px;
+    list-style: none;
+    float: left;
+    clear: left;
+}
+
+tr.menu_top td
+{
+}
+
+tr.menu_top td a
+{
+    float: left;
+    text-decoration: none;
+    color: #000;
+    padding: 5px 15px 5px 15px;
+    font: 12px "Microsoft YaHei" , "Arial" , Helvetica, sans-serif;
+    background: url(nov_menuline.gif) no-repeat top right;
+}
+
+tr.menu_top td a:hover
+{
+    color: #fff;
+    text-decoration: none;
+    background: url(km_nov_24.gif) no-repeat top center;
+}
+
+tr.menu_top td a.current
+{
+    background: url(km_nov_23.gif) no-repeat top center;
+    color: #fff;
+}
+
+.hbdl_foot_bg
+{
+    background: url(hbdl_nov_footbg.gif) repeat-x;
+    height: 33px;
+}
+
+/*快捷菜单样式 */
+.shortcutmenu
+{
+    background-color: #FFF;
+    right: 32px;
+    top: 35px;
+    position: absolute;
+    width: 140px;
+    border: 1px solid #a8a8a8;
+    border-left: 1px solid #cbcbcb;
+    border-top: 1px solid #cbcbcb;
+    z-index: 9000;
+}
+.shortcutmenu ul
+{
+    line-height: 27px;
+    background: #ffffff;
+    list-style-type: none;
+    width: 140px;
+    margin: 0;
+    padding: 0;
+}
+.shortcutmenu ul li
+{
+    float: left;
+    width: 140px;
+    border-bottom: 1px dotted #CCC;
+    height: 27px;
+    overflow: hidden;
+}
+.shortcutmenu_onmouse
+{
+    background: #f0f0f0;
+}
+.shortcutmenu_span_left
+{
+    width: 105px;
+    float: left;
+    padding-left: 15px;
+}
+.shortcutmenu_span_right
+{
+    width: 20px;
+    float: right;
+}
+.shortcutmenu ul a
+{
+    text-align: left;
+    overflow: hidden;
+    font-size: 12px;
+}
+.shortcutmenu ul a:link
+{
+    color: #333;
+    text-decoration: none;
+}
+.shortcutmenu ul a:visited
+{
+    color: #333;
+    text-decoration: none;
+}
+.shortcutmenu ul a:hover
+{
+    color: #3399ff;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+/*快捷菜单样式 */
+.shortcutmenu
+{
+    background-color: #FFF;
+    right: 32px;
+    top: 35px;
+    position: absolute;
+    width: 140px;
+    border: 1px solid #a8a8a8;
+    border-left: 1px solid #cbcbcb;
+    border-top: 1px solid #cbcbcb;
+    z-index: 9000;
+}
+.shortcutmenu ul
+{
+    line-height: 27px;
+    background: #ffffff;
+    list-style-type: none;
+    width: 140px;
+    margin: 0;
+    padding: 0;
+}
+.shortcutmenu ul li
+{
+    float: left;
+    width: 140px;
+    border-bottom: 1px dotted #CCC;
+    height: 27px;
+    overflow: hidden;
+}
+.shortcutmenu_onmouse
+{
+    background: #f0f0f0;
+}
+.shortcutmenu_span_left
+{
+    width: 105px;
+    float: left;
+    padding-left: 15px;
+}
+.shortcutmenu_span_right
+{
+    width: 20px;
+    float: right;
+}
+.shortcutmenu ul a
+{
+    text-align: left;
+    overflow: hidden;
+    font-size: 12px;
+}
+.shortcutmenu ul a:link
+{
+    color: #333;
+    text-decoration: none;
+}
+.shortcutmenu ul a:visited
+{
+    color: #333;
+    text-decoration: none;
+}
+.shortcutmenu ul a:hover
+{
+    color: #3399ff;
+    text-decoration: underline;
+    font-weight: normal;
+}
+
+/*部门门户样式*/
+.dh-footmenu
+{
+    width: 100%;
+    overflow: hidden;
+    position: absolute;
+    left: 0px;
+    bottom: -29px;
+}
+.dh-footmenu-block
+{
+    width: 100%;
+    position: relative;
+    height: 57px;
+    z-index: -10;
+}
+.dh-footmenu-uparrow
+{
+    margin: 0px auto;
+    width: 80px;
+    height: 15px;
+}
+.dh-fm-margin
+{
+    padding: 10px;
+    background-color: #e6e6e6;
+}
+.dh-fm-left
+{
+    width: 100%;
+    height: 37px;
+    overflow: hidden;
+}
+.dh-fm-left ul
+{
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
+.dh-fm-left li
+{
+    cursor: pointer;
+    font: 14px "Microsoft YaHei" , "Arial" , "Arial" , Helvetica, sans-serif;
+    color: #000;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    margin-right: 1px;
+    overflow: hidden;
+    background-color: #FFF;
+    overflow: hidden;
+    padding: 0px 15px;
+    float: left;
+}
+.dh-fm-left li:hover
+{
+    color: #FFF;
+    background-color: #95b6d9;
+}
+.dh-fm-left li.current
+{
+    color: #FFF;
+    background-color: #95b6d9;
+}
+*html .dh-fm-left li
+{
+    cursor: pointer;
+    font: 14px "Microsoft YaHei" , "Arial" , "Arial" , Helvetica, sans-serif;
+    color: #000;
+    height: 37px;
+    line-height: 37px;
+    text-align: center;
+    margin-right: 1px;
+    overflow: hidden;
+    background-color: #FFF;
+    overflow: hidden;
+    padding: 0px 15px;
+    float: left;
+}
+
+.dh-fm-more
+{
+    cursor: pointer;
+    font: 14px "Microsoft YaHei" , "Arial" , "Arial" , Helvetica, sans-serif;
+    background: url(/Portal/Styles/Dept/more.png) no-repeat;
+    background-position: 20px 9px;
+    color: #000;
+    width: 75px;
+    padding-left: 43px;
+    height: 37px;
+    line-height: 37px;
+    overflow: hidden;
+    background-color: #FFF;
+    overflow: hidden;
+}
+*html .dh-fm-more
+{
+    cursor: pointer;
+    font: 14px "Microsoft YaHei" , "Arial" , "Arial" , Helvetica, sans-serif;
+    background: url(/Portal/Styles/Dept/more.png) no-repeat;
+    background-position: 8px 9px;
+    color: #000;
+    width: 92px;
+    padding-left: 30px;
+    height: 37px;
+    line-height: 37px;
+    overflow: hidden;
+    background-color: #FFF;
+    overflow: hidden;
+}
+.dh-fm-more:hover
+{
+    color: #FFF;
+    background-color: #95b6d9;
+}
+.dh-fm-more.current
+{
+    color: #FFF;
+    background-color: #95b6d9;
+}
+
+.dh-moremain
+{
+    position: absolute;
+    right: 10px;
+    bottom: 70px;
+    width: 200px;
+    background-color: #FFF;
+    border: 3px solid #95b6d9;
+    z-index: 2;
+}
+.dh-mm-menu
+{
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin: 0px;
+    padding: 0px;
+}
+.dh-mm-menu ul
+{
+    margin: 0px;
+    padding: 0px;
+    list-style-type: none;
+}
+.dh-mm-menu li
+{
+    cursor: pointer;
+    float: left;
+    width: 100%;
+    display: inline-block;
+    overflow: hidden;
+    height: 41px;
+    border-bottom: #ccc 1px solid;
+}
+.dh-mm-menu li span
+{
+    font: 14px "Microsoft YaHei" , "Arial" , "Arial" , Helvetica, sans-serif;
+    line-height: 41px;
+    padding-left: 20px;
+    text-decoration: none;
+}
+.dh-mm-menu li:hover
+{
+    color: #FFF;
+    background-color: #95b6d9;
+}
+.dh-mm-menu li.current
+{
+    color: #FFF;
+    background-color: #95b6d9;
+}
+.dh-fm-moreclose
+{
+    cursor: pointer;
+    font: 14px "Microsoft YaHei" , "Arial" , "Arial" , Helvetica, sans-serif;
+    background: url(moreclose.png) no-repeat;
+    background-position: 20px 9px;
+    color: #fff;
+    width: 75px;
+    padding-left: 43px;
+    height: 37px;
+    line-height: 37px;
+    overflow: hidden;
+    background-color: #95b6d9;
+    overflow: hidden;
+}
+
+/* 报警页面 */
+.warningArea
+{
+    position: absolute;
+    right: 380px;
+    top: 10px;
+    width: 205px;
+    height: 24px;
+    z-index: 2;
+}
+
+.warningMarqueeDiv
+{
+    float: left;
+    cursor: pointer;
+    width: 205px;
+    height: 24px; /* 必要元素 */
+    overflow: hidden; /* 必要元素 */
+    line-height: 24px;
+    color: #666;
+}
+.warningMarqueeDiv ul
+{
+    margin: 0px;
+}
+.warningMarqueeDiv li
+{
+    list-style-type: none;
+    height: 24px;
+    padding-left: 10px;
+}
+
+
+.warningMarqueeDiv li a
+{
+    float: left;
+    color: #666;
+    text-decoration: none;
+    width: 180px;
+    text-overflow: ellipsis;
+    word-break: keep-all;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.blockTitle
+{
+    background:url(/Portal/Door/image/Vista_titlebg.png) top repeat-x;
+}

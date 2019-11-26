@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>安装页面</title>
+<style type="text/css">
+body,td,th {
+	font-size: 12px;
+}
+body {background:url(ico/cs_body_bg.jpg) #FFF repeat-x; margin:0px;}
+.errork{ padding-left:20px;}
+.error01{font-family:"Microsoft YaHei"; font-size:18px; font-weight:bolder; color:#000; height:35px;}
+.error02{font-family:"Microsoft YaHei"; font-size:14px; color:#000; line-height:22px;}
+.error02 a{font-family:"Microsoft YaHei"; font-size:16px; line-height:22px;}
+.error03{font-family:"Microsoft YaHei"; font-size:12px; color: #F60; height:35px;}
+</style>
+</head>
+    <script>
+        var InstallType;
+        function Install(type) {
+            InstallType = type;
+            document.all("InstallWin").style.display = "";
+            switch (type) {
+                case "sl":
+                    document.all("InstallWin").src = "Silverlight.exe";
+                    break;
+            }
+        }
+        function Complete() {
+            try {
+                if (InstallType == "sl") {
+                    //var cfgIo = new ActiveXObject("GsCfgIO.cCfgInfoIO");
+                    InstallWin.document.write("<P style='color:red;'>SilverLight控件安装完成！<A href='/portal/Portal.aspx' target='_top'>点击返回系统主页</A>！</P>");
+                }
+            } catch (e) { }
+        }
+    </script>
+<body>
+<table width="100%" cellspacing="0">
+  <tr>
+    <td height="150" colspan="2">&nbsp;</td>
+  </tr>
+  <tr>
+    <td width="40%" align="right"><img src="ico/silverlight.png" width="128" height="128" alt="error" /></td>
+    <td class="errork"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td valign="top" class="error01">控件安装</td>
+        </tr>
+      <tr>
+        <td class="error02">SilverLight控件是系统正确运行所必需的，整个安装过程只需几分钟。<br />
+          请&nbsp;&nbsp;<a href="javascript:;" onclick="Install('sl')" >点击安装</a></td>
+        </tr>
+      <tr>
+        <td class="error03">此控件必须安装</td>
+        </tr>
+    </table></td>
+  </tr>
+  <tr>
+    <td><iframe id="InstallWin" style="display: none; width: 100%; height: 200px" src="about:blank" frameborder="no"></iframe></td>
+  </tr>
+</table>
+</body>
+</html>

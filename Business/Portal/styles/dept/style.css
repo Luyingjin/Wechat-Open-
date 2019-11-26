@@ -1,0 +1,69 @@
+@charset "utf-8";
+/* 部门门户 */
+body {
+	margin:0px;
+	background-color: #e6e6e6;
+}
+.dh-line { height:10px; width:100%; overflow:hidden; background-color:#e6e6e6;}
+.dh-leftbg { background-color:#FFF}
+.dh-rightbg { background-color:#f1f5f8}
+.dh-photonews { width:100%; height:98px; overflow:hidden;}
+.dh-pn-right { height:98px; width:100%; overflow:hidden}
+.dh-pn-float {}
+.dh-pn-line { margin-bottom:10px;}
+.dh-pn-photo {overflow:hidden;width:180px;cursor:pointer}
+.dh-pn-main {height:98px; width:100%; overflow:hidden;}
+.dh-pn-margin { margin:20px 20px 0px 20px;}
+.dh-pn-title {font: 16px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; color: #000; margin:0px; padding:0px; text-decoration:none; height:23px; width:100%; overflow:hidden;}
+.dh-pn-title a{font: 16px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; color: #000;text-decoration:none;}
+.dh-pn-title a:hover{color:#2d4f74; text-decoration: underline;}
+.dh-pn-date{ font-size:12px; color:#999; float:right;}
+.dh-pn-content {font: 12px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; width:100%; height:33px; overflow:hidden; color: #666; margin:5px 0px 0px 0px; padding:0px; text-decoration:none;}
+.dh-pn-page { width:25px; height:98px; overflow:hidden;float:right}
+.dh-pn-pageon { cursor:pointer; background:#95b6d9; color:#FFF;}
+.dh-pn-pageno { cursor:pointer;width:25px; height:19px;font: 12px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; text-align:center; line-height:19px; overflow:hidden; border-left:1px #e6e6e6 solid; border-bottom:1px #e6e6e6 solid;  float:left;}
+.dh-pn-pagemore {  cursor:pointer;width:25px; height:18px; font-size:8px; text-align:center; line-height:12px; overflow:hidden; border-left:1px #e6e6e6 solid;  float:left;}
+.dh-right{ width:100%;}
+.dh-r-header { width:100%; border-bottom:1px #cacaca solid; height:50px; overflow:hidden;}
+.dh-r-search { margin:10px; border:1px #dbd9d9 solid; background-color:#FFF; padding:5px;height:auto;overflow:hidden;}
+*html .dh-r-search { margin:10px; border:1px #dbd9d9 solid; background-color:#FFF; padding:5px;height:auto; height:33px;overflow:hidden;}
+.dh-r-search a { height:20px; width:20px; background:url(search.png) no-repeat; float:right; overflow:hidden;}
+.dh-rs-input { border:0px; font: 14px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; color: #666; width:180px; float:left; overflow:hidden;}
+.dh-r-user { width:100%; overflow:auto; margin:0px; padding:0px;}
+.dh-r-user ul { margin:0px; padding:0px; list-style-type:none;}
+.dh-r-user li { cursor:default; height:41px; line-height:41px; border-bottom:#ccc 1px solid; overflow:hidden;}
+.dh-r-user li:hover { background-color:rgb(252,240,193)}
+.dh-r-user li h6 { margin:0px; padding:0px; font: 12px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; float:left; text-decoration: none; width:80px;  display:inline-block; overflow:hidden; height:41px; color:#666; line-height:41px; float:left;}
+.dh-r-user li span.name { font: 13px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; float:left; text-decoration: none; width:60px;  display:inline-block; overflow:hidden; height:41px; color:#2d4f74; line-height:41px;}
+.dh-r-user li img{float:left;}
+.dh-r-user li span.role { float:right; font-size:12px; color:#999; width:70px; margin-right:10px;display:inline-block; overflow:hidden; text-align: left;text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}
+.dh-news { width:100%; overflow:auto;}
+.dh-n-header {width:100%; height:50px; overflow:hidden;}
+.dh-n-search { margin:10px; border:1px #dbd9d9 solid; background-color:#FFF; padding:5px;height:auto;overflow:hidden; width:250px; float:right}
+*html .dh-n-search { margin:10px; border:1px #dbd9d9 solid; background-color:#FFF; padding:5px;height:auto; height:33px;overflow:hidden; width:250px}
+.dh-n-search a { height:20px; width:20px; background:url(search.png) no-repeat; float:right; overflow:hidden;}
+.dh-n-tab { float:left; margin:10px; padding:0px;}
+.dh-n-tab ul { margin:0px; padding:0px; list-style-type:none;}
+.dh-n-tab li {  cursor:pointer; height:21px; line-height:21px; padding:5px 15px; border:#ccc 1px solid; overflow:hidden; float:left;  font: 14px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif;  color:#000; margin-right:2px; }
+.dh-n-tab li:hover {color:#FFF; background-color:#2d4f74;}
+.dh-n-tab li.current {color:#FFF; background-color:#2d4f74}
+*html .dh-n-tab li {   height:33px; line-height:33px; padding:5px 15px; border:#ccc 1px solid; overflow:hidden; float:left;  font: 14px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif;  color:#2d4f74; margin-right:2px; }
+.dh-n-line{ width:100%; border-bottom:#e6e6e6 1px solid;}
+.dh-n-margin { margin:20px 20px 20px 20px;}
+.dh-n-title {font: 16px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; color: #000; margin:0px; padding:0px; text-decoration:none; height:23px; width:100%; overflow:hidden;}
+.dh-n-title a{font: 16px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; color: #000;text-decoration:none;}
+.dh-n-title a:hover{color:#2d4f74; text-decoration: underline;}
+.dh-n-date{ font-size:12px; color:#999; float:right;}
+.dh-n-content {font: 12px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; width:100%; height:33px; overflow:hidden; color: #666; margin:5px 0px 0px 0px; padding:0px; text-decoration:none;}
+.dh-nonews { padding:28px 0px 0px 50px; font:32px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; color:#CCC;}
+
+.ay_main { position:absolute; background-color:#fff; width:318px; height:135px; margin:0px; padding:0 15px 0 0; border-bottom:1px solid #dfdfdf; border-right:1px solid #eeeeee;  border-left:1px solid #eeeeee;border-top:3px solid #95b6d9; float:left; overflow:hidden;}
+.ay_main_photo { width:103px; height:135px; float:left; overflow:hidden;}
+.ay_main_right { width:200px; height:135px; float:right; overflow:hidden;}
+.ay_right_top { width:100%; border-bottom:1px solid #dfdfdf; padding:10px 0 5px 0; overflow:hidden;}
+.ay_name {font: 14px "Microsoft YaHei","Arial", Helvetica, sans-serif; color:#000; float:left; line-height:24px;  height:24px; margin-left:5px; }
+.ay_duty { font-size:12px; color:#666; float:left;  line-height:24px; height:24px; margin-left:5px;}
+.ay_info {font-size:12px; color:#666;  line-height:20px;overflow:hidden;  margin:5px 0px 0px 5px;}
+.ay_info ul { margin:0px; padding:0px; text-decoration:none;}
+.ay_info li{}
+.ay_info li.email{width:190px;overflow:hidden; text-overflow:ellipsis;white-space:nowrap;word-break:keep-all;}

@@ -1,0 +1,47 @@
+﻿.left_main { margin:0px 10px;}
+.left_main_list { width:100%;}
+.left_main_list span {float:right; margin:0px; padding:0px;}
+.left_main_list span a {padding-left:5px}
+.left_main_list h1 {font: 12px "Microsoft YaHei","Arial", Helvetica, sans-serif; font-weight:bold; float:left; margin:0px; padding:0px;}
+.left_main_list h2 {font: 12px "宋体","Arial", Helvetica, sans-serif; font-weight:bold; float:left; margin:0px; padding-top:3px;}
+.left_main_list h3 { margin:0px; padding:0px;}
+.left_main_list h3 a {font: 15px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:bold; color: #006b9c; float:left; margin:0px; padding:0px; text-decoration:none;}
+.left_main_list h3 a:hover {color:#33C;text-decoration:underline;}
+.left_main_list h6 {float:left; margin:0px; padding:0px;padding-top:1px;}
+
+.left_main_listread { width:100%;}
+.left_main_listread span {float:right; margin:0px; padding:0px;}
+.left_main_listread span a{padding-left:5px}
+.left_main_listread h1 {font: 12px "Microsoft YaHei","Arial", Helvetica, sans-serif; color: #444; float:left; margin:0px; padding:0px;}
+.left_main_listread h2 {font: 12px "宋体","Arial", Helvetica, sans-serif; font-weight:normal; color: #444; float:left; margin:0px; padding-top:3px;}
+.left_main_listread h3 { margin:0px; padding:0px;}
+.left_main_listread h3 a {font: 15px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; color: #444; float:left; margin:0px; padding:0px; text-decoration:none;}
+.left_main_listread h3 a:hover {color:#33C;text-decoration:underline;}
+.left_main_listread h6 {float:left; margin:0px; padding:0px;padding-top:1px;}
+
+
+.left_main_listimportant { width:100%;}
+.left_main_listimportant span {float:right; margin:0px; padding:0px;}
+.left_main_listimportant span a{padding-left:5px}
+.left_main_listimportant h1 {font: 12px "Microsoft YaHei","Arial", Helvetica, sans-serif; color: #444; float:left; margin:0px; padding:0px;}
+.left_main_listimportant h2 {font: 12px "宋体","Arial", Helvetica, sans-serif; color: #444; float:left; margin:0px; padding-top:3px;}
+.left_main_listimportant h3 { margin:0px; padding:0px;}
+.left_main_listimportant h3 a {font: 15px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:bold; color: #fa2805; float:left; margin:0px; padding:0px; text-decoration:none;}
+.left_main_listimportant h3 a:hover {color:#33C;text-decoration:underline;}
+.left_main_listimportant h6 {float:left; margin:0px; padding:0px;padding-top:1px;}
+
+.mini-grid-cell{border-right-width:0px}
+
+.left_filters{ height:30px}
+.left_filter_wrapper { height:28px; border:1px #d4d4d4 solid;}
+.left_filter_left {float:left; line-height:28px; height:28px; font-size:12px; padding-left:7px; padding-top:5px}
+.left_filter_right {float:right; display: inline-table;}
+.left_filter_right a { font-size:12px;  text-decoration:none; border-top:currentColor 0px none; border-bottom:currentColor 0px none; border-right:currentColor 0px none; border-left:#d4d4d4 1px solid; line-height:28px; padding:0px 15px 0px 20px; float:right; color:#000;}
+.left_filter_right_on {background-color:#ECEDEF}
+.left_filter_right span { float:left;  line-height:28px; cursor:pointer; }
+.down { background-image:url(/Base/Scripts/ShortMsg/filter_down.png); width:7px; height:8px; overflow:hidden; margin:10px 0px 0px 5px; overflow:hidden; float:left;  line-height:28px; cursor:pointer; }
+.up { background-image:url(/Base/Scripts/ShortMsg/filter_up.png); width:7px; height:8px; overflow:hidden; margin:10px 0px 0px 5px; overflow:hidden; float:left;  line-height:28px; cursor:pointer; }
+.active{ background-color:#DFE8F6;}
+.checkbox { margin-top:3px; float:left;}
+.label {line-height:28px; height:28px; float:left;}
+

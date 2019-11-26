@@ -1,0 +1,63 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" id="btnSave" iconcls="icon-add" onclick="add({title:'添加回复图文',height:'500px'})" plain="true">
+                    增加</a> <a class="mini-button" iconcls="icon-edit" onclick="edit({title:'编辑回复图文',height:'500px'});"
+                        plain="true">编辑</a><a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a>
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入标题或摘要" style="width: 200px;"
+                    onenter="quickSearch('Title,Description');" onbuttonclick="quickSearch('Title,Description');" />
+                <a class="mini-button" onclick="showWindow('queryWindow')" iconcls="icon-find" plain="true">
+                    详细查询</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Title" width="200" headeralign="center" align="left" >
+                标题</div>
+            <div field="Description" headeralign="center" width="*" align="left">
+                摘要</div>
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    标题
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Title" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                    摘要
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Description" style="width: 75%;" class="mini-textbox" />
+                </td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>

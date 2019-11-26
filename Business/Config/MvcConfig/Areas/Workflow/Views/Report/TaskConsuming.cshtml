@@ -1,0 +1,151 @@
+﻿@{
+    <link rel="stylesheet" href="/CommonWebResource/CoreLib/bootstrap/css/bootstrap.css">
+    <script type="text/javascript" src="/CommonWebResource/CoreLib/Basic/jQuery/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" src="/CommonWebResource/CoreLib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/CommonWebResource/CoreLib/HighCharts/highcharts.js"></script>    
+    
+    <style>
+        .lead
+        {
+            margin-bottom: 0px;
+        }
+        .progress
+        {
+            margin-bottom: 0px;
+        }
+        .label1
+        {
+            background-color: rgb(245,245,245);
+            width: 150px;
+        }
+    </style>
+    
+}
+<br />
+<table width="100%" style="font-family: 'Microsoft YaHei'">
+    <tr>
+        <td>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading lead">当前状态 </div>
+                    <table class="table">
+                        <tr>
+                            <td class="label1">
+                                活动流程：
+                            </td>
+                            <td class="text-info">
+                                <span class="lead text-info">@Html.Raw(ViewBag.processingFlowCount)</span><span class="text-muted">个</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label1">
+                                平均耗时（流程）：
+                            </td>
+                            <td>
+                                <span class="lead text-info">@Html.Raw(ViewBag.flowConsuming)</span><span class="text-muted">小时</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label1">
+                                平均耗时（环节）：
+                            </td>
+                            <td class="text-info">
+                                <span class="lead text-info">@Html.Raw(ViewBag.taskConsuming)</span><span class="text-muted">小时</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+        <td>
+            <div class="col-sm-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading lead">摘要信息 </div>
+                    <table class="table">
+                        <tr>
+                            <td class="label1">
+                                使用人数：<span class="lead text-info">&nbsp;</span>
+                            </td>
+                            <td>
+                                <div class="progress progress-striped text-info">@Html.Raw(string.Format("{0}%，共{1}人", ViewBag.userPer, ViewBag.userCount))
+                                    <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @Html.Raw(ViewBag.userPer)%;"><span class="sr-only">@Html.Raw(ViewBag.userPer)%
+                                        完成（危险）</span> </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label1">
+                                总流程实例数：
+                            </td>
+                            <td>
+                                <span class="lead text-info">@Html.Raw(ViewBag.taskCount)</span><span class="text-muted">个</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="label1">
+                                总流程定义数：
+                            </td>
+                            <td class="text-info">
+                                <span class="lead text-info">@Html.Raw(ViewBag.flowDefCount)</span><span class="text-muted">个</span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            &nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <div id="container" style="height: 250px;"></div>
+        </td>
+    </tr>
+</table>
+<script type="text/javascript">
+    $(function () {
+        $('#container').highcharts({
+            title: {
+                text: '',//'流程执行情况',
+                x: -20 //center
+            },
+            subtitle: {
+                text: '',
+                x: -20
+            },
+            xAxis: {
+                categories: @Html.Raw(ViewBag.categories)
+            },
+            yAxis: {
+                title: {
+                    text: '流程数 (个)'
+                },
+                plotLines: [{
+                    value: 0,
+                    width: 1,
+                    color: '#808080'
+                }]
+            },
+            tooltip: {
+                valueSuffix: '个'
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle',
+                borderWidth: 0
+            },
+            series: [{
+                name: '启动',
+                data: @Html.Raw(ViewBag.data1)
+            }, {
+                name: '完成',
+                data: @Html.Raw(ViewBag.data2)
+            }]
+        });
+    });
+
+</script>

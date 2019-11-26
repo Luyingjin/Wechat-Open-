@@ -1,0 +1,161 @@
+﻿<div style="text-align: center; vertical-align: middle; width: 100%; height: 100%; cursor: default; font-weight: bold; border: 0;">
+    <table style="text-align: center; border: 0;" border="1" cellspacing="0" cellpadding="0">
+        <tr>
+            <td colspan="2" align="left" style="border: 0;">
+                年份：
+                <input id="Year" class="mini-combobox" data="yearEnum" onvaluechanged="onYearChanged" />
+            </td>
+            <td colspan="2" align="right" style="border: 0;">
+                工作日：<span id="workdayCount">@ViewBag.WorkdayCount</span>天&nbsp; 休息日：<span id="holidayCount">@ViewBag.HolidayCount</span>天&nbsp;
+            </td>
+        </tr>
+        <tr>
+        </tr>
+        @for (int month = 1; month <= 12; month++)
+        {
+            if (month % 4 == 1)
+            {
+            @Html.Raw("<tr>");
+            }                
+            <td style='@Html.Raw("background-position:right;background-repeat: no-repeat;background-image: url(\"/Base/Scripts/Calendar/" + month.ToString() + ".gif\");")'>
+                <table style="text-align: center; width: 100%;" border="0" cellpadding="0" cellspacing="0">
+                    <tr>
+                        <td>
+                            &nbsp;&nbsp;日&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;一&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;二&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;三&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;四&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;五&nbsp;&nbsp;
+                        </td>
+                        <td>
+                            &nbsp;&nbsp;六&nbsp;&nbsp;
+                        </td>
+                    </tr>
+                    @for (int i = 0; i < 6; i++)
+                    {
+                        int[] workdayList = ViewBag.WorkdayList[month - 1];
+                        int[] holidayList = ViewBag.HolidayList[month - 1];
+                        <tr>
+                            @for (int j = 0; j < 7; j++)
+                            {
+                                int day = ViewBag.DayList[month - 1][i, j];
+                                if (day > 0)
+                                {
+                                    if (j == 0 || j == 6)
+                                    {
+                                        if (workdayList.Contains(day))
+                                        {
+                                @Html.Raw("<td class='weekend workday' data='{month:" + month + ",day:" + day + "}'>" + day + "</td>")
+                                        }
+                                        else
+                                        {              
+                                @Html.Raw("<td class='weekend' data='{month:" + month + ",day:" + day + "}'>" + day + "</td>")
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (holidayList.Contains(day))
+                                        {
+                                @Html.Raw("<td class='day holiday' data='{month:" + month + ",day:" + day + "}'>" + day + "</td>")
+                                        }
+                                        else
+                                        {                                        
+                                @Html.Raw("<td class='day' data='{month:" + month + ",day:" + day + "}'>" + day + "</td>")
+                                        }
+                                    }
+
+                                }
+                                else
+                                {
+                                @Html.Raw("<td>&nbsp;</td>");
+                                }
+
+                            }
+                        </tr>
+                    }
+                </table>
+            </td>
+
+                    if (month % 4 == 0)
+                    {
+            @Html.Raw("</tr>");
+                    }
+        }
+    </table>
+</div>
+<script type="text/javascript">
+    var year = getQueryString("Year");
+    var yearEnum = [];
+    yearEnum.push({ value: year - 2, text: year - 2 });
+    yearEnum.push({ value: year - 1, text: year - 1 });
+    yearEnum.push({ value: year, text: year });
+    yearEnum.push({ value: year - (-1), text: year - (-1) });
+    yearEnum.push({ value: year - (-2), text: year - (-2) });
+    $("#Year").val(year);
+    function onYearChanged(e) {
+        year = e.sender.getValue();
+        window.location.href = window.location.href.replace(window.location.search, "?Year=" + year);
+    }
+</script>
+<script type="text/javascript">
+    $(function () {
+        $(".day").css("cursor", "pointer").bind("click", function (e) {
+            var $this = $(this);
+            addExecuteParam("data", $this.attr("data"));
+            if ($this.hasClass("holiday")) {
+                execute("DeleteHoliday", { onComplete: function () { $this.removeClass("holiday"); addHoliday(-1); } });
+            }
+            else {
+                execute("AddHoliday", { onComplete: function () { $this.addClass("holiday"); addHoliday(1); } });
+            }
+        });
+
+        $(".weekend").css("cursor", "pointer").bind("click", function (e) {
+            var $this = $(this);
+            addExecuteParam("data", $this.attr("data"));
+            if ($this.hasClass("workday")) {
+                execute("DeleteWorkday", { onComplete: function () { $this.removeClass("workday"); addHoliday(1); } });
+            }
+            else {
+                execute("AddWorkday", { onComplete: function () { $this.addClass("workday"); addHoliday(-1); } });
+            }
+        });
+    });  
+</script>
+<script type="text/javascript">
+    function addHoliday(x) {
+        var w = $("#workdayCount");
+        var h = $("#holidayCount");
+        w.text(w.text() - x);
+        h.text(h.text() - (-x));
+    }
+</script>
+<style type="text/css">
+    .day
+    {
+        color: Black;
+    }
+    .weekend
+    {
+        color: #C00000;
+    }
+    .holiday
+    {
+        color: #C00000;
+    }
+    .workday
+    {
+        color: Black;
+    }
+</style>

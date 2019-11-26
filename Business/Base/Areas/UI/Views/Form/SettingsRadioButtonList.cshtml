@@ -1,0 +1,133 @@
+﻿<div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 100;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="returnForm();">确定</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" autogetdata="false" style="top: 30px; position: relative;">
+<div class="formDiv">
+    <fieldset>
+        <legend>基本属性</legend>
+        <div>
+            <table style="width: 100%;">
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        必须填写：
+                    </td>
+                    <td>
+                        <input name="required" class="mini-combobox" value="false" data="yesNo" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        允许输入：
+                    </td>
+                    <td>
+                        <input name="allowInput" class="mini-combobox" value="true" data="yesNo" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        布局方式：
+                    </td>
+                    <td>
+                        <input name="repeatLayout" class="mini-combobox" style="width: 100%;" value="" textfield="text" valuefield="value" data="repeatLayout" shownullitem="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        平铺方向：
+                    </td>
+                    <td>
+                        <input name="repeatDirection" class="mini-combobox" style="width: 100%;" textfield="text" valuefield="value" data="repeatDirection" shownullitem="true" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        平铺显示项：
+                    </td>
+                    <td>
+                        <input name="repeatItems" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数据列表：
+                    </td>
+                    <td>
+                        <input name="data" textname="data" class="mini-buttonedit" style="width: 100%" onbuttonclick="onDataClick" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>事件属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        值改变时发生：
+                    </td>
+                    <td>
+                        <input name="onvaluechanged" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        项点击时发生：
+                    </td>
+                    <td>
+                        <input name="onitemclick" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+    var yesNo = [{ "value": "true", "text": "是" }, { "value": "false", "text": "否"}];
+    var repeatDirection = [{ text: "水平", value: "horizontal" }, { text: "垂直", value: "vertical"}];
+    var repeatLayout = [{ text: "无", value: "none" }, { text: "流式", value: "flow" }, { text: "表格", value: "table"}];
+
+    function setData(data) {
+        if (data) {
+            var form = new mini.Form("dataForm");
+            form.setData(mini.decode(data));
+            form.setChanged(false);
+        }
+    }
+
+    function onDataClick() {
+        var btn = mini.getbyName("data");
+        var data = btn.getValue();
+        openWindow('EnumEdit', { width: 350, height: 300, data: data, onDestroy: function (s) {
+            if (s != "close") {
+                var d = s;
+                if (typeof (s) == "object" || typeof (s) == "array" || s.constructor == Array || s.constructor == Object)
+                    var d = mini.encode(s);
+                btn.setValue(d);
+                btn.setText(d);
+            }
+        }
+        });
+    }
+</script>

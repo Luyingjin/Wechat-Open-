@@ -1,0 +1,204 @@
+﻿<div class="mini-toolbar" style="padding: 2px; border-bottom: 0;">
+    <table style="width: 100%;">
+        <tr>
+            <td style="width: 100%; text-align: left">
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="save">确定</a>
+                <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+            </td>
+            <td style="white-space: nowrap;">
+                <a class="mini-button" onclick="showHelp()" iconcls="icon-help" plain="true">帮助</a>
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post">
+    <input name="ID" class="mini-hidden" />
+    <input name="IsDelete" class="mini-hidden" />
+    <input name="MpID" class="mini-hidden" />
+    <input name="ArticleID" class="mini-hidden" />
+    <input name="ArticleGroupID" class="mini-hidden" />
+    <input name="ImageID" class="mini-hidden" />
+    <input name="VideoID" class="mini-hidden" />
+    <input name="VoiceID" class="mini-hidden" />
+    <input name="ArticleMediaID" class="mini-hidden" />
+    <input name="ArticleGroupMediaID" class="mini-hidden" />
+    <input name="ImageMediaID" class="mini-hidden" />
+    <input name="VideoMediaID" class="mini-hidden" />
+    <input name="VoiceMediaID" class="mini-hidden" />
+    <div class="basediv">
+        <table width="100%" cellpadding="5" cellspacing="0" border="1" bordercolor="#333333"
+            bordercolordark="#FFFFFF">
+            <tr>
+                <td width="15%">分组
+                </td>
+                <td width="85%" colspan="3">
+                    <input class="mini-combobox" id="GroupIDs" name="GroupIDs" textName="GroupNames" style="width: 100%;" valuefield="ID"
+                        textfield="Name" url="/WeChat/MpGroup/GetTree?MpID=@Request["MpID"]" multiSelect="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td width="15%">性别
+                </td>
+                <td width="35%">
+                    <input class="mini-combobox" id="Sex" name="Sex" style="width: 100%;" valuefield="value"
+                        textfield="text" data="MpFansSex"  multiSelect="true"/>
+                </td>
+                <td width="15%">国家
+                </td>
+                <td width="35%">
+                    <input class="mini-combobox" id="Country" name="Country" textName="CountryText" style="width: 100%;" valuefield="ID" nullItemText="" showNullItem="true"
+                        textfield="Name" url="/WeChat/MpFans/GetCountryEnum?MpID=@Request["MpID"]" onvaluechanged="onCountryChanged"/>
+                </td>
+            </tr>
+            <tr>
+                <td>省份
+                </td>
+                <td>
+                    <input class="mini-combobox" id="Province" name="Province" style="width: 100%;" valuefield="ID" nullItemText="" showNullItem="true"
+                        textfield="Name" url="" onvaluechanged="onProvinceChanged"/>
+                </td>
+                <td>城市
+                </td>
+                <td>
+                    <input class="mini-combobox" id="City" name="City" style="width: 100%;" valuefield="ID"
+                        textfield="Name" url="" multiSelect="true"/>
+                </td>
+            </tr>
+            <tr>
+                <td>消息类型&nbsp;&nbsp;<b style="color: red;">*</b>
+                </td>
+                <td colspan="3">
+                    <div name="MessageType" class="mini-radiobuttonlist" repeatitems="10" repeatlayout="table" borderstyle="border:1px solid #aaaaaa;"
+                    textfield="text" valuefield="value" data="MpButtonMediaType" shownullitem="true" onvaluechanged="onMediaTypeChanged" required="true">
+                </div>
+                </td>
+            </tr>
+            <tr id="ContentTr" class="SubMedia" style="display:none">
+                <td>文本内容
+                </td>
+                <td colspan="3">
+                    <input name="Content" class="mini-textarea" style="width: 100%" vtype="maxLength:500" />
+                </td>
+            </tr>
+            <tr id="ArticleTr" class="SubMedia" style="display:none">
+                <td>
+                    单图文
+                </td>
+                <td colspan="3">
+                    <input textname="ArticleName" id="ArticleName" name="ArticleName" allowInput="false" style="width: 100%;
+                        text-align: left" class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="ArticleGroupTr" class="SubMedia" style="display:none">
+                <td>
+                    多图文
+                </td>
+                <td colspan="3">
+                    <input textname="ArticleGroupName" id="ArticleGroupName" name="ArticleGroupName" allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="ImageTr" class="SubMedia" style="display:none">
+                <td>
+                    图片
+                </td>
+                <td colspan="3">
+                    <input textname="ImageName" id="ImageName" name="ImageName"  allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="VideoTr" class="SubMedia" style="display:none">
+                <td>
+                    视频
+                </td>
+                <td colspan="3">
+                    <input textname="VideoName" id="VideoName" name="VideoName" allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+            <tr id="VoiceTr" class="SubMedia" style="display:none">
+                <td>
+                    音频
+                </td>
+                <td colspan="3">
+                    <input textname="VoiceName" id="VoiceName" name="VoiceName" allowInput="false" style="width: 100%;
+                       text-align: left"  class="mini-buttonedit" required="false" vtype="maxLength:200" />
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>
+<script type="text/javascript">
+    @Html.GetEnum("WeChat.MpButtonMediaType")
+    @Html.GetEnum("WeChat.MpFansSex")
+
+    addSelector("ArticleName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxArticleMedia&MpID=" + getQueryString("MpID")
+    , { returnParams: "ArticleID:ID,ArticleName:Title,ArticleName:Title,ArticleMediaID:MediaID"});
+    addSelector("ArticleGroupName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpMediaArticleGroup&MpID=" + getQueryString("MpID")
+    , { returnParams: "ArticleGroupID:ID,ArticleGroupName:Name,ArticleGroupName:Name,ArticleGroupMediaID:MediaID"});
+    addSelector("ImageName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxImageMedia&MpID=" + getQueryString("MpID")
+    , { returnParams: "ImageID:ID,ImageName:Name,ImageName:Name,ImageMediaID:MediaID"});
+    addSelector("VideoName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpMediaVideo&MpID=" + getQueryString("MpID")
+    , { returnParams: "VideoID:ID,VideoName:Title,VideoName:Title,VideoMediaID:MediaID"});
+    addSelector("VoiceName",  "/MvcConfig/UI/List/PageView?TmplCode=SelectWxMpMediaVoice&MpID=" + getQueryString("MpID")
+    , { returnParams: "VoiceID:ID,VoiceName:Name,VoiceName:Name,VoiceMediaID:MediaID"});
+    function pageLoad() {
+    }
+
+    function onFormSetData() {
+        var functype = getQueryString("FuncType");
+        if (functype == "copy") {
+            var newId = "@Formula.FormulaHelper.CreateGuid()";
+            mini.getbyName("ID").setValue(newId);
+            mini.getbyName("NAME").setValue(mini.getbyName("NAME").getValue() + "-复制");
+        }
+        onMediaTypeChanged();
+    }
+
+    //菜单素材类型改变时
+    function onMediaTypeChanged(e) {
+        var type=mini.getbyName("MessageType").getValue();
+        $(".SubMedia").hide();
+        if(type=="mpnews"){
+            $("#ArticleTr").show();
+        }
+        else if(type=="mpmultinews"){
+            $("#ArticleGroupTr").show();
+        }
+        else if(type=="text"){
+            $("#ContentTr").show();
+        }
+        else if(type=="voice"){
+            $("#VoiceTr").show();
+        }
+        else if(type=="image"){
+            $("#ImageTr").show();
+        }
+        else if(type=="video"){
+            $("#VideoTr").show();
+        }
+    }
+
+    function onCountryChanged(e){
+        var CountryCombo = mini.get("Country");
+        var ProvinceCombo = mini.get("Province");
+        var CityCombo = mini.get("City");
+        var countrytext = CountryCombo.getValue();
+        ProvinceCombo.setValue("");
+        CityCombo.setValue("");
+        var url = "/WeChat/MpFans/GetProvinceEnum?MpID=@Request["MpID"]" + "&Country="+encodeURI(countrytext);
+        ProvinceCombo.setUrl(url);
+        CityCombo.setUrl("");
+    }
+
+    function onProvinceChanged(e){
+        var CountryCombo = mini.get("Country");
+        var ProvinceCombo = mini.get("Province");
+        var CityCombo = mini.get("City");
+        var countrytext = CountryCombo.getValue();
+        var provincetext = ProvinceCombo.getValue();
+        CityCombo.setValue("");
+        var url = "/WeChat/MpFans/GetCityEnum?MpID=@Request["MpID"]" + "&Country="+encodeURI(countrytext) + "&Province="+encodeURI(provincetext);
+        CityCombo.setUrl(url);
+    }
+</script>

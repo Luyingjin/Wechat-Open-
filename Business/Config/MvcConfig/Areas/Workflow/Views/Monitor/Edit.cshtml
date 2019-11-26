@@ -1,0 +1,144 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" vertical="true">
+    <div size="45%" showcollapsebutton="true">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" id="btnReplaceUser" plain="true" iconcls="icon-edit" 
+                            onclick="replaceUser();">置换人员</a>
+                        <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+                    </td>
+                    <td id="btnRight">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="silverlightControlHost" style="height: 2000px;">
+                <object data="data:application/x-silverlight-2," type="application/x-silverlight-2"
+                    width="100%" height="100%" name="designer">
+                    <param name="source" value="/Workflow/ClientBin/WorkFlowDesigner.xap" />
+                    <param name="onError" value="onSilverlightError" />
+                    <param name="background" value="white" />
+                    <param name="minRuntimeVersion" value="4.0.50826.0" />
+                    <param name="autoUpgrade" value="true" />
+                    <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=4.0.50826.0" style="text-decoration: none">
+                        <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="获取 Microsoft Silverlight"
+                            style="border-style: none" />
+                    </a>
+                </object>
+                <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px;
+                    border: 0px"></iframe>
+            </div>
+        </div>
+    </div>
+    <div showcollapsebutton="true">
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="/MvcConfig/Workflow/Trace/GetFlowExecList"
+                multiselect="true">
+                <div property="columns">
+                    <div field="StepName" width="100">环节名称</div>
+                    <div field="Type" width="60" align="center">任务类型</div>
+                    <div field="TaskUserDept" width="150">接收人部门</div>
+                    <div field="TaskUserName" width="60" align="center">接收人</div>
+                    <div field="ExecUserName" width="60" align="center">操作人</div>
+                    <div field="ExecRoutingName" width="100">操作</div>
+                    <div field="CreateTime" width="110" dateformat="yyyy-MM-dd HH:mm">接收时间</div>
+                    <div field="ExecTime" width="110" dateformat="yyyy-MM-dd HH:mm">操作时间</div>
+                    <div field="UseTime" width="100" align="center">操作耗时</div>
+                    <div field="ExecComment" width="*">操作意见</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var TaskExecType = [{ value: 'Normal', text: '普通' }, { value: 'Delegate', text: '委托' }, { value: 'Circulate', text: '传阅' }, { value: 'Ask', text: '加签'}];
+    addGridEnum('dataGrid', 'Type', 'TaskExecType');
+    addGridLink('dataGrid', 'TaskUserName', '/MvcConfig/Workflow/Trace/UserView?ID={ID}&UserID={TaskUserID}', { title: "人员信息", refresh: false, weight: 300, height: 230 });
+    addGridLink('dataGrid', 'ExecUserName', '/MvcConfig/Workflow/Trace/UserView?ID={ID}&UserID={ExecUserID}', { title: "人员信息", refresh: false, weight: 300, height: 230 });
+</script>
+<style type="text/css">
+    html, body
+    {
+        height: 100%;
+        overflow: auto;
+    }
+    body
+    {
+        padding: 0;
+        margin: 0;
+    }
+    #silverlightControlHost
+    {
+        height: 100%;
+        text-align: center;
+    }
+</style>
+<script type="text/javascript">
+    function onSilverlightError(sender, args) {
+        var appSource = "";
+        if (sender != null && sender != 0) {
+            appSource = sender.getHost().Source;
+        }
+        var errorType = args.ErrorType;
+        var iErrorCode = args.ErrorCode;
+        if (errorType == "ImageError" || errorType == "MediaError") {
+            return;
+        }
+        var errMsg = "Silverlight 应用程序中未处理的错误 " + appSource + "\n";
+        errMsg += "代码: " + iErrorCode + "    \n";
+        errMsg += "类别: " + errorType + "       \n";
+        errMsg += "消息: " + args.ErrorMessage + "     \n";
+        if (errorType == "ParserError") {
+            errMsg += "文件: " + args.xamlFile + "     \n";
+            errMsg += "行: " + args.lineNumber + "     \n";
+            errMsg += "位置: " + args.charPosition + "     \n";
+        }
+        else if (errorType == "RuntimeError") {
+            if (args.lineNumber != 0) {
+                errMsg += "行: " + args.lineNumber + "     \n";
+                errMsg += "位置: " + args.charPosition + "     \n";
+            }
+            errMsg += "方法名称: " + args.methodName + "     \n";
+        }
+        引发新错误(errMsg);
+    }
+
+    var msgId = "";
+    var taskID = "";
+    function showActivityTrace(activityID) {
+
+        var grid = mini.get("dataGrid");
+
+        var rows = grid.findRows(function (row) {
+            if (row.StepID == activityID) return true;
+        });
+
+        taskID = "";
+        for (var i = 0; i < rows.length; i++) {
+            if (!rows[i]["ExecTime"])
+                taskID = rows[i]["TaskID"];
+        }
+        grid.clearSelect();
+        grid.selects(rows, false);
+
+        if (taskID == "")
+            mini.get("btnReplaceUser").disable();
+        else
+            mini.get("btnReplaceUser").enable();
+    }
+
+    function replaceUser() {
+        openWindow("ReplaceUser?TaskID=" + taskID, { title: '人员置换', width: '450px', height: '200px' });
+    }
+
+    if (getQueryString("IsFinishedList") == "True")
+        $("#btnReplaceUser").hide();
+
+    function pageLoad() {
+        mini.get("btnReplaceUser").disable();
+    }
+
+
+</script>

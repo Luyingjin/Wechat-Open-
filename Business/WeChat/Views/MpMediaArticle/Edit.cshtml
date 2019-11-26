@@ -1,0 +1,275 @@
+﻿@section scripts{
+    <script src="@Url.Content("/commonwebresource/corelib/swfupload/swfupload.js")" type="text/javascript"></script>
+    <script charset="utf-8" src="@Url.Content("/Base/Scripts/KindEditor/kindeditor-min.js")" type="text/javascript"></script>
+    <script charset="utf-8" src="@Url.Content("/Base/Scripts/KindEditor/lang/zh_CN.js")" type="text/javascript"></script>
+    <link href="@Url.Content("/Base/Scripts/KindEditor/themes/default/default.css")" rel="stylesheet" type="text/css" />
+<script language="javascript" type="text/javascript">
+    KindEditor.ready(function (K) {
+        window.editor = K.create('textarea.KindEditor', {
+            uploadJson: '/Base/PortalBlock/KindEditor/Upload',
+            fileManagerJson: '/Base/PortalBlock/KindEditor/FileManager',
+            allowFileManager: true,
+            resizeType: 0,
+            filterMode: false,
+            wellFormatMode:false,
+            items: [
+                'source', '|', 'undo', 'redo', '|', 'cut', 'copy', 'paste',
+		        'plainpaste', 'wordpaste', '|', 'justifyleft', 'justifycenter', 'justifyright',
+		        'justifyfull', 'insertorderedlist', 'insertunorderedlist', 'indent', 'outdent', 'subscript',
+		        'superscript', 'clearhtml', 'quickformat', 'selectall', '|', 'fullscreen', 
+		        'formatblock', 'fontname', 'fontsize', '|', 'forecolor', 'hilitecolor', 'bold',
+		        'italic', 'underline', 'strikethrough', 'lineheight', 'removeformat', '|', 'image', 'multiimage',
+		        'hr', 'baidumap', 'pagebreak',
+		        'anchor', 'link', 'unlink', 'emoticons'
+                ]
+        });
+        if (getQueryString("FuncType").toLowerCase() == "view") {
+            window.editor.readonly(true);
+        }
+    });
+</script>
+}
+<style type="text/css">
+    .gw_portrait, .gw_identityCard
+    {
+        border: 1px #eee solid;
+        float: left;
+        margin-right: 30px;
+    }
+    
+    .gw_portrait
+    {
+        width: 130px;
+        height: 120px;
+    }
+    
+    .gw_identityCard
+    {
+        width: 230px;
+        height: 144px;
+    }
+    .gw_sign
+    {
+        width: 80px;
+        height: 30px;
+    }
+</style>
+<div id="formlayout" class="mini-layout" style="width: 100%; height: 100%;">
+    <div region="north" height="32" showspliticon="false" showheader="false" allowresize="false"
+        splitsize="0" style="border: 0;">
+        <div class="mini-toolbar" id="btnDiv">
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 100%; text-align: left;">
+                        <a class="mini-button" plain="true" iconcls="icon-save" onclick="save();">保存</a>
+                        <a class="mini-button" plain="true" iconcls="icon-cancel" onclick="closeWindow()">取消</a>
+                    </td>
+                    <td style="white-space: nowrap;">
+                        <a class="mini-button" onclick="showWindow('helpWindow')" iconcls="icon-help" plain="true">
+                            帮助</a>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div title="center" region="center" style="border: 0;">
+        <form id="dataForm" method="post">
+        <input name="ID" class="mini-hidden" />
+        <input name="MpID" class="mini-hidden" />
+        <input name="PicMediaID" class="mini-hidden" />
+        <input name="PicFileID" class="mini-hidden" />
+        <input name="IsDelete" class="mini-hidden" />
+        <div class="basediv">
+            <fieldset>
+                <legend style="font-weight: bold">图文信息</legend>
+                <table style="width: 100%">
+                    <tr style="height: 0px">
+                        <td width="15%">
+                        </td>
+                        <td width="35%">
+                        </td>
+                        <td width="15%">
+                        </td>
+                        <td width="35%">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            标题
+                        </td>
+                        <td>
+                            <input name="Title" class="mini-textbox" style="width: 100%" required="true"
+                                vtype="maxLength:64" />
+                        </td>
+                        <td>
+                            封面
+                        </td>
+                        <td rowspan="3">
+                            <table width="100%">
+                                <tr>
+                                    <td>
+                                        <div class="gw_portrait">
+                                            <input id="picinput" class="mini-Pic" noneImageSrc="/CommonWebResource/RelateResource/image/system/feedback.png" imageWidth="130px" imageHeight="120px"/></div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="left">
+                                        <input onclick="uploadPic()"
+    class="mini-button" text="上传" plain="false" style="height: 19px;width:130px" />&nbsp;<input name="selectpic" onclick="onSelecting"
+    class="mini-button" text="从图片库中选择" plain="false" style="height: 19px;width:130px" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            作者
+                        </td>
+                        <td>
+                            <input name="Author" class="mini-textbox" style="width: 100%"
+                                vtype="maxLength:8" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <div name="ShowPic" class="mini-checkbox" checked="false" readonly="false" text="封面图片显示在正文中"></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            摘要
+                        </td>
+                        <td colspan="3">
+                            <input name="Description" class="mini-textarea" style="width: 100%" vtype="maxLength:120" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>正文</td>
+                        <td colspan="3">
+                            <textarea name="Content" class="KindEditor" style="width: 100%; height: 350px"></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            原文链接
+                        </td>
+                        <td colspan="3">
+                            <input name="Url" class="mini-textbox" style="width: 100%"
+                                vtype="maxLength:250" />
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+        </div>
+        </form>
+    </div>
+</div>
+<div id="helpWindow" class="mini-window" title="帮助" style="width: 700px; height: 230px;
+    display: none;" showmodel="true" allowresize="false" allowdrag="true">
+    <fieldset>
+        <legend style="font-weight: bold;">控件背景颜色说明</legend>
+        <table border="1" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td width="12%" align="center" style="font-weight: bold;">
+                    标识颜色
+                </td>
+                <td width="15%" align="center" style="font-weight: bold;">
+                    标识说明
+                </td>
+                <td width="75%" align="center" style="font-weight: bold;">
+                    备注
+                </td>
+            </tr>
+            <tr>
+                <td style="background-color: #FFFACD;">
+                </td>
+                <td align="center">
+                    必填字段
+                </td>
+                <td>
+                    该颜色表示字段为必填字段，字段的值不可为空；
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+    <fieldset>
+        <legend style="font-weight: bold;">图标说明</legend>
+        <table border="1" cellspacing="0" cellpadding="0" width="100%">
+            <tr>
+                <td width="12%" align="center" style="font-weight: bold">
+                    按钮图标
+                </td>
+                <td width="15%" align="center" style="font-weight: bold">
+                    图标名称
+                </td>
+                <td width="73%" align="center" style="font-weight: bold">
+                    图标说明
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <img src="/CommonWebResource/Theme/Default/MiniUI/images/textbox/error.gif" title="警告" />
+                </td>
+                <td align="center">
+                    警告图标
+                </td>
+                <td>
+                    图标对应字段的值输入有误；
+                </td>
+            </tr>
+        </table>
+    </fieldset>
+</div>
+<script language="javascript" type="text/javascript">
+    function onFormSetData() {
+        mini.get("picinput").setSrc("/WeChat/MpImage/GetPic?ID=" + mini.getbyName("PicFileID").getValue());
+
+        var name = "selectpic", url = "/MvcConfig/UI/List/PageView?TmplCode=SelectWxImageMedia&MpID=" + getQueryString("MpID"), 
+        selectorSettings = { width: 400, height: 520, returnParams: "MediaID:PicMediaID,FileID:PicFileID", onSelected: onSelectPic };
+        var settings = jQuery.extend(true, {}, selectorParamSettings, selectorSettings, { name: name, key: name, url: url, addQueryString: false });
+        selectorSettingss.push(settings);
+    }
+
+    function onSelectPic(data, settings) {
+        if (data != "close") {
+            mini.getbyName("PicMediaID").setValue(data[0].MediaID);
+            mini.getbyName("PicFileID").setValue(data[0].FileID);
+            mini.get("picinput").setSrc("/WeChat/MpImage/GetPic?ID=" + data[0].FileID);
+        }
+    }
+
+    function uploadPic() {
+        var value = "FileIds";
+        var relateId = getQueryString("MpID");
+        var url = SlUploadUrl + "?value=" + value + "&" + "FileMode=single&IsLog=undefined&Filter=图片|*.jpg;*.jpeg;*.png;*.bmp;*.gif&MaximumUpload=" + 2 + "&MaxNumberToUpload=" + 20 + "&AllowThumbnail=" + false + "&RelateId=&Src=system";
+        if (relateId)
+            url += "&RelateId=" + relateId;
+        mini.open({
+            url: url,
+            width: 500,
+            height: 300,
+            title: "图片上传",
+            ondestroy: function (rtnValue) {
+                if (rtnValue.substring(0, 3) == "err") {
+                    msgUI(rtnValue, 4);
+                    return;
+                }
+                else if (rtnValue != "") {
+                    $.ajax({
+                        type: "POST",
+                        url: "/WeChat/MpMediaImage/AddFile?MpID=" + relateId + "&FileName=" + rtnValue,
+                        dataType: "json",
+                        success: function (data) {
+                            msgUI("上传成功！");
+                            mini.get("picinput").setSrc("/WeChat/MpImage/GetPic?ID=" + data[0].FileID);
+                            mini.getbyName("PicMediaID").setValue(data[0].MediaID);
+                            mini.getbyName("PicFileID").setValue(data[0].FileID);
+                        }
+                    });
+                }
+            }
+        });
+    }
+</script>

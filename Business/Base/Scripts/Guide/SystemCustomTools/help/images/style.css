@@ -1,0 +1,73 @@
+body {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+	background-color:#808080;
+}
+div {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+ul {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+li {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+dl {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+dt {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+dd {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+h2 {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+p {
+	margin: 0px; padding: 0px; font-family: "Î¢ÈíÑÅºÚ";
+}
+ul {
+	list-style: none;
+}
+img {
+	border: currentColor;
+}
+a {
+	
+}
+.banner-box {
+	height: 600px; overflow: hidden; position: relative; min-width: 860px;
+}
+.banner-box .bd {
+	width: 100% !important;
+}
+.banner-box .bd li .m-width {
+	margin: 0px auto; width: 880px; overflow: hidden;
+}
+.banner-box .bd li {
+	width: 100% !important; height: 600px;
+}
+.banner-box .bd li a {
+	display: block; background-size: auto;
+}
+.banner-btn {
+	left: 50%; top: 250px; width: 860px; margin-left: -430px; position: absolute;
+}
+.banner-btn a {
+	top: 0px; width: 49px; height: 104px; display: block; position: absolute; opacity: 0.4; -moz-opacity: 0.4; -khtml-opacity: 0.4;
+}
+.banner-btn a.prev {
+	background: url("../images/foot.png") no-repeat 0px 0px; left: 20px;
+}
+.banner-btn a.next {
+	background: url("../images/foot.png") no-repeat -49px 0px; right: 20px;
+}
+.banner-box .hd {
+	left: 385px; top:320px; position: absolute;
+}
+.banner-box .hd ul li {
+	background: rgb(204, 204, 204); border-radius: 50%; width: 12px; height: 12px; text-indent: -9999px; margin-right: 10px; float: left; cursor: pointer;
+}
+.banner-box .hd ul li.on {
+	background: rgb(0, 59, 133);
+}

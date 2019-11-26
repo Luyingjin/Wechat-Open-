@@ -1,0 +1,165 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="returnForm();">确定</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" autogetdata="false">
+<div class="formDiv">
+    <fieldset>
+        <legend>基本属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        列头样式：
+                    </td>
+                    <td>
+                        <input name="headerStyle" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        单元格样式：
+                    </td>
+                    <td>
+                        <input name="cellStyle" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        允许移动列头：
+                    </td>
+                    <td>
+                        <input name="allowMove" class="mini-combobox" value="true" data="yesNo" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        允许调整宽度：
+                    </td>
+                    <td>
+                        <input name="allowResize" class="mini-combobox" value="true" data="yesNo" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数据类型：
+                    </td>
+                    <td>
+                        <input name="dataType" class="mini-combobox" value="true" data="dataType" shownullitem="true" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        货币单位：
+                    </td>
+                    <td>
+                        <input name="currencyUnit" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        日期格式：
+                    </td>
+                    <td>
+                        <input name="dateFormat" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数字格式：
+                    </td>
+                    <td>
+                        <input name="numberFormat" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        保留的小数位数：
+                    </td>
+                    <td>
+                        <input name="decimalPlaces" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        枚举：
+                    </td>
+                    <td>
+                        <input name="EnumKey" textname="EnumKey" class="mini-buttonedit" style="width: 100%" onbuttonclick="onDataClick" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        汇总：
+                    </td>
+                    <td>
+                        <input name="Collect" class="mini-combobox" data="collectEnum" style="width: 100%" shownullitem="true" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>事件属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        单元格绘制函数：
+                    </td>
+                    <td>
+                        <input name="onrenderer" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+    var yesNo = [{ "value": "true", "text": "是" }, { "value": "false", "text": "否"}];
+    var vType = [{ "value": "email", "text": "邮件" }, { "value": "int", "text": "整型" }, { "value": "float", "text": "浮点型"}];
+    var dataType = [{ "value": "string", "text": "字符串" }, { "value": "int", "text": "整型" }, { "value": "float", "text": "浮点型" }, { "value": "date", "text": "日期型" }, { "value": "boolean", "text": "布尔型" }, { "value": "currency", "text": "货币型"}];
+    var collectEnum = [{ value: "sum", text: "总计" }, { value: "avg", text: "平均"}];
+    function setData(data) {
+        if (data) {
+            var form = new mini.Form("dataForm");
+            form.setData(mini.decode(data));
+            form.setChanged(false);
+        }
+    }
+
+    function onDataClick() {
+        var btn = mini.getbyName("EnumKey");
+        var data = btn.getValue();
+        openWindow('EnumEdit', { width: 350, height: 300, data: data, onDestroy: function (s) {
+            if (s != "close") {
+                var d = s;
+                if (typeof (s) == "object" || typeof (s) == "array" || s.constructor == Array || s.constructor == Object)
+                    var d = mini.encode(s);
+                btn.setValue(d);
+                btn.setText(d);
+            }
+        }
+        });
+    }
+</script>

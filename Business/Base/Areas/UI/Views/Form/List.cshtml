@@ -1,0 +1,101 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" allowresize="true">
+    <div size="150" showcollapsebutton="true">
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="overflow: hidden; width: 100%; height: 100%" url="GetTree?RootFullID=0" textfield="Name" idfield="ID" parentfield="ParentID" resultastree="false"
+                onnodeclick="onNodeSelect" expandonload="1">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false">
+        <div class="mini-toolbar gw-grid-toolbar" borderstyle="border-left:0px">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-add" onclick="add({url:'Edit?CategoryID={ID}',paramFrom:'dataTree'});">增加</a>
+                        <a class="mini-button" iconcls="icon-copy" onclick="execute('Clone?FormID={ID}',{mustConfirm:true,mustSelectOneRow:true,actionTitle:'克隆'});">克隆</a>
+                        <a class="mini-button" iconcls="icon-remove" onclick="del();">删除</a>
+                    </td>
+                    <td class="gw-toolbar-right">
+                        <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入编号或名称" onenter="quickSearch('Code,Name');" onbuttonclick="quickSearch('Code,Name');" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" multiselect="true" borderstyle="border-left:0px;border-right:0px;border-bottom:0px" collapsegrouponload="false">
+                <div property="columns">
+                    <div type="checkcolumn"></div>
+                    <div field="Code" width="120" allowsort="true" align="center">表单编号</div>
+                    <div field="Name" width="150" allowsort="true">表单名称</div>
+                    <div headeralign="center" header="相关业务数据">
+                        <div property="columns">
+                            <div field="ConnName" width="80" allowsort="true" align="center">库名</div>
+                            <div field="TableName" width="100" allowsort="true" align="center">表名</div>
+                        </div>
+                    </div>
+                    <div field="ModifyTime" align="center" datatype="date" dateformat="yyyy-MM-dd HH:mm" width="120" allowsort="true">最后修订时间</div>
+                    <div headeralign="center" header="修订">
+                        <div property="columns">
+                            <div field="Base" width="60" align="center">基本信息</div>
+                            <div field="Item" width="60" align="center">控件信息</div>
+                            <div field="Layout" width="60" align="center">布局信息</div>
+                            <div field="DefaultValue" width="60" align="center">默认值</div>
+                            <div field="SerialNumber" width="60" align="center">流水号</div>
+                            <div field="FlowLogic" width="60" align="center">流程逻辑</div>
+                        </div>
+                    </div>
+                    <div field="PreView" width="60" align="center">预览</div>
+                    <div field="Release" width="60" align="center">生成表</div>
+                    <div field="Export" width="80" align="center">导出HTML</div>
+                    <div field="ExportSql" width="80" align="center">导出Sql</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    addGridLink("dataGrid", "PreView", "/MvcConfig/UI/Form/PageView?TmplCode={Code}&IsPreView=True", { linkText: '预览' });
+    addGridLink("dataGrid", "Base", "Edit?ID={ID}", { linkText: '基本信息', width: 1000 });
+    addGridLink("dataGrid", "Layout", "LayoutEdit?ID={ID}&TmplCode={Code}", { linkText: '布局信息', width: 1000 });
+    addGridLink("dataGrid", "Item", "ItemList?FormID={ID}", { linkText: '控件信息', width: 1000 });
+    addGridLink("dataGrid", "DefaultValue", "DefaultValueEdit?FormID={ID}", { linkText: '默认值', width: 1000 });
+    addGridLink("dataGrid", "SerialNumber", "SerialNumberEdit?FormID={ID}", { linkText: '流水号', width: 1000 });
+    addGridLink("dataGrid", "FlowLogic", "FlowLogicList?FormID={ID}", { linkText: '流程逻辑', width: 1000 });
+    addGridButton("dataGrid", "Release", { action: "ReleaseForm", actionTitle: "生成表" });
+    addGridButton("dataGrid", "Export", { linkText: '导出HTML', onButtonClick: function (row) {
+        var url = "/MvcConfig/UI/Form/ExportHtml?TmplCode=" + row["Code"];
+        window.open(url);
+    }
+    });
+    addGridButton("dataGrid", "ExportSql", { linkText: '导出Sql', onButtonClick: function (row) {
+        var url = "/Base/UI/ExportSql/SqlFile?DefID=" + row["ID"] + "&FileCode=Form_" + row["Code"] + "&TableName=S_UI_Form";
+        window.open(url);
+    }
+    });
+    jQuery(".gw-grid-toolbar .mini-button").hide();
+</script>
+<script type="text/javascript">
+    //树节点点击事件
+    function onNodeSelect(e) {
+        if (e.isLeaf) {
+            jQuery(".gw-grid-toolbar .mini-button").show();
+            var dataGrid = mini.get("dataGrid");
+            dataGrid.setUrl("GetFormList?CategoryID=" + e.node.FullID.split('.')[1]);
+            
+            dataGrid.load();
+        }
+        else {
+            var dataGrid = mini.get("dataGrid");
+            dataGrid.setUrl("GetFormList");            
+            dataGrid.load();
+            jQuery(".gw-grid-toolbar .mini-button").hide();
+        }
+    }
+
+    function pageLoad() {
+        var dataGrid = mini.get("dataGrid");
+        dataGrid.setUrl("GetFormList");
+        dataGrid.load();
+    }
+
+</script>

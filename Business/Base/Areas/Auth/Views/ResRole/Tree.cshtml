@@ -1,0 +1,152 @@
+﻿<div class="mini-splitter" style="width: 100%; height: 100%;" borderstyle="border:0px">
+    <div size="350" minsize="200" showcollapsebutton="false">
+        <div class="mini-toolbar" id="btnDiv">
+            <table>
+                <tr>
+                    <td>
+                        <a class="mini-button" iconcls="icon-setting" onclick="relationAppending(urlConstant.multiRole,{fullRelation:true,action:'SetRoleRelation'});">授权到角色</a>
+                        <a class="mini-button" iconcls="icon-setting2" onclick="relationAppending(urlConstant.multiOrg,{fullRelation:true,action:'SetOrgRelation', width: 320, height: 500});">授权到组织</a>
+                        <a class="mini-button" iconcls="icon-setting" onclick="relationAppending(urlConstant.multiUser,{fullRelation:true,action:'SetUserRelation', width: 750, height: 595});">授权到用户</a>
+                    </td>
+                    <td id="btnRight">
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="mini-fit">
+            <ul id="dataTree" class="mini-tree" style="width: 100%; height: 100%; overflow-x: hidden" url="GetTree" showtreeicon="true" textfield="Name" iconfield="Type" idfield="ID" parentfield="ParentID"
+                resultastree="false" onnodeselect="onNodeSelect" expandonload="0" contextmenu="#treeMenu" onload="onload">
+            </ul>
+        </div>
+    </div>
+    <div showcollapsebutton="false" style="border: 0px">
+        <div class="mini-splitter" style="width: 100%; height: 100%;">
+            <div showcollapsebutton="false">
+                <div class="mini-toolbar" id="btnDiv">
+                    <table>
+                        <tr>
+                            <td>
+                                已授权的组织或角色
+                            </td>
+                            <td id="btnRight">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="mini-fit">
+                    <div id="dataGrid" class="mini-datagrid" borderstyle="border:0px" showpager="false" onrowclick="onDataGridRowClick" style="width: 100%; height: 100%;" url="GetRelationList" multiselect="false"
+                        allowunselect="false">
+                        <div property="columns">
+                            <div field="Type" width="60" align="center">类型</div>
+                            <div field="Name" width="200" align="center">名称</div>
+                            <div field="Description" width="*">描述</div>
+                            <div field="Delete" width="60"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div maxsize="250" minsize="250" showcollapsebutton="true" expanded="false">
+                <div showcollapsebutton="false" style="width: 100%; height: 100%;">
+                    <div class="mini-toolbar" id="btnDiv">
+                        <table>
+                            <tr>
+                                <td>
+                                </td>
+                                <td id="btnRight">
+                                    <input id="key" class="mini-textbox" emptytext="请输入工号或姓名" style="width: 150px;" onenter="quickSearch('WorkNo,Name',{gridId:'userGrid'});" />
+                                    <a class="mini-button" onbuttonclick="quickSearch('Code,Name',{gridId:'userGrid'});" iconcls="icon-search">查询</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="mini-fit">
+                        <div id="userGrid" class="mini-datagrid" borderstyle="border:0px" style="width: 100%; height: 100%;" url="GetUserRelationList" multiselect="true">
+                            <div property="columns">
+                                <div type="checkcolumn"></div>
+                                <div field="WorkNo" width="60">工号</div>
+                                <div field="Name" width="*">姓名</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ul id="treeMenu" class="mini-contextmenu">
+    <li iconcls="icon-setting" onclick="relationAppending(urlConstant.multiRole,{fullRelation:true,action:'SetRoleRelation'});">授权到角色</li>
+    <li iconcls="icon-setting2" onclick="relationAppending(urlConstant.multiOrg,{fullRelation:true,action:'SetOrgRelation', width: 320, height: 500});">授权到组织</li>
+    <li iconcls="icon-setting" onclick="relationAppending(urlConstant.multiUser,{fullRelation:true,action:'SetUserRelation', width: 750, height: 595});">授权到用户</li>
+</ul>
+<script type="text/javascript">
+    var node;
+    function onNodeSelect(e) {
+        node = e.node;
+        var dataGrid = mini.get("dataGrid");
+
+        //        var col = dataGrid.getColumn(3);
+        //        if (node.Type == "Menu") {
+        //            dataGrid.hideColumn(col);
+        //        }
+        //        else {
+        //            dataGrid.showColumn(col);
+        //        }
+
+        dataGrid.setUrl(dataGrid.url.split('?')[0] + "?NodeFullID=" + e.node.FullID);
+        dataGrid.load();
+        var userGrid = mini.get("userGrid");
+        userGrid.setUrl("GetUserRelationList?NodeFullID=" + e.node.FullID);
+        userGrid.load();
+
+    }
+    function onDataGridRowClick(e) {
+        var userGrid = mini.get("userGrid");
+        userGrid.setUrl("GetUserRelationList?NodeFullID=" + node.FullID + "&GridRowID=" + e.record.ID);
+        userGrid.load();
+    }
+
+    function pageLoad() {
+//        var tree = mini.get("dataTree");
+//        var node = tree.getRootNode();
+//        node = tree.getChildNodes(node)[0];
+//        tree.selectNode(node);
+//        var e = {};
+//        e.node = node;
+//        onNodeSelect(e);
+    }
+
+</script>
+<script type="text/javascript">
+    @Html.GetEnum(typeof(Base.Logic.RoleType));     
+</script>
+<script type="text/javascript">
+    addGridEnum("dataGrid", "Type", "RoleType");   
+    addGridButton("dataGrid", "Delete", { linkText: '删除', onButtonClick: function (row) {
+        delRelation({ relationData: [row] });
+    }
+    });
+</script>
+<script type="text/javascript">
+    function onload(e) {
+        if (e.data.length == 0)
+            window.location = "/MvcConfig/AccessError.html";
+    }
+</script>
+<style type="text/css">
+    .Menu
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/flowstart.gif) no-repeat;
+    }
+    .Button
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/set.gif) no-repeat;
+    }
+    .Field
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/item.gif) no-repeat;
+    }
+    .Data
+    {
+        background: url(/CommonWebResource/Theme/Default/MiniUI/icons/node.png) no-repeat;
+    }
+</style>

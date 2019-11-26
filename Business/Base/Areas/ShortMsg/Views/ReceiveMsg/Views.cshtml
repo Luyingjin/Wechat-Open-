@@ -1,0 +1,409 @@
+﻿@section scripts{
+    <script charset="utf-8" src="@Url.Content("/Base/Scripts/KindEditor/kindeditor-min.js")" type="text/javascript"></script>
+    <script charset="utf-8" src="@Url.Content("/Base/Scripts/KindEditor/lang/zh_CN.js")" type="text/javascript"></script>
+    <link href="@Url.Content("/Base/Scripts/KindEditor/themes/default/default.css")" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+    body {
+	    margin: 0px;
+	    overflow:hidden;
+    }
+    .title_div { background:#f3f3f3; width:100%; font-size:12px; padding-bottom:10px;border-bottom:1px #c7c8c9 solid;}
+    .title_div h1 { padding:10px; margin:0px; font-family:微软雅黑, Arial, Helvetica, sans-serif; font-weight:normal; font-size:18px;}
+    .title_div h2 { padding:3px 0px 3px 12px; margin:0px; font-weight:normal; font-size:12px; color:#999;}
+    .attachment_div { width:100%; padding:1px 0; border-bottom:1px #c7c8c9 solid;}
+    .attachment_left1 { padding:5px 2px 2px 2px;}
+    .attachment_left { border-right:1px #c7c8c9 solid;font: 12px "Microsoft YaHei","Arial", Helvetica, sans-serif; padding:5px 2px 5px 2px;}
+    .attachment_right { background:url(images/attachment_right_bg.gif) repeat-x top; padding:2px;}
+    ul.tab_menu_top { padding: 0px 0px 0px 0px; margin:0px; list-style: none; float: left; clear: left;}
+    ul.tab_menu_top li {float: left; margin-right:3px;}
+    ul.tab_menu_top li a { position:relative; float:left; white-space:nowrap; text-decoration: none;color: #000;padding: 3px 8px 3px 28px;font: 12px "Microsoft YaHei","Arial", Helvetica, sans-serif; no-repeat top right;}
+    ul.tab_menu_top li a img { position:absolute; left:8px; height:16px; float: left; padding-right:15px; display: block; margin-top: 0px;no-repeat top left;}
+    ul.tab_menu_top li a:hover {color:#0f36c6;text-decoration:none; background-color:#99c1e7;}
+    ul.tab_menu_rar { padding: 0px 0px 0px 0px; margin:0px; list-style: none; float: left; clear: left;}
+    ul.tab_menu_rar li {float: left; margin-right:3px;}
+    ul.tab_menu_rar li a { position:relative; float:left; white-space:nowrap; text-decoration: none;color: #000;padding: 3px 8px 3px 28px;font: 12px "Microsoft YaHei","Arial", Helvetica, sans-serif; no-repeat top right;}
+    ul.tab_menu_rar li a img { position:absolute; left:8px; height:16px; float: left; padding-right:15px; display: block; margin-top: 0px;no-repeat top left;}
+    ul.tab_menu_rar li a:hover {color:#0f36c6;text-decoration:none; background-color:#99c1e7;}
+    .new_content { overflow:auto; width:100%; height:300px;}
+    .link_main {margin:1px;}
+    .link_on {padding:5px; font-size:12px; background:#e9f6ff; border:#7bb2d1 1px solid; color: #039;}
+    .old_main {margin:1px;}
+    .old_on { padding:5px; font-size:12px; background:#eff1f2; border:#999 1px solid;}
+    .rar {border-bottom:1px solid #CCC; width:100%; padding-bottom:2px; margin-bottom:2px;}
+
+    .left_main_listread { width:100%;border-bottom:1px #CCC dotted; background-color:#f3f3f3}
+    .left_main_listread h1 {font: 12px "Microsoft YaHei","Arial", Helvetica, sans-serif; font-weight:bold; float:left; margin:0px; padding:0px;}
+    .left_main_listread h2 {font: 12px "宋体","Arial", Helvetica, sans-serif; font-weight:normal; color: #999; float:left; margin:0px; padding-top:3px;}
+    .left_main_listread h3 { margin:0px; padding:0px;}
+    .left_main_listread h3 a {font: 15px "Microsoft YaHei","Arial","Arial", Helvetica, sans-serif; font-weight:normal; color: #000; float:left; margin:0px; padding:0px; text-decoration:none;}
+    .left_main_listread h3 a:hover {color:#33C;text-decoration:underline;}
+    .left_main_listread h6 {float:left; margin:0px; padding:0px;padding-top:1px;}    
+    
+    .ke-statusbar { display:none; }
+    .ke-toolbar { display:none; }
+    </style>
+
+
+<script language="javascript" type="text/javascript">
+    KindEditor.ready(function (K) {
+        window.editor = K.create('textarea.KindEditor', {
+            minWidth: 300,
+            items: [],
+            layout: '<div class="container" style="border:0px"><div class="toolbar"></div><div class="edit"></div><div class="statusbar"></div></div>'
+        });
+        window.editor.readonly(true);
+    });
+
+</script>
+}
+<div class="title_div">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td><h1><span id="Title"></span></h1></td>
+        <td style="width:70px;display:none" align="right" id="tdBtns">
+            
+        </td>
+        <td width="5px">&nbsp;</td>
+        </tr>
+    </table>
+    <table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td width="80px"><h2>发送人：</h2></td>
+        <td><span id="SenderName"></span><br /></td>
+      </tr>
+      <tr>
+        <td><h2>发送时间：</h2></td>
+        <td><span id="SenderTime"></span><br /></td>
+      </tr>
+      <tr>
+        <td><h2>接收人：</h2></td>
+        <td><span id="SenderReceiverNames"></span></td>
+      </tr>
+    </table>
+</div>
+<div class="link_main" style="display:none">
+    <div class="link_on">
+        <input id="LinkUrl" type="hidden" />
+        <a href="javascript:void(0)"><img src="/CommonWebResource/Theme/Default/MiniUI/icons/link_form.png" border="0px" alt="相关链接" width="16" height="16" align="absmiddle" />
+        相关链接</a>
+    </div>
+</div>
+<div class="attachment_div" style="display:none">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td width="40" align="center" valign="top" class="attachment_left">附件</td>
+      <td class="attachment_right">
+        <ul class="tab_menu_rar" style="border-bottom:1px solid #CCC; width:100%; padding-bottom:2px; margin-bottom:2px;display:none">
+        	<li><a href="javascript:void(0);" title="打包下载" style="color:#039" name="DownloadAll"><img src="/Base/Scripts/ShortMsg/rar.png" width="16" height="16" border="0" align="absmiddle" />[ 打包下载 ]</a></li>
+   		</ul>
+      	<ul class="tab_menu_top" style="width:100%;">
+   		</ul>
+      </td>
+    </tr>
+  </table>
+</div>
+<div id="divContent">
+    <textarea id="Content" name="Content" style="width:100%;height:300px;visibility:hidden;" class="KindEditor"></textarea>
+</div>
+<div class="old_main" style="display:none">
+    <div class="old_on">
+        <a href="javascript:void(0)" onclick="showHideHistory()" title="历史消息" id="HistoryNews" style="color:#000;text-decoration:none;"><img src="/CommonWebResource/RelateResource/image/icons/message_up.png" border="0px" width="16" height="16" align="absmiddle" />历史消息</a>
+    </div>
+</div>
+<div style="width:100%;display:none;" id="divHistory">
+    <div class="old_on">
+        <a href="javascript:void(0)" onclick="showHideHistory()" title="历史消息" id="HistoryNews" style="color:#000;text-decoration:none;"><img src="/CommonWebResource/RelateResource/image/icons/message_down.png" border="0px" width="16" height="16" align="absmiddle" />历史消息</a>
+    </div>
+</div>
+
+<script language="javascript">
+
+    $(function () {
+        var id = getQueryString("ID");
+        if (id != "") {
+            execute("GetModel?ID=" + id, {
+                onComplete: function (data) {
+                    setData(data);
+                    var funcType = getQueryString("FuncType");
+                    if (funcType != "") {
+                        var $img = $("<img>").attr("width", "16px").attr("height", "16px").attr("border", "0px").attr("align", "absmiddle");
+                        if ($.trim(data.IsSystemMsg) != "1")
+                            $("#tdBtns").append($("<a></a>").attr("href", "javascript:void(0)").attr("title", "回复消息").css("paddingLeft", "5px").append($img.clone().attr("src", "/Base/Scripts/ShortMsg/reply.png").click(function () { reply(id); }).hover(function () { imgMouseOver(event); }, function () { imgMouseOut(event); })));
+                        $("#tdBtns").append($("<a></a>").attr("href", "javascript:void(0)").attr("title", "转发消息").css("paddingLeft", "5px").append($img.clone().attr("src", "/Base/Scripts/ShortMsg/forward.png").click(function () { forward(id); }).hover(function () { imgMouseOver(event); }, function () { imgMouseOut(event); })));
+                        var receiverID = getQueryString("ReceiverID");
+                        var $imgDel = $("<a></a>").attr("href", "javascript:void(0)").attr("title", "删除消息").css("paddingLeft", "5px").append($img.clone().attr("src", "/Base/Scripts/ShortMsg/delete.png").hover(function () { imgMouseOver(event); }, function () { imgMouseOut(event); }));
+                        if (funcType == "Receive" || funcType == "Delete") {
+                            if (funcType == "Receive") {
+                                $imgDel.click(function () { deleteMsg(receiverID); });
+                            }
+                            else {
+                                $imgDel.click(function () { destroyMsg(receiverID); });
+                            }
+                        }
+                        else if (funcType == "Send") {
+                            $imgDel.click(function () { deleteMsgBody(id); });
+                        }
+                        $("#tdBtns").append($imgDel)
+                        $("#tdBtns").show();
+                    }
+                }
+            });
+        }
+
+        if (KindEditor.instances.length > 0) {
+            KindEditor.instances[0].toolbar.div.hide();
+            KindEditor.instances[0].statusbar.hide();
+        }
+        setContentHeight();
+    });
+
+    function setData(data) {
+        var menu = $(".tab_menu_top");
+        menu.find("li").remove();
+        var downloadAlls = $("a[name='DownloadAll']");
+        downloadAlls.unbind("click");
+        if ($.trim(data.AttachFileIDs) != "") {
+            $(".attachment_div").show();
+            var arrAttachs = data.AttachFileIDs.split(",");
+            if (arrAttachs.length > 1) {
+                downloadAlls.bind("click", function () { DownloadFile(data.AttachFileIDs) });
+                $(".tab_menu_rar").show();
+            }
+            else {
+                $(".tab_menu_rar").hide();
+            }
+            $.each(arrAttachs, function (i, attach) {
+                if ($.trim(attach) != "") {
+                    var iconUrl = getIconUrl(attach);
+                    var $img = $("<img>").attr("src", iconUrl).attr("width", "16px").attr("height", "16px").attr("border", "0").attr("align", "absmiddle");
+                    menu.append($("<li></li>").append($("<a></a>").attr("href", "#").click(function () { DownloadFile(attach) }).append($img).append(getMiniFileName(attach))));
+                }
+            });
+        }
+        else {
+            $(".attachment_div").hide();
+        }
+        $("#Title").text($.trim(data.Title));
+
+        $("#LinkUrl").val($.trim(data.LinkUrl));
+        $(".link_main").find("a").unbind("click");
+        if ($.trim(data.LinkUrl) != "") {
+            $(".link_main").show();
+            $(".link_main").find("a").bind("click", clickLinkForm);
+        }
+        else {
+            $(".link_main").hide();
+        }
+        $("#SenderName").text($.trim(data.SenderName));
+        var receivers = $.trim(data.ReceiverNames);
+        if (receivers != "" && $.trim(data.ReceiverDeptNames) != "")
+            receivers += ",";
+        receivers += $.trim(data.ReceiverDeptNames);
+        $("#SenderReceiverNames").text(receivers);
+        if ($.trim(data.SendTime) != "") {
+            var sendTime = new Date(data.SendTime);
+            $("#SenderTime").text(sendTime.format("yyyy年MM月dd日h:mm:ss"));
+        }
+
+        $("#divHistory").hide().find(".left_main_listread").remove();
+        if ($.trim(data.ParentID) != "") {
+            $(".old_main").hide();
+            //initHistory(data.ParentID);
+        }
+        else {
+            $(".old_main").hide();
+        }
+        if (KindEditor.instances.length > 0) {
+            KindEditor.instances[0].html($.trim(data.Content));
+        }
+        setContentHeight();
+    }
+
+    function clickLinkForm(e) {
+        var url = $("#LinkUrl").val();
+        if ($.trim(url) != "")
+            openWindow(url, { width: "80%", height: "80%" });
+    }
+
+    $(window).resize(function () {
+        setContentHeight();
+    });
+
+    function setContentHeight() {
+        if (KindEditor.instances.length > 0) {
+            var attachHeight = $(".attachment_div").is(":visible") ? $(".attachment_div").height() : -3;
+            var linkHeight = $(".link_main").is(":visible") ? $(".link_main").height() : 0;
+            var oldHeight = $(".old_main").is(":visible") ? $(".old_main").height() : 0;
+            var hisHeight = $("#divHistory").is(":visible") ? $("#divHistory").height() : 0;
+            var height = $("body").height() - attachHeight - $(".title_div").height() - linkHeight - oldHeight - hisHeight - 15;
+            KindEditor.instances[0].resize($("body").width(), height);
+        }
+    }
+
+    function getIconUrl(attach) {
+        var imgUrl = "/CommonWebResource/RelateResource/image/ico16/";
+        var regexDOC = /\.(doc|docx)$/;
+        var regexEXCEL = /\.(xls|xlsx)$/;
+        var regexPDF = /\.(pdf)$/;
+        var regexPPT = /\.(ppt|pptx)$/;
+
+        var iconUrl = imgUrl + "unkownfile.png";
+        if (regexDOC.test(attach.toLowerCase())) {
+            iconUrl = imgUrl + "word.png";
+        }
+        else if (regexEXCEL.test(attach.toLowerCase())) {
+            iconUrl = imgUrl + "excel.png";
+        }
+        else if (regexPDF.test(attach.toLowerCase())) {
+            iconUrl = imgUrl + "pdf.png";
+        }
+
+        else if (regexPPT.test(attach.toLowerCase())) {
+            iconUrl = imgUrl + "powerpoint.png";
+        }
+        return iconUrl;
+    }
+
+    function initHistory(parentId) {
+        execute("GetHistory?ParentID=" + parentId, {
+            onComplete: function (data) {
+                historyData = data;
+                $.each(historyData, function (i, rec) {
+                    var $table = $("<table width=\"100%\" border=\"0\" cellspacing=\"5\" cellpadding=\"0\"></table");
+                    var id = rec.ID;
+                    //第一行
+                    var senderName = $.trim(rec.SenderName);
+                    var senderTime = $.trim(rec.SendTime) == "" ? "" : new Date(rec.SendTime).format("yyyy年MM月dd日h:mm:ss");
+                    var title = $.trim(rec.Title);
+                    var $tr1td = $("<td></td>").append($("<h1></h1>").text(senderName)).append($("<h2></h2>").text("[" + senderTime + "]"));
+                    if ($.trim(rec.AttachFileIDs) != "") {
+                        var $img = $("<img>").attr("width", "16px").attr("height", "16px").attr("border", "0px").attr("align", "absmiddle");
+                        $tr1td.append($("<h6></h6>").append($img.attr("title", "附件").attr("src", "/CommonWebResource/RelateResource/image/ico16/attachment.png")));
+                    }
+                    var $tr1 = $("<tr></tr>").append($tr1td);
+                    $table.append($tr1);
+
+                    //第二行
+                    var $title = $("<h3></h3>").append($("<a></a>").attr("href", "javascript:;").text(title).bind("click", function () { openMsg(id, title); }));
+                    $table.append($("<tr></tr>").append($("<td></td>").append($title)));
+
+                    var $div = $("<div></div>").addClass("left_main_listread").append($table);
+                    $("#divHistory").append($div);
+                });
+            }
+        });
+    }
+
+    function openMsg(id, title) {
+        openWindow("Views?ID=" + id, {
+            title: title,
+            width: "60%",
+            height: "85%"
+        });
+    }
+
+    function showHideHistory() {
+        var $divH = $("#divHistory");
+        var $divT = $(".old_main");
+        if (!$divH.is(":visible")) {
+            $divT.hide();
+            $divH.css("left", "0px").css("bottom", "0px").show();
+        }
+        else {
+            $divH.hide();
+            $divT.show();
+        }
+        setContentHeight();
+    }
+
+    Date.prototype.format = function (format) {
+        /* 
+        * eg:format="yyyy-MM-dd hh:mm:ss"; 
+        */
+        var o = {
+            "M+": this.getMonth() + 1, // month  
+            "d+": this.getDate(), // day  
+            "h+": this.getHours(), // hour  
+            "m+": this.getMinutes(), // minute  
+            "s+": this.getSeconds(), // second  
+            "q+": Math.floor((this.getMonth() + 3) / 3), // quarter  
+            "S": this.getMilliseconds()
+            // millisecond  
+        }
+
+        if (/(y+)/.test(format)) {
+            format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4
+                        - RegExp.$1.length));
+        }
+
+        for (var k in o) {
+            if (new RegExp("(" + k + ")").test(format)) {
+                format = format.replace(RegExp.$1, RegExp.$1.length == 1
+                            ? o[k]
+                            : ("00" + o[k]).substr(("" + o[k]).length));
+            }
+        }
+        return format;
+    }
+
+    function imgMouseOver(e) {
+        if (!e) e = window.event;
+        var img = e.target || e.srcElement;
+        var src = $(img).attr("src").replace(".png", "on.png");
+        $(img).attr("src", src);
+    }
+
+    function imgMouseOut(e) {
+        if (!e) e = window.event;
+        var img = e.target || e.srcElement;
+        var src = $(img).attr("src").replace("on.png", ".png");
+        $(img).attr("src", src);
+    }
+
+    function reply(id) {
+        openWindow('Edit?ParentID=' + id + '&ReplyID=' + id, { addQueryString: false, title: '回复消息', width: '80%', height: '85%' });
+    }
+
+    function forward(id) {
+        openWindow('Edit?ParentID=' + id + '&ForwardID=' + id, { addQueryString: false, title: '转发消息', width: '80%', height: '85%' });
+    }
+
+    function deleteMsg(id) {
+        msgUI("确认删除？", 2, function (action) {
+            if (action == "ok") {                
+                addExecuteParam("IDs", id);
+                execute("/Base/ShortMsg/DeleteMsg/DeleteMsg", {
+                    onComplete: function (rtn) {
+                        closeWindow("refresh");
+                    }
+                });
+            }
+        });
+    }
+
+    function destroyMsg(id) {
+        msgUI("确认永久删除？", 2, function (action) {
+            if (action == "ok") {
+                addExecuteParam("IDs", id);
+                execute("/Base/ShortMsg/DeleteMsg/Delete", {
+                    onComplete: function (rtn) {
+                        closeWindow("refresh");
+                    }
+                });
+            }
+        });
+    }
+
+    function deleteMsgBody(id) {
+        msgUI("确认删除？", 2, function (action) {
+            if (action == "ok") {
+                addExecuteParam("IDs", id);
+                execute("/Base/ShortMsg/SendMsg/DeleteMsgBody", {
+                    onComplete: function (rtn) {
+                        closeWindow("refresh");
+                    }
+                });
+            }
+        });
+    }
+</script>

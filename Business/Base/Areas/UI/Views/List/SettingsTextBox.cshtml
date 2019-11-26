@@ -1,0 +1,76 @@
+﻿<div class="mini-toolbar" id="btnDiv" style="width: 100%; position: fixed; top: 0; left: 0; z-index: 100;">
+    <table>
+        <tr>
+            <td>
+                <a class="mini-button" plain="true" iconcls="icon-save" onclick="returnForm();">确定</a>
+            </td>
+            <td id="btnRight">
+            </td>
+        </tr>
+    </table>
+</div>
+<form id="dataForm" method="post" autogetdata="false" style="top: 30px; position: relative;">
+<div class="formDiv">
+    <fieldset>
+        <legend>基本属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        空文本提示：
+                    </td>
+                    <td>
+                        <input name="emptyText" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        验证规则：
+                    </td>
+                    <td>
+                        <input name="vtype" class="mini-combobox" style="width: 100%" shownullitem="true" data="vType" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>事件属性</legend>
+        <div>
+            <table>
+                <tr class="hideRow">
+                    <td width="50%">
+                    </td>
+                    <td width="50%">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        值改变时发生：
+                    </td>
+                    <td>
+                        <input name="onvaluechanged" class="mini-textbox" style="width: 100%" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </fieldset>
+</div>
+</form>
+<script type="text/javascript">
+    var yesNo = [{ "value": "true", "text": "是" }, { "value": "false", "text": "否"}];
+    var vType = [{ "value": "email", "text": "邮件" }, { "value": "int", "text": "整型" }, { "value": "float", "text": "浮点型"}];
+    function setData(data) {
+        if (data) {
+            var form = new mini.Form("dataForm");
+            form.setData(mini.decode(data));
+            form.setChanged(false);
+        }
+    }
+</script>

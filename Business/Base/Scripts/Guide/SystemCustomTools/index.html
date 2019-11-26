@@ -1,0 +1,197 @@
+﻿<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>无标题文档</title>
+<link href="/CommonWebResource/Theme/Default/MiniUI/miniui.css" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="/CommonWebResource/CoreLib/Basic/jQuery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="/CommonWebResource/CoreLib/MiniUI/miniui.js"></script>
+<style type="text/css">
+body { background-color:#f8f8f8; margin:0px;}
+.flow-top { width:100%; background-color:#FFF; border-bottom:#e1e1e1 1px solid; }
+.flow-top span { background:url(images/top_icon.png) no-repeat; padding-left:35px; margin-left:10px;font-family: "微软雅黑"; font-size:16px; height:30px; line-height:30px;}
+#apDiv1 {
+	position: absolute;
+	left: 95px;
+	top: 241px;
+	width: 128px;
+	height: 128px;
+	z-index: 11;
+}
+#apDiv2 {
+	position: absolute;
+	left: 279px;
+	top: 128px;
+	width: 128px;
+	height: 128px;
+	z-index: 12;
+}
+#apDiv3 {
+	position: absolute;
+	left: 484px;
+	top: 128px;
+	width: 128px;
+	height: 128px;
+	z-index: 13;
+}
+#apDiv4 {
+	position: absolute;
+	left: 678px;
+	top: 241px;
+	width: 128px;
+	height: 128px;
+	z-index: 13;
+}
+#apDiv5 {
+	position: absolute;
+	left: 377px;
+	top: 344px;
+	width: 128px;
+	height: 128px;
+	z-index: 14;
+}
+#apDiv6 {
+	position: absolute;
+	left: 94px;
+	top: 76px;
+	width: 115px;
+	height: 105px;
+	z-index: 14;
+}
+.bt-help {
+	position: absolute;
+	right: 0px;
+	top: 0px;
+	width: 40px;
+	height: 40px;
+	z-index: 999;
+}
+#apDivline {
+	position: absolute;
+	left: 100px;
+	top: 178px;
+	width: 600px;
+	height: 268px;
+	z-index: 1;
+}
+#apDivline02 {
+	position: absolute;
+	left: 117px;
+	top: 124px;
+	width: 252px;
+	height: 102px;
+	z-index: 2;
+}
+</style>
+
+<script type="text/javascript">
+function MM_swapImgRestore() { //v3.0
+  var i,x,a=document.MM_sr; for(i=0;a&&i<a.length&&(x=a[i])&&x.oSrc;i++) x.src=x.oSrc;
+}
+function MM_preloadImages() { //v3.0
+  var d=document; if(d.images){ if(!d.MM_p) d.MM_p=new Array();
+    var i,j=d.MM_p.length,a=MM_preloadImages.arguments; for(i=0; i<a.length; i++)
+    if (a[i].indexOf("#")!=0){ d.MM_p[j]=new Image; d.MM_p[j++].src=a[i];}}
+}
+
+function MM_findObj(n, d) { //v4.01
+  var p,i,x;  if(!d) d=document; if((p=n.indexOf("?"))>0&&parent.frames.length) {
+    d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
+  if(!(x=d[n])&&d.all) x=d.all[n]; for (i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
+  for(i=0;!x&&d.layers&&i<d.layers.length;i++) x=MM_findObj(n,d.layers[i].document);
+  if(!x && d.getElementById) x=d.getElementById(n); return x;
+}
+
+function MM_swapImage() { //v3.0
+  var i,j=0,x,a=MM_swapImage.arguments; document.MM_sr=new Array; for(i=0;i<(a.length-2);i+=3)
+   if ((x=MM_findObj(a[i]))!=null){document.MM_sr[j++]=x; if(!x.oSrc) x.oSrc=x.src; x.src=a[i+2];}
+}
+</script>
+<script type="text/javascript">
+        mini.parse();
+
+        
+        function help_bddy() {
+            
+            mini.open({
+                url: "/Base/Scripts/Guide/SystemCustomTools/help/help_bddy.html",
+                title: "“表单定义”帮助", width: 880, height: 630
+            });
+        }
+		function help_rkgl() {
+            
+            mini.open({
+                url: "/Base/Scripts/Guide/SystemCustomTools/help/help_rkgl.html",
+                title: "“菜单定义”帮助", width: 880, height: 630
+            });
+        }
+		function help_bbdy() {
+            
+            mini.open({
+                url: "/Base/Scripts/Guide/SystemCustomTools/help/help_bbdy.html",
+                title: "“报表定义”帮助", width: 880, height: 630
+            });
+        }
+		function help_lbdy() {
+            
+            mini.open({
+                url: "/Base/Scripts/Guide/SystemCustomTools/help/help_lbdy.html",
+                title: "“列表定义”帮助", width: 880, height: 630
+            });
+        }
+		function help_lcdy() {
+            
+            mini.open({
+                url: "/Base/Scripts/Guide/SystemCustomTools/help/help_lcdy.html",
+                title: "“流程定义”帮助", width: 880, height: 630
+            });
+        }
+		function help_xzqdy() {
+            
+            mini.open({
+                url: "/Base/Scripts/Guide/SystemCustomTools/help/help_xzqdy.html",
+                title: "“选择器定义”帮助", width: 880, height: 630
+            });
+        }
+		
+</script>
+</head>
+
+<body>
+<div class="flow-top" >
+  <span>系统定义工具</span>
+</div>
+<div id="apDiv1" >
+  <a href="/Base/UI/Form/List" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt-pzbd','','images/bt_pzbd_on.png',1)"><img id="bt-pzbd" src="images/bt_pzbd.png" border="0"  alt="表单定义" /></a>
+    <div class="bt-help"><a href="#" onClick="help_bddy();" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt-help1','','images/bt_help_on.png',1)"><img id="bt-help1" src="images/bt_help.png" border="0"  alt="配置表单" /></a></div>
+</div>
+
+<div id="apDiv2" >
+  <a href="/Base/UI/List/List" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt_pzlb','','images/bt_pzlb_on.png',1)"><img id="bt_pzlb" src="images/bt_pzlb.png" border="0"  alt="列表定义" /></a>
+  <div class="bt-help"><a href="#"  onClick="help_lbdy();"  onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt-help2','','images/bt_help_on.png',1)"><img id="bt-help2" src="images/bt_help.png" border="0"  alt="配置表单" /></a></div>
+</div>
+
+<div id="apDiv3" >
+  <a href="/Workflow/DefFlow/List" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt_pzlc','','images/bt_pzlc_on.png',1)"><img id="bt_pzlc" src="images/bt_pzlc.png" border="0"  alt="流程定义" /></a>
+    <div class="bt-help"><a href="#"  onClick="help_lcdy()" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt-help3','','images/bt_help_on.png',1)"><img id="bt-help3" src="images/bt_help.png" border="0"  alt="配置表单" /></a></div>
+</div>
+
+<div id="apDiv4" >
+  <a href="/Base/Auth/Res/Tree" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt_pzrk','','images/bt_pzrk_on.png',1)"><img id="bt_pzrk" src="images/bt_pzrk.png" border="0"  alt="入口管理" /></a>
+  <div class="bt-help"><a href="#" onClick="help_rkgl()" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt-help4','','images/bt_help_on.png',1)"><img id="bt-help4" src="images/bt_help.png" border="0"  alt="配置表单" /></a></div>
+</div>
+
+<div id="apDiv5" >
+  <a href="/Base/AutoReport/Define/List" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt_pzbb','','images/bt_pzbb_on.png',1)"><img id="bt_pzbb" src="images/bt_pzbb.png" border="0"  alt="配置表单" /></a>
+  <div class="bt-help"><a href="#"  onClick="help_bbdy();" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt-help5','','images/bt_help_on.png',1)"><img id="bt-help5" src="images/bt_help.png" border="0"  alt="配置表单" /></a></div>
+</div>
+
+<div id="apDiv6" >
+  <a href="/Base/UI/Selector/List" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt_xzqdy','','images/bt_xzqdy_on.png',1)"><img id="bt_xzqdy" src="images/bt_xzqdy.png" border="0"  alt="选择器定义" /></a>
+  <div class="bt-help"><a href="#"  onClick="help_xzqdy();" onmouseout="MM_swapImgRestore()" onmouseover="MM_swapImage('bt-help6','','images/bt_help_on.png',1)"><img id="bt-help6" src="images/bt_help.png" border="0"  alt="配置表单" /></a></div>
+</div>
+
+<div id="apDivline"><img src="images/bg_line.png" width="600" height="255" /></div>
+<div id="apDivline02"><img src="images/bg_line2.png" width="252" height="102" /></div>
+</body>
+</html>

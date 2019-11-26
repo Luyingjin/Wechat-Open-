@@ -1,0 +1,43 @@
+﻿@{
+    ViewBag.Title = "设计任务列表";
+}
+<div class="mini-toolbar" style="padding: 0px; border: 0">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+            </td>
+            <td style="white-space: nowrap;">
+                <input id="key" class="mini-buttonedit gw-searchbox" emptytext="请输入任务名称" onenter="quickSearch('TaskName');"
+                    onbuttonclick="quickSearch('TaskName');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" style="width: 100%; height: 100%;" url="GetDesignTaskList"
+        multiselect="true" borderstyle="border-left:0;border-right:0;">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="DisplayName" width="*" allowsort="true" align="left">
+                任务名称</div>
+            <div field="CreateDate" width="90" allowsort="true" align="center" dateformat="yyyy-MM-dd">
+                创建日期</div>
+            <div field="Exec" align="center">
+                执行
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    addGridButton("dataGrid", "Exec", {
+        linkText: '执行',
+        onButtonClick: function (row, settings) {
+            openWindow(row.LinkUrl + "?ActivityID=" + row.ID + "&WBSID=" + row.WBSID + "&TaskWorkID=" + row.BusniessID + "&ProjectInfoID=" + row.ProjectInfoID, { width: '60%', height: '85%', title: row.DisplayName, onDestroy: reloadGrid });
+        }
+    });
+
+    function reloadGrid() {
+        mini.get("dataGrid").reload();
+    }
+</script>

@@ -1,0 +1,87 @@
+﻿<div class="mini-toolbar" id="btnDiv">
+    <table>
+        <tr>
+            <td style="width: 100%;">
+                <a class="mini-button" id="btnAdd" iconcls="icon-upload" onclick="uploadimg()" plain="true"  >
+                    上传</a><a class="mini-button" iconcls="icon-remove" onclick="del()"
+                            plain="true">删除</a><label style="font-family:Verdana;">&nbsp;&nbsp;&nbsp;图片大小不超过2M, 格式为bmp, png, jpeg, jpg, gif</label>
+            </td>
+            <td id="btnRight">
+                <input class="mini-buttonedit searchbox" id="key" emptytext="请输入名称" style="width: 200px;"
+                    onenter="quickSearch('Name');" onbuttonclick="quickSearch('Name');" />
+            </td>
+        </tr>
+    </table>
+</div>
+<div class="mini-fit">
+    <div id="dataGrid" class="mini-datagrid" idfield="ID" url="GetList" allowmovecolumn="false"
+        style="width: 100%; height: 100%;" pagesize="20" multiSelect="true">
+        <div property="columns">
+            <div type="checkcolumn">
+            </div>
+            <div field="Name" width="*" headeralign="center" align="left" >
+                名称</div>
+            @*<div field="MediaID" width="300" headeralign="center" align="left" >
+                素材ID</div>*@
+        </div>
+    </div>
+</div>
+<div id="queryWindow" class="mini-window" title="详细查询" style="width: 690px; height: 145px;"
+    showmodal="true" allowresize="false" allowdrag="true">
+    <div class="queryDiv">
+        <form id="queryForm" method="post">
+        <table>
+            <tr>
+                <td width="10%" align="center">
+                    名称
+                </td>
+                <td width="23%" align="left">
+                    <input name="$LK$Name" class="mini-textbox" style="width: 75%" />
+                </td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+                <td width="10%" align="center">
+                </td>
+                <td width="23%" align="left">
+                </td>
+            </tr>
+        </table>
+        </form>
+        <div>
+            <a class="mini-button" onclick="search()" iconcls="icon-find" style="margin-right: 20px;">
+                查询</a> <a class="mini-button" onclick="clearQueryForm('queryForm')" iconcls="icon-undo">
+                    清空</a>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function uploadimg() {
+        var value = "FileIds";
+        var relateId = getQueryString("MpID");
+        var url = SlUploadUrl + "?value=" + value + "&" + "FileMode=multi&IsLog=undefined&Filter=图片|*.jpg;*.jpeg;*.png;*.bmp;*.gif&MaximumUpload=" + 2 + "&MaxNumberToUpload=" + 20 + "&AllowThumbnail=" + false + "&RelateId=&Src=system";
+        if (relateId)
+            url += "&RelateId=" + relateId;
+        mini.open({
+            url: url,
+            width: 500,
+            height: 300,
+            title: "图片上传",
+            ondestroy: function (rtnValue) {
+                if (rtnValue.substring(0, 3) == "err") {
+                    msgUI(rtnValue, 4);
+                    return;
+                }
+                else if (rtnValue != "") {
+                    addExecuteParam("MpID", relateId);
+                    addExecuteParam("FileName", rtnValue);
+                    execute("AddFile", { mustConfirm: false, onComplete: function () { msgUI("上传成功！"); search(); } });
+                }
+            }
+        });
+    }
+</script>
+<script type="text/javascript">
+    addGridLink('dataGrid', 'Name', 'Edit?ID={ID}&FileID={FileID}', { title: '图片编辑', width: 450, height: '45%' });
+</script>

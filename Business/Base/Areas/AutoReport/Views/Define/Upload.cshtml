@@ -1,0 +1,65 @@
+﻿@section scripts{
+    <script src="@Url.Content("/commonwebresource/corelib/swfupload/swfupload.js")" type="text/javascript"></script>
+    <style type="text/css">
+        body
+        {
+            margin: 0px;
+        }
+        .gw_user_wrapper
+        {
+            margin: 0 0 0 10px;
+            width: 96%;
+            padding-top: 2px;
+        }
+        .gw_user_text
+        {
+            font-size: 12px;
+            color: #666;
+            width: 100%;
+        }
+    </style>
+}
+<div class="gw_user_wrapper" id="editForm">
+    <div class="gw_user_text">
+        <br />
+        <br />
+        <header>
+		    <span>上传报表文件</span>
+	    </header>
+        <br>
+        <div style="width: 100%; float: left;">
+            <input id="rdlFile" class="mini-fileupload" style="width: 250px" limittype="*.rdl;*.rdlc;"
+                uploadonselect="false" flashurl="/commonwebresource/corelib/swfupload/swfupload.swf"
+                uploadurl="/Base/AutoReport/Define/UploadRdlc" onuploadsuccess="onUploadSuccess" />&nbsp;
+            <a class="mini-button" iconcls="icon-upload" onclick="startUpload();">上传</a>
+            说明：多次上传，以最后一次为准。</div>
+        <br>
+    </div>
+</div>
+<script type="text/javascript">
+    $("#rdlFile").each(function () {
+        var $ctrl = $(this);
+        $ctrl.attr("limittype", getQueryString("ReportCode") + ".rdl");
+    });
+    function startUpload() {
+        var fileupload = mini.get("rdlFile");
+        if (fileupload.getText() == "") {
+            msgUI("请先选择本地rdl文件！", 1);
+            return;
+        }
+        var form = new mini.Form("#editForm");
+        form.clear();
+        form.loading();
+        fileupload.startUpload();
+    }
+    function onUploadSuccess(e) {
+        this.setText("");
+        var form = new mini.Form("#editForm");
+        form.unmask();
+        //msgUI("上传成功" + e.serverData + "！", 0, function (act) { closeWindow("refresh"); });
+        setTimeout('closeWindow("refresh");', 200);  //不给延时会报错        
+    }
+    $(document).ready(function () {
+        $("#divFloat").hide();
+    });
+</script>
